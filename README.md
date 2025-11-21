@@ -8,10 +8,11 @@ Based on [FT article (Nov 2025)](https://www.ft.com/content/8e375410-dde2-43bc-8
 
 ```bash
 pip install -r requirements.txt
-python download_data.py  # downloads pp-2024.csv, shows manual download instructions
-# Complete manual downloads (see script output)
-python analyze.py
+python download_data.py  # Auto-downloads all data (~340 MB)
+python analyze.py        # Runs analysis, generates results
 ```
+
+**That's it!** All data downloads automatically. Zero manual steps.
 
 ## Output Files
 
