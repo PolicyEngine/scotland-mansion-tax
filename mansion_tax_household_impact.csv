@@ -1,0 +1,568 @@
+constituency_name,pct_households_affected,avg_loss_per_household
+Cities of London and Westminster,1.628,2000
+Kensington and Bayswater,1.22,2000
+Chelsea and Fulham,1.125,2000
+Hampstead and Highgate,0.713,2000
+Battersea,0.687,2000
+Richmond Park,0.615,2000
+Islington South and Finsbury,0.483,2000
+Hammersmith and Chiswick,0.466,2000
+Holborn and St Pancras,0.464,2000
+Runnymede and Weybridge,0.389,2000
+Finchley and Golders Green,0.379,2000
+Esher and Walton,0.375,2000
+Wimbledon,0.358,2000
+Hornsey and Friern Barnet,0.328,2000
+Harpenden and Berkhamsted,0.327,2000
+Ealing Central and Acton,0.317,2000
+Windsor,0.313,2000
+Twickenham,0.306,2000
+Queen's Park and Maida Vale,0.299,2000
+Chesham and Amersham,0.28,2000
+Beaconsfield,0.28,2000
+Tooting,0.277,2000
+Putney,0.268,2000
+Dulwich and West Norwood,0.257,2000
+Guildford,0.215,2000
+Reigate,0.211,2000
+Islington North,0.207,2000
+Sevenoaks,0.203,2000
+South West Hertfordshire,0.197,2000
+Winchester,0.194,2000
+Hertsmere,0.193,2000
+Bath,0.19,2000
+Maidenhead,0.185,2000
+North Cotswolds,0.182,2000
+Oxford West and Abingdon,0.181,2000
+Godalming and Ash,0.18,2000
+Hackney South and Shoreditch,0.178,2000
+Clapham and Brixton Hill,0.161,2000
+Epping Forest,0.16,2000
+Arundel and South Downs,0.159,2000
+Tatton,0.159,2000
+Hackney North and Stoke Newington,0.154,2000
+Poole,0.153,2000
+Henley and Thame,0.15,2000
+Woking,0.147,2000
+Brentwood and Ongar,0.147,2000
+St Albans,0.145,2000
+Bermondsey and Old Southwark,0.144,2000
+Farnham and Bordon,0.139,2000
+Dorking and Horley,0.128,2000
+Chipping Barnet,0.127,2000
+East Hampshire,0.123,2000
+Hove and Portslade,0.119,2000
+Lewisham West and East Dulwich,0.119,2000
+Vauxhall and Camberwell Green,0.118,2000
+South Cotswolds,0.116,2000
+New Forest East,0.113,2000
+Banbury,0.113,2000
+Bromley and Biggin Hill,0.107,2000
+Tunbridge Wells,0.106,2000
+Altrincham and Sale West,0.105,2000
+"Ruislip, Northwood and Pinner",0.103,2000
+Greenwich and Woolwich,0.103,2000
+Chichester,0.103,2000
+East Surrey,0.103,2000
+Hendon,0.102,2000
+Poplar and Limehouse,0.101,2000
+Brent East,0.099,2000
+Cambridge,0.099,2000
+Wycombe,0.099,2000
+Bristol Central,0.097,2000
+Newbury,0.097,2000
+Reading West and Mid Berkshire,0.095,2000
+Kingston and Surbiton,0.092,2000
+Southgate and Wood Green,0.091,2000
+East Grinstead and Uckfield,0.091,2000
+Mid Sussex,0.09,2000
+North West Essex,0.089,2000
+Mid Buckinghamshire,0.087,2000
+North East Hampshire,0.085,2000
+New Forest West,0.085,2000
+Wokingham,0.084,2000
+Reading Central,0.084,2000
+South Cambridgeshire,0.084,2000
+Epsom and Ewell,0.084,2000
+South Devon,0.083,2000
+Romsey and Southampton North,0.082,2000
+Eltham and Chislehurst,0.081,2000
+Leyton and Wanstead,0.079,2000
+Sussex Weald,0.078,2000
+Streatham and Croydon North,0.078,2000
+Witney,0.077,2000
+Daventry,0.076,2000
+Harrow East,0.075,2000
+Cheltenham,0.074,2000
+Welwyn Hatfield,0.073,2000
+Tonbridge,0.073,2000
+North Cornwall,0.072,2000
+Truro and Falmouth,0.071,2000
+Surrey Heath,0.07,2000
+Kenilworth and Southam,0.069,2000
+Manchester Central,0.069,2000
+Meriden and Solihull East,0.068,2000
+Ealing Southall,0.068,2000
+Lewisham North,0.067,2000
+Salisbury,0.067,2000
+Stratford-on-Avon,0.066,2000
+Wetherby and Easingwold,0.064,2000
+Bethnal Green and Stepney,0.063,2000
+North East Hertfordshire,0.062,2000
+Frome and East Somerset,0.06,2000
+East Wiltshire,0.06,2000
+Croydon South,0.058,2000
+North West Hampshire,0.058,2000
+York Central,0.057,2000
+South Northamptonshire,0.057,2000
+Macclesfield,0.056,2000
+Beckenham and Penge,0.056,2000
+Basildon and Billericay,0.055,2000
+Exeter,0.055,2000
+Cardiff South and Penarth,0.054,2000
+Exmouth and Exeter East,0.054,2000
+Horsham,0.053,2000
+Hitchin,0.052,2000
+Croydon West,0.052,2000
+Didcot and Wantage,0.052,2000
+Harrogate and Knaresborough,0.051,2000
+Edmonton and Winchmore Hill,0.051,2000
+Hertford and Stortford,0.05,2000
+Rutland and Stamford,0.05,2000
+Canterbury,0.05,2000
+Birmingham Ladywood,0.049,2000
+Watford,0.049,2000
+Sheffield Central,0.049,2000
+Bicester and Woodstock,0.048,2000
+Peckham,0.047,2000
+Enfield North,0.047,2000
+Tewkesbury,0.046,2000
+Orpington,0.046,2000
+Bristol North West,0.045,2000
+Lewes,0.045,2000
+Chingford and Woodford Green,0.045,2000
+Hamble Valley,0.045,2000
+Thornbury and Yate,0.045,2000
+North Somerset,0.044,2000
+Warwick and Leamington,0.044,2000
+Salford,0.044,2000
+Hornchurch and Upminster,0.043,2000
+Manchester Rusholme,0.043,2000
+Sutton and Cheam,0.043,2000
+Maldon,0.043,2000
+Stretford and Urmston,0.043,2000
+Liverpool Riverside,0.042,2000
+Wells and Mendip Hills,0.042,2000
+Luton South and South Bedfordshire,0.042,2000
+Droitwich and Evesham,0.041,2000
+Westmorland and Lonsdale,0.041,2000
+Spelthorne,0.041,2000
+Hemel Hempstead,0.041,2000
+Tottenham,0.041,2000
+Isle of Wight West,0.041,2000
+Oxford East,0.04,2000
+Bexhill and Battle,0.04,2000
+Sutton Coldfield,0.04,2000
+Weald of Kent,0.039,2000
+Buckingham and Bletchley,0.039,2000
+Bromsgrove,0.039,2000
+Honiton and Sidmouth,0.039,2000
+Isle of Wight East,0.039,2000
+St Austell and Newquay,0.039,2000
+North West Norfolk,0.039,2000
+Skipton and Ripon,0.039,2000
+Tamworth,0.038,2000
+Loughborough,0.038,2000
+Chester South and Eddisbury,0.038,2000
+Christchurch,0.038,2000
+Leeds Central and Headingley,0.038,2000
+Bury St Edmunds and Stowmarket,0.038,2000
+Rushcliffe,0.038,2000
+Broxbourne,0.037,2000
+Mid Bedfordshire,0.037,2000
+South Suffolk,0.037,2000
+Manchester Withington,0.037,2000
+Knowsley,0.037,2000
+Newcastle upon Tyne Central and West,0.037,2000
+St Ives,0.037,2000
+West Dorset,0.037,2000
+Nottingham South,0.036,2000
+Brighton Pavilion,0.036,2000
+Ely and East Cambridgeshire,0.036,2000
+North Northumberland,0.035,2000
+North Devon,0.035,2000
+Eastbourne,0.035,2000
+South Dorset,0.034,2000
+Suffolk Coastal,0.033,2000
+Ealing North,0.033,2000
+Melton and Syston,0.032,2000
+Glastonbury and Somerton,0.032,2000
+Braintree,0.032,2000
+South West Norfolk,0.032,2000
+Melksham and Devizes,0.032,2000
+North Dorset,0.032,2000
+Stourbridge,0.032,2000
+West Lancashire,0.032,2000
+Stroud,0.031,2000
+Filton and Bradley Stoke,0.031,2000
+Romford,0.031,2000
+Cheadle,0.031,2000
+Fylde,0.031,2000
+Bournemouth West,0.031,2000
+Keighley and Ilkley,0.031,2000
+Hayes and Harlington,0.031,2000
+Herne Bay and Sandwich,0.03,2000
+North Herefordshire,0.03,2000
+Milton Keynes North,0.03,2000
+Newcastle-under-Lyme,0.03,2000
+Camborne and Redruth,0.03,2000
+Leeds South,0.03,2000
+Stratford and Bow,0.03,2000
+North West Cambridgeshire,0.03,2000
+Tiverton and Minehead,0.03,2000
+Thirsk and Malton,0.03,2000
+Brentford and Isleworth,0.03,2000
+Coventry East,0.03,2000
+Bury South,0.03,2000
+Scarborough and Whitby,0.029,2000
+Hexham,0.029,2000
+Nottingham East,0.029,2000
+Harlow,0.029,2000
+Worcester,0.029,2000
+Chelmsford,0.029,2000
+Wirral West,0.028,2000
+Rayleigh and Wickford,0.028,2000
+Neath and Swansea East,0.028,2000
+Witham,0.028,2000
+Birmingham Edgbaston,0.028,2000
+Congleton,0.028,2000
+Corby and East Northamptonshire,0.028,2000
+Telford,0.028,2000
+Central Suffolk and North Ipswich,0.028,2000
+Ashford,0.028,2000
+Broadland and Fakenham,0.027,2000
+Mid Norfolk,0.027,2000
+Leicester South,0.027,2000
+Central Devon,0.027,2000
+Thurrock,0.027,2000
+York Outer,0.027,2000
+Dover and Deal,0.027,2000
+Aylesbury,0.027,2000
+North Norfolk,0.027,2000
+Mid Leicestershire,0.026,2000
+Hereford and South Herefordshire,0.026,2000
+Lewisham East,0.026,2000
+Dartford,0.026,2000
+Gower,0.026,2000
+Torbay,0.025,2000
+Portsmouth North,0.025,2000
+Maidstone and Malling,0.025,2000
+Bognor Regis and Littlehampton,0.025,2000
+Bracknell,0.025,2000
+Ribble Valley,0.024,2000
+"Harborough, Oadby and Wigston",0.024,2000
+Richmond and Northallerton,0.024,2000
+Solihull West and Shirley,0.024,2000
+"Brecon, Radnor and Cwm Tawe",0.024,2000
+Huntingdon,0.024,2000
+Doncaster Central,0.024,2000
+Yeovil,0.024,2000
+Newark,0.024,2000
+Portsmouth South,0.024,2000
+Derbyshire Dales,0.023,2000
+Earley and Woodley,0.023,2000
+Sittingbourne and Sheppey,0.023,2000
+West Worcestershire,0.023,2000
+Sheffield South East,0.023,2000
+Waveney Valley,0.023,2000
+North Bedfordshire,0.023,2000
+Gloucester,0.023,2000
+St Neots and Mid Cambridgeshire,0.023,2000
+Northampton North,0.023,2000
+Brent West,0.022,2000
+Chester North and Neston,0.022,2000
+Rochester and Strood,0.022,2000
+Ashfield,0.022,2000
+Gravesham,0.022,2000
+South Ribble,0.022,2000
+Stafford,0.022,2000
+South West Devon,0.022,2000
+Wyre Forest,0.022,2000
+Worthing West,0.022,2000
+Rugby,0.022,2000
+Newcastle upon Tyne North,0.022,2000
+Mid Dorset and North Poole,0.022,2000
+Walthamstow,0.022,2000
+Stockport,0.022,2000
+Cardiff North,0.021,2000
+Hinckley and Bosworth,0.021,2000
+Nuneaton,0.021,2000
+Feltham and Heston,0.021,2000
+Southampton Itchen,0.021,2000
+South West Wiltshire,0.021,2000
+Shrewsbury,0.021,2000
+Southend East and Rochford,0.021,2000
+Sheffield Hallam,0.021,2000
+North West Leicestershire,0.021,2000
+Harrow West,0.021,2000
+South East Cornwall,0.02,2000
+Widnes and Halewood,0.02,2000
+Llanelli,0.02,2000
+Aberafan Maesteg,0.02,2000
+Monmouthshire,0.02,2000
+Bedford,0.02,2000
+Milton Keynes Central,0.02,2000
+Clwyd North,0.02,2000
+Wakefield and Rothwell,0.02,2000
+Rossendale and Darwen,0.02,2000
+St Helens North,0.02,2000
+Peterborough,0.02,2000
+Ynys Môn,0.019,2000
+Lichfield,0.019,2000
+Torridge and Tavistock,0.019,2000
+Swindon South,0.019,2000
+Wrexham,0.019,2000
+Heywood and Middleton North,0.019,2000
+Washington and Gateshead South,0.019,2000
+Hastings and Rye,0.019,2000
+Uxbridge and South Ruislip,0.018,2000
+Doncaster East and the Isle of Axholme,0.018,2000
+Ilford North,0.018,2000
+Bassetlaw,0.018,2000
+Bristol South,0.018,2000
+Basingstoke,0.018,2000
+Ilford South,0.018,2000
+Bradford South,0.018,2000
+North Shropshire,0.018,2000
+Crawley,0.018,2000
+Dunstable and Leighton Buzzard,0.018,2000
+"Pontefract, Castleford and Knottingley",0.018,2000
+Derby South,0.018,2000
+Mid Derbyshire,0.018,2000
+Redditch,0.017,2000
+Broxtowe,0.017,2000
+South Leicestershire,0.017,2000
+Brighton Kemptown and Peacehaven,0.017,2000
+Stevenage,0.017,2000
+Sleaford and North Hykeham,0.017,2000
+Folkestone and Hythe,0.017,2000
+Plymouth Sutton and Devonport,0.017,2000
+West Suffolk,0.016,2000
+Birmingham Erdington,0.016,2000
+Cardiff West,0.016,2000
+Penrith and Solway,0.016,2000
+Barking,0.016,2000
+Kingswinford and South Staffordshire,0.016,2000
+Bolsover,0.016,2000
+Makerfield,0.016,2000
+Halesowen,0.015,2000
+Sefton Central,0.015,2000
+Vale of Glamorgan,0.015,2000
+Leeds North East,0.015,2000
+Leeds North West,0.015,2000
+Caerfyrddin,0.015,2000
+Runcorn and Helsby,0.015,2000
+North East Somerset and Hanham,0.015,2000
+South Basildon and East Thurrock,0.015,2000
+Mid and South Pembrokeshire,0.015,2000
+Birmingham Selly Oak,0.015,2000
+Mansfield,0.015,2000
+East Thanet,0.015,2000
+Newport East,0.015,2000
+Burton and Uttoxeter,0.015,2000
+Sheffield Heeley,0.015,2000
+Clacton,0.015,2000
+Southampton Test,0.015,2000
+Wolverhampton West,0.015,2000
+Lincoln,0.015,2000
+Preston,0.015,2000
+Gorton and Denton,0.014,2000
+"Oldham West, Chadderton and Royton",0.014,2000
+Bury North,0.014,2000
+Bridgwater,0.014,2000
+Derby North,0.014,2000
+Grantham and Bourne,0.014,2000
+Warrington South,0.014,2000
+East Worthing and Shoreham,0.014,2000
+Wigan,0.013,2000
+Leicester East,0.013,2000
+Stoke-on-Trent South,0.013,2000
+Lancaster and Wyre,0.013,2000
+Bristol East,0.013,2000
+Rochdale,0.013,2000
+Normanton and Hemsworth,0.013,2000
+Middlesbrough and Thornaby East,0.013,2000
+Old Bexley and Sidcup,0.013,2000
+Leicester West,0.013,2000
+Pendle and Clitheroe,0.013,2000
+Worsley and Eccles,0.013,2000
+Wythenshawe and Sale East,0.013,2000
+Slough,0.013,2000
+Carlisle,0.013,2000
+Oldham East and Saddleworth,0.012,2000
+Chesterfield,0.012,2000
+Harwich and North Essex,0.012,2000
+Blackburn,0.012,2000
+Gainsborough,0.012,2000
+Chippenham,0.012,2000
+South Shropshire,0.012,2000
+Havant,0.012,2000
+Weston-super-Mare,0.012,2000
+South Derbyshire,0.012,2000
+Bradford East,0.012,2000
+Bangor Aberconwy,0.012,2000
+Erith and Thamesmead,0.012,2000
+North East Derbyshire,0.012,2000
+Swindon North,0.012,2000
+Carshalton and Wallington,0.012,2000
+Chatham and Aylesford,0.012,2000
+Kettering,0.011,2000
+Darlington,0.011,2000
+Leeds East,0.011,2000
+Chorley,0.011,2000
+Staffordshire Moorlands,0.011,2000
+Huddersfield,0.011,2000
+Colchester,0.011,2000
+Nottingham North and Kimberley,0.011,2000
+Walsall and Bloxwich,0.011,2000
+Alyn and Deeside,0.011,2000
+Louth and Horncastle,0.011,2000
+Taunton and Wellington,0.011,2000
+Burnley,0.011,2000
+Bournemouth East,0.011,2000
+Tynemouth,0.011,2000
+South Holland and The Deepings,0.011,2000
+Morecambe and Lunesdale,0.011,2000
+Mitcham and Morden,0.011,2000
+Halifax,0.011,2000
+Ossett and Denby Dale,0.01,2000
+Gillingham and Rainham,0.01,2000
+South Norfolk,0.01,2000
+Hazel Grove,0.01,2000
+Hartlepool,0.01,2000
+Bristol North East,0.01,2000
+Forest of Dean,0.01,2000
+Rother Valley,0.01,2000
+Faversham and Mid Kent,0.01,2000
+Bradford West,0.01,2000
+"Stone, Great Wyrley and Penkridge",0.01,2000
+Bolton West,0.01,2000
+St Helens South and Whiston,0.01,2000
+Birkenhead,0.01,2000
+Eastleigh,0.01,2000
+Amber Valley,0.01,2000
+Stoke-on-Trent Central,0.01,2000
+Luton North,0.01,2000
+Warrington North,0.01,2000
+Barnsley North,0.009,2000
+Northampton South,0.009,2000
+Norwich North,0.009,2000
+Rhondda and Ogmore,0.009,2000
+Dagenham and Rainham,0.009,2000
+Croydon East,0.009,2000
+Doncaster North,0.009,2000
+Bishop Auckland,0.009,2000
+Smethwick,0.009,2000
+Dwyfor Meirionnydd,0.009,2000
+Wellingborough and Rushden,0.009,2000
+Easington,0.009,2000
+Wolverhampton South East,0.009,2000
+Stoke-on-Trent North,0.009,2000
+Jarrow and Gateshead East,0.009,2000
+Merthyr Tydfil and Aberdare,0.009,2000
+Sunderland Central,0.009,2000
+Southport,0.009,2000
+Newport West and Islwyn,0.009,2000
+Dewsbury and Batley,0.008,2000
+North Warwickshire and Bedworth,0.008,2000
+Penistone and Stocksbridge,0.008,2000
+Birmingham Perry Barr,0.008,2000
+Kingston upon Hull West and Haltemprice,0.008,2000
+Boston and Skegness,0.008,2000
+Newcastle upon Tyne East and Wallsend,0.008,2000
+Blackpool South,0.008,2000
+Bolton South and Walkden,0.008,2000
+Kingston upon Hull North and Cottingham,0.008,2000
+Stalybridge and Hyde,0.007,2000
+Southend West and Leigh,0.007,2000
+Plymouth Moor View,0.007,2000
+Spen Valley,0.007,2000
+Erewash,0.007,2000
+Cannock Chase,0.007,2000
+Cardiff East,0.007,2000
+Newton Abbot,0.007,2000
+Swansea West,0.007,2000
+Colne Valley,0.007,2000
+Caerphilly,0.007,2000
+Shipley,0.007,2000
+Sherwood Forest,0.007,2000
+Scunthorpe,0.007,2000
+Bridlington and The Wolds,0.007,2000
+Ellesmere Port and Bromborough,0.007,2000
+Coventry South,0.007,2000
+Fareham and Waterlooville,0.007,2000
+Rawmarsh and Conisbrough,0.007,2000
+Blaenau Gwent and Rhymney,0.007,2000
+Bootle,0.007,2000
+Goole and Pocklington,0.007,2000
+Leeds South West and Morley,0.007,2000
+Leeds West and Pudsey,0.007,2000
+Tipton and Wednesbury,0.007,2000
+Houghton and Sunderland South,0.007,2000
+Birmingham Northfield,0.007,2000
+Blaydon and Consett,0.007,2000
+Whitehaven and Workington,0.007,2000
+Birmingham Hodge Hill and Solihull North,0.007,2000
+West Bromwich,0.007,2000
+Liverpool Garston,0.007,2000
+Torfaen,0.007,2000
+Gedling,0.007,2000
+Blackley and Middleton South,0.007,2000
+Crewe and Nantwich,0.006,2000
+Ipswich,0.006,2000
+Aldershot,0.006,2000
+West Ham and Beckton,0.006,2000
+Coventry North West,0.005,2000
+The Wrekin,0.005,2000
+Blackpool North and Fleetwood,0.005,2000
+North Durham,0.005,2000
+Stockton North,0.005,2000
+Bridgend,0.005,2000
+High Peak,0.005,2000
+Lowestoft,0.005,2000
+City of Durham,0.005,2000
+Cramlington and Killingworth,0.005,2000
+Kingston upon Hull East,0.005,2000
+Liverpool Wavertree,0.005,2000
+Birmingham Hall Green and Moseley,0.005,2000
+Newton Aycliffe and Spennymoor,0.005,2000
+Clwyd East,0.005,2000
+Brigg and Immingham,0.005,2000
+East Ham,0.005,2000
+Bolton North East,0.004,2000
+Norwich South,0.004,2000
+Great Yarmouth,0.004,2000
+Barrow and Furness,0.004,2000
+Leigh and Atherton,0.004,2000
+Sheffield Brightside and Hillsborough,0.004,2000
+Rotherham,0.004,2000
+Calder Valley,0.004,2000
+Blyth and Ashington,0.004,2000
+Bexleyheath and Crayford,0.003,2000
+Hyndburn,0.003,2000
+Birmingham Yardley,0.003,2000
+Stockton West,0.003,2000
+Barnsley South,0.002,2000
+Dudley,0.002,2000
+Beverley and Holderness,0.002,2000
+North East Cambridgeshire,0.002,2000
+Wallasey,0.002,2000
+Ashton-under-Lyne,0.002,2000
+Gosport,0.002,2000
+Wolverhampton North East,0.002,2000
+Liverpool Walton,0.002,2000
+Redcar,0.002,2000
+Middlesbrough South and East Cleveland,0.002,2000
+Gateshead Central and Whickham,0.002,2000
+Selby,0.002,2000
+Ceredigion Preseli,0.002,2000
