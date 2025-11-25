@@ -4,11 +4,18 @@ UK Mansion Tax Analysis - 2024
 
 Analyzes property sales above £1.5m and £2m thresholds by Westminster constituency.
 Uses MySoc 2025 constituency data for postcode matching.
+Uprates 2024 prices to 2026-27 using OBR house price index forecast.
 """
 
 import pandas as pd
 import sys
 from pathlib import Path
+
+# OBR House Price Index forecast from October 2024 Economic and Fiscal Outlook
+# https://obr.uk/efo/economic-and-fiscal-outlook-october-2024/
+HPI_2024 = 148.74
+HPI_2026_27 = 154.03
+UPRATING_FACTOR = HPI_2026_27 / HPI_2024  # 1.0356
 
 def check_file(path, description):
     """Check if required file exists."""
@@ -37,7 +44,7 @@ def load_constituency_names():
 
 def analyze_threshold(threshold, postcode_lookup, const_names):
     """Analyze properties above threshold by constituency."""
-    print(f"\nProcessing £{threshold:,} threshold...")
+    print(f"\nProcessing £{threshold:,} threshold (2026-27 prices)...")
 
     # Load and filter property data
     pp_path = 'data/pp-2024.csv'
@@ -49,9 +56,12 @@ def analyze_threshold(threshold, postcode_lookup, const_names):
         'town', 'district', 'county', 'ppd_category', 'record_status'
     ])
 
-    # Filter by price threshold
-    df = df[df['price'] >= threshold]
-    print(f"  {len(df):,} properties above £{threshold:,}")
+    # Uprate 2024 prices to 2026-27 using OBR HPI forecast
+    df['price_uprated'] = df['price'] * UPRATING_FACTOR
+
+    # Filter by price threshold (using uprated prices)
+    df = df[df['price_uprated'] >= threshold]
+    print(f"  {len(df):,} properties above £{threshold:,} (after uprating)")
 
     # Normalize postcodes and match to constituencies
     df['postcode_norm'] = df['postcode'].str.replace(' ', '').str.upper()
@@ -63,12 +73,12 @@ def analyze_threshold(threshold, postcode_lookup, const_names):
     matched = df['constituency'].notna().sum()
     print(f"  {matched:,} matched to constituencies ({matched/len(df)*100:.1f}%)")
 
-    # Calculate constituency stats
+    # Calculate constituency stats (using uprated prices)
     stats = df[df['constituency'].notna()].groupby('constituency').agg(
-        properties=('price', 'count'),
-        mean_price=('price', 'mean'),
-        median_price=('price', 'median'),
-        total_value=('price', 'sum')
+        properties=('price_uprated', 'count'),
+        mean_price=('price_uprated', 'mean'),
+        median_price=('price_uprated', 'median'),
+        total_value=('price_uprated', 'sum')
     ).round(0)
 
     stats['revenue'] = (stats['properties'] * 2000).astype(int)
@@ -80,6 +90,11 @@ if __name__ == '__main__':
     print("="*60)
     print("UK Mansion Tax Analysis")
     print("="*60)
+
+    print(f"\nUprating 2024 prices to 2026-27:")
+    print(f"  HPI 2024: {HPI_2024}")
+    print(f"  HPI 2026-27 forecast: {HPI_2026_27}")
+    print(f"  Uprating factor: {UPRATING_FACTOR:.4f} (+{(UPRATING_FACTOR-1)*100:.2f}%)")
 
     print("\nLoading reference data...")
     postcode_lookup = load_postcode_mapping()
