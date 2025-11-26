@@ -209,7 +209,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
             width: 180px;
             height: 12px;
             border-radius: 3px;
-            background: linear-gradient(to right, #F7FDFC, #39C6C0, #2C6496);
+            background: linear-gradient(to right, #B8E6E6, #39C6C0, #2C6496);
         }
         .legend-labels {
             display: flex;
@@ -438,9 +438,9 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
         const colorScale = d3.scaleSequential()
             .domain([0, maxPct])
             .interpolator(t => {
-                // Interpolate from light teal -> teal -> blue
+                // Interpolate from visible light teal -> teal -> blue
                 if (t < 0.5) {
-                    return d3.interpolate('#F7FDFC', '#39C6C0')(t * 2);
+                    return d3.interpolate('#B8E6E6', '#39C6C0')(t * 2);
                 } else {
                     return d3.interpolate('#39C6C0', '#2C6496')((t - 0.5) * 2);
                 }
