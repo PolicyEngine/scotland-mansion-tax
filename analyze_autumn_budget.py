@@ -9,7 +9,7 @@ Policy details (from OBR EFO November 2025):
 - From April 2028, properties valued over £2m (in 2026 prices) face surcharge
 - Four price bands with surcharges from £2,500 to £7,500
 - OBR explicitly states: £2,500 for lowest band (£2m-£2.5m), £7,500 for highest (£5m+)
-- Middle band rates (£3,500 and £5,000) are interpolated - not officially published
+- Middle band rates (£3,500 and £5,000) from Bloomberg - official source unclear
 - OBR estimates £0.4bn revenue in 2029-30
 
 Methodology:
@@ -62,14 +62,15 @@ THRESHOLD_UPRATING_2026_TO_2028 = calculate_uprating_factor(CPI_GROWTH, 2026, 20
 
 # Surcharge bands in 2026 prices (as defined in policy)
 # NOTE: OBR only explicitly states the lowest (£2,500) and highest (£7,500) rates.
-# The middle band rates are INTERPOLATED assumptions - official rates not yet published.
+# Middle band rates from Bloomberg (no official source cited):
+# https://www.bloomberg.com/news/articles/2025-11-26/reeves-hits-uk-property-with-mansion-tax-on-2-million-homes
 # Source: OBR EFO Nov 2025, para A.10 states "four price bands" and gives
 # "£2,500 for a property valued in the lowest £2 million to £2.5 million band"
 # "£7,500 for a property valued in the highest band of £5 million or more"
 BANDS_2026 = [
     (2_000_000, 2_500_000, 2_500),   # £2m-£2.5m: £2,500 (confirmed by OBR)
-    (2_500_000, 3_000_000, 3_500),   # £2.5m-£3m: £3,500 (INTERPOLATED - not official)
-    (3_000_000, 5_000_000, 5_000),   # £3m-£5m: £5,000 (INTERPOLATED - not official)
+    (2_500_000, 3_000_000, 3_500),   # £2.5m-£3m: £3,500 (Bloomberg, no official source)
+    (3_000_000, 5_000_000, 5_000),   # £3m-£5m: £5,000 (Bloomberg, no official source)
     (5_000_000, float('inf'), 7_500), # £5m+: £7,500 (confirmed by OBR)
 ]
 
