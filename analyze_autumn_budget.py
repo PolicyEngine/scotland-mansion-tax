@@ -22,20 +22,16 @@ import sys
 from pathlib import Path
 
 # OBR House Price Index forecast from November 2025 EFO
-# Source: Table A.1 and paragraph 2.59
-# "house prices grow just under 3 per cent in 2025 and average 2½ per cent
-#  annual growth from 2026"
-# Average house price: £260,000 (2024) -> ~£305,000 (2030)
-
-# Annual HPI growth rates (percentage change on previous year)
+# Source: Paragraph 2.59 - "house prices grow just under 3 per cent in 2025 and
+#         average 2½ per cent annual growth from 2026"
+# Property tax impact: "reduce house price growth by around 0.1 percentage points
+#                       a year from 2028"
 HPI_GROWTH = {
-    2024: 0.0,     # Base year
+    2024: 0.0,     # Base year (already 2024 prices)
     2025: 2.9,     # "just under 3 per cent"
     2026: 2.5,     # "average 2½ per cent annual growth from 2026"
     2027: 2.5,
-    2028: 2.4,     # Slightly lower due to property tax impact (-0.1pp)
-    2029: 2.4,
-    2030: 2.4,
+    2028: 2.4,     # 2.5% - 0.1pp property tax impact
 }
 
 
@@ -47,17 +43,35 @@ def calculate_uprating_factor(growth_dict, from_year, to_year):
     return factor
 
 
-# Policy uses 2026 prices for property valuation
-# We uprate 2024 sale prices to 2026 to compare against the £2m threshold
-UPRATING_2024_TO_2026 = calculate_uprating_factor(HPI_GROWTH, 2024, 2026)
+# Policy takes effect April 2028
+# We uprate 2024 sale prices to 2028 using HPI
+# Thresholds are defined in 2026 prices and uprated by CPI from 2028 onwards
+# For simplicity, we assume CPI ~ 2% annually for threshold uprating
+UPRATING_2024_TO_2028_HPI = calculate_uprating_factor(HPI_GROWTH, 2024, 2028)
 
-# Surcharge bands (in 2026 prices, uprated by CPI annually)
-# For simplicity, we use the 2028 rates as stated in the policy
-BANDS = [
+# CPI forecast for threshold uprating (2026 to 2028)
+# Source: OBR November 2025 EFO - "2.5 per cent in 2026" and "2 per cent target in 2027"
+CPI_GROWTH = {
+    2026: 0.0,  # Base year for thresholds (defined in 2026 prices)
+    2027: 2.5,  # OBR forecast for 2026 (applies to uprating in 2027)
+    2028: 2.0,  # Target rate
+}
+THRESHOLD_UPRATING_2026_TO_2028 = calculate_uprating_factor(CPI_GROWTH, 2026, 2028)
+
+# Surcharge bands in 2026 prices (as defined in policy)
+BANDS_2026 = [
     (2_000_000, 2_500_000, 2_500),   # £2m-£2.5m: £2,500
     (2_500_000, 3_000_000, 3_500),   # £2.5m-£3m: £3,500 (interpolated)
     (3_000_000, 5_000_000, 5_000),   # £3m-£5m: £5,000 (interpolated)
     (5_000_000, float('inf'), 7_500), # £5m+: £7,500
+]
+
+# Uprate bands to 2028 prices using CPI
+BANDS_2028 = [
+    (int(lower * THRESHOLD_UPRATING_2026_TO_2028),
+     upper if upper == float('inf') else int(upper * THRESHOLD_UPRATING_2026_TO_2028),
+     charge)
+    for lower, upper, charge in BANDS_2026
 ]
 
 # OBR's estimated revenue in 2029-30 (post-behavioural)
@@ -65,13 +79,14 @@ OBR_REVENUE_2029_30 = 400_000_000  # £0.4 billion
 
 
 def get_surcharge(value):
-    """Calculate annual surcharge for a property value (in 2026 prices)."""
-    if value < 2_000_000:
+    """Calculate annual surcharge for a property value (in 2028 prices)."""
+    # Use 2028 bands (thresholds uprated by CPI from 2026)
+    if value < BANDS_2028[0][0]:
         return 0
-    for lower, upper, charge in BANDS:
+    for lower, upper, charge in BANDS_2028:
         if lower <= value < upper:
             return charge
-    return BANDS[-1][2]  # Highest band
+    return BANDS_2028[-1][2]  # Highest band
 
 
 def check_file(path, description):
@@ -108,17 +123,20 @@ def analyze():
     print("Based on OBR November 2025 Economic and Fiscal Outlook")
     print("=" * 70)
 
-    print(f"\nHouse Price Uprating (2024 -> 2026):")
-    print(f"  Annual growth rates: {HPI_GROWTH}")
-    print(f"  Cumulative factor: {UPRATING_2024_TO_2026:.4f} "
-          f"(+{(UPRATING_2024_TO_2026-1)*100:.1f}%)")
+    print(f"\nHouse Price Uprating (2024 -> 2028):")
+    print(f"  HPI growth rates: {HPI_GROWTH}")
+    print(f"  Cumulative HPI factor: {UPRATING_2024_TO_2028_HPI:.4f} "
+          f"(+{(UPRATING_2024_TO_2028_HPI-1)*100:.1f}%)")
+    print(f"\nThreshold Uprating (2026 -> 2028 by CPI):")
+    print(f"  CPI factor: {THRESHOLD_UPRATING_2026_TO_2028:.4f} "
+          f"(+{(THRESHOLD_UPRATING_2026_TO_2028-1)*100:.1f}%)")
 
-    print(f"\nSurcharge bands (properties valued over £2m in 2026 prices):")
-    for lower, upper, charge in BANDS:
+    print(f"\nSurcharge bands in 2028 prices (thresholds uprated by CPI from 2026):")
+    for lower, upper, charge in BANDS_2028:
         if upper == float('inf'):
-            print(f"  £{lower/1e6:.1f}m+: £{charge:,}/year")
+            print(f"  £{lower/1e6:.2f}m+: £{charge:,}/year")
         else:
-            print(f"  £{lower/1e6:.1f}m-£{upper/1e6:.1f}m: £{charge:,}/year")
+            print(f"  £{lower/1e6:.2f}m-£{upper/1e6:.2f}m: £{charge:,}/year")
 
     print(f"\nOBR revenue estimate for 2029-30: £{OBR_REVENUE_2029_30/1e9:.1f}bn")
 
@@ -141,17 +159,20 @@ def analyze():
     total_sales = len(df)
     print(f"  {total_sales:,} total sales in 2024")
 
-    # Uprate 2024 prices to 2026 prices using HPI
-    # Policy threshold is £2m in 2026 prices
-    df['price_2026'] = df['price'] * UPRATING_2024_TO_2026
+    # Uprate 2024 prices to 2028 prices using HPI
+    # Policy takes effect April 2028
+    df['price_2028'] = df['price'] * UPRATING_2024_TO_2028_HPI
 
-    # Filter to properties valued over £2m in 2026 prices
-    df_scope = df[df['price_2026'] >= 2_000_000].copy()
-    print(f"  {len(df_scope):,} sales valued above £2m in 2026 prices "
+    # Get the 2028 threshold (lowest band)
+    threshold_2028 = BANDS_2028[0][0]
+
+    # Filter to properties valued above the 2028 threshold
+    df_scope = df[df['price_2028'] >= threshold_2028].copy()
+    print(f"  {len(df_scope):,} sales valued above £{threshold_2028/1e6:.2f}m in 2028 prices "
           f"({len(df_scope)/total_sales*100:.2f}% of sales)")
 
-    # Calculate implied surcharge for each property (using 2026 prices for bands)
-    df_scope['surcharge'] = df_scope['price_2026'].apply(get_surcharge)
+    # Calculate implied surcharge for each property (using 2028 prices and bands)
+    df_scope['surcharge'] = df_scope['price_2028'].apply(get_surcharge)
 
     # Match to constituencies
     df_scope['postcode_norm'] = df_scope['postcode'].str.replace(' ', '').str.upper()
@@ -169,10 +190,10 @@ def analyze():
     df_matched = df_scope[df_scope['constituency'].notna()]
 
     stats = df_matched.groupby('constituency').agg(
-        properties=('price_2026', 'count'),
-        mean_price=('price_2026', 'mean'),
-        median_price=('price_2026', 'median'),
-        total_value=('price_2026', 'sum'),
+        properties=('price_2028', 'count'),
+        mean_price=('price_2028', 'mean'),
+        median_price=('price_2028', 'median'),
+        total_value=('price_2028', 'sum'),
         implied_surcharge=('surcharge', 'sum')
     ).round(0)
 
@@ -186,15 +207,15 @@ def analyze():
     stats = stats.sort_values('properties', ascending=False)
 
     # Band breakdown
-    print("\nProperties by surcharge band:")
-    for lower, upper, charge in BANDS:
+    print("\nProperties by surcharge band (2028 prices):")
+    for lower, upper, charge in BANDS_2028:
         if upper == float('inf'):
-            count = (df_matched['price_2026'] >= lower).sum()
-            label = f"£{lower/1e6:.0f}m+"
+            count = (df_matched['price_2028'] >= lower).sum()
+            label = f"£{lower/1e6:.2f}m+"
         else:
-            count = ((df_matched['price_2026'] >= lower) &
-                     (df_matched['price_2026'] < upper)).sum()
-            label = f"£{lower/1e6:.1f}m-£{upper/1e6:.1f}m"
+            count = ((df_matched['price_2028'] >= lower) &
+                     (df_matched['price_2028'] < upper)).sum()
+            label = f"£{lower/1e6:.2f}m-£{upper/1e6:.2f}m"
         print(f"  {label}: {count:,} properties (£{charge:,}/yr each)")
 
     print(f"\nTotal implied surcharge from sales data: £{total_implied/1e6:.1f}m")
