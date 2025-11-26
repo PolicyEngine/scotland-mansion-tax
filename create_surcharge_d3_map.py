@@ -365,7 +365,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
 
         const hexjson = ''' + json.dumps(hexjson) + ''';
 
-        const geojson = ''' + json.dumps(geojson) + ''';
+        const geoData = ''' + json.dumps(geojson) + ''';
 
         const allConstituencies = ''' + json.dumps(all_constituencies) + ''';
 
@@ -375,6 +375,43 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
         const svg = d3.select('#map');
         const g = svg.append('g');
         const tooltip = document.getElementById('tooltip');
+
+        let currentView = 'geo';
+
+        // Calculate bounds of British National Grid coordinates
+        let xMin = Infinity, xMax = -Infinity, yMin = Infinity, yMax = -Infinity;
+        geoData.features.forEach(feature => {
+            const traverse = (coords) => {
+                if (typeof coords[0] === 'number') {
+                    xMin = Math.min(xMin, coords[0]);
+                    xMax = Math.max(xMax, coords[0]);
+                    yMin = Math.min(yMin, coords[1]);
+                    yMax = Math.max(yMax, coords[1]);
+                } else {
+                    coords.forEach(traverse);
+                }
+            };
+            traverse(feature.geometry.coordinates);
+        });
+
+        // Create scale to fit British National Grid into SVG
+        const padding = 40;
+        const dataWidth = xMax - xMin;
+        const dataHeight = yMax - yMin;
+        const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight);
+        const geoOffsetX = (width - dataWidth * geoScale) / 2;
+        const geoOffsetY = (height - dataHeight * geoScale) / 2;
+
+        const projection = d3.geoTransform({
+            point: function(x, y) {
+                this.stream.point(
+                    (x - xMin) * geoScale + geoOffsetX,
+                    height - ((y - yMin) * geoScale + geoOffsetY)
+                );
+            }
+        });
+
+        const pathGenerator = d3.geoPath().projection(projection);
 
         // Zoom behavior
         const zoom = d3.zoom()
@@ -404,22 +441,9 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
             .domain([0, maxPct])
             .interpolator(t => d3.interpolate('#e0e7ed', '#1a4a6e')(Math.pow(t, 0.5)));
 
-        // Calculate centroids for geo view
-        const centroids = {};
-        const projection = d3.geoMercator()
-            .center([-2, 54])
-            .scale(2800)
-            .translate([width / 2, height / 2]);
-        const pathGenerator = d3.geoPath().projection(projection);
-
-        geojson.features.forEach(f => {
-            const centroid = pathGenerator.centroid(f);
-            centroids[f.properties.Name] = centroid;
-        });
-
         // Draw geographic view
         const geoPaths = g.selectAll('.constituency-path')
-            .data(geojson.features)
+            .data(geoData.features)
             .enter()
             .append('path')
             .attr('class', 'constituency-path')
@@ -622,7 +646,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
                             .attr('stroke-width', d => d.properties.Name === name ? 2 : 0.3);
 
                         // Zoom to constituency
-                        const feature = geojson.features.find(f => f.properties.Name === name);
+                        const feature = geoData.features.find(f => f.properties.Name === name);
                         if (feature) {
                             const bounds = pathGenerator.bounds(feature);
                             const dx = bounds[1][0] - bounds[0][0];
