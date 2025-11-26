@@ -398,7 +398,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
         const dataHeight = yMax - yMin;
         const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight);
         const geoOffsetX = (width - dataWidth * geoScale) / 2;
-        const geoOffsetY = (height - dataHeight * geoScale) / 2;
+        const geoOffsetY = (height - dataHeight * geoScale) / 2 - 40;
 
         const projection = d3.geoTransform({
             point: function(x, y) {
@@ -525,7 +525,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
         });
 
         // Calculate hex positions - centered in SVG
-        const hexSize = 9;
+        const hexSize = 8;
         const hexWidth = hexSize * 2;
         const hexHeight = Math.sqrt(3) * hexSize;
         const hexRangeQ = hexQMax - hexQMin;
