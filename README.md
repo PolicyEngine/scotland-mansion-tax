@@ -17,10 +17,10 @@ python create_mansion_tax_map.py  # Generates hex map visualizations
 
 | Threshold | Properties | % of 2024 Sales | Constituencies |
 |-----------|------------|-----------------|----------------|
-| £1.5m | 13,884 | 1.57% | 567 |
-| £2m | 7,849 | 0.89% | 553 |
+| £1.5m | 14,820 | 1.68% | 568 |
+| £2m | 8,213 | 0.93% | 553 |
 
-**Top constituency:** Cities of London and Westminster (929 properties above £1.5m)
+**Top constituency:** Cities of London and Westminster (951 properties above £1.5m)
 
 **Match rate:** 95.2% of high-value properties matched to constituencies
 
