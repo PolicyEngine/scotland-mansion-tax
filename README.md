@@ -46,14 +46,14 @@ python create_surcharge_map.py       # Generates hex map visualizations
 
 | Metric | Value |
 |--------|-------|
-| Properties above £2m (2024 sales, uprated) | 10,371 |
+| Sales above £2m (2024, uprated to 2029) | 10,371 |
 | % of 2024 sales | 1.18% |
-| Constituencies affected | 559 |
+| Constituencies with sales above £2m | 559 |
 | Total OBR revenue estimate | £400m |
 
 **Top 5 constituencies by allocated revenue:**
 
-| Constituency | Properties | Allocated Revenue | Share |
+| Constituency | Sales | Allocated Revenue | Share |
 |--------------|------------|-------------------|-------|
 | Cities of London and Westminster | 811 | £39.8m | 9.9% |
 | Kensington and Bayswater | 634 | £28.4m | 7.1% |

@@ -5,7 +5,7 @@ In the November 2025 Autumn Budget, the UK government announced a new high value
 Using 2024 Land Registry sales data, we estimate how this revenue will be distributed across Westminster constituencies.
 
 Key findings:
-- 559 of 650 constituencies contain properties above the £2 million threshold
+- 559 of 650 constituencies had sales above £2 million in 2024
 - The top 10 constituencies account for 34% of the estimated revenue
 - Cities of London and Westminster alone accounts for 10% (£40 million)
 - London constituencies dominate, with 8 of the top 10 affected areas
@@ -31,7 +31,7 @@ We estimate each constituency's share of the £400 million total by analysing 20
 
 ### Top 20 constituencies by estimated revenue
 
-| Rank | Constituency | Properties sold above £2m | Estimated annual revenue | Share of total |
+| Rank | Constituency | Sales above £2m | Estimated annual revenue | Share of total |
 |------|--------------|---------------------------|--------------------------|----------------|
 | 1 | Cities of London and Westminster | 811 | £39.8m | 9.9% |
 | 2 | Kensington and Bayswater | 634 | £28.4m | 7.1% |
@@ -54,7 +54,7 @@ We estimate each constituency's share of the £400 million total by analysing 20
 | 19 | Twickenham | 77 | £2.6m | 0.7% |
 | 20 | Harpenden and Berkhamsted | 73 | £2.3m | 0.6% |
 
-The top 20 constituencies account for 43% of the estimated revenue, despite representing just 3% of all constituencies.
+The top 20 constituencies account for 43% of the estimated revenue while comprising 3% of all constituencies.
 
 ## Geographic distribution {#map}
 
@@ -62,11 +62,11 @@ The map below shows the estimated revenue allocation by constituency. Darker sha
 
 <iframe src="surcharge_map_by_revenue.html" width="100%" height="850" frameborder="0"></iframe>
 
-The concentration in London and the Home Counties reflects the geography of UK property wealth. Of the 559 constituencies with properties above the £2 million threshold:
+The concentration in London and the Home Counties reflects the geography of UK property wealth. Of the 559 constituencies with sales above £2 million in 2024:
 - 69 are in Greater London (accounting for 48% of estimated revenue)
 - The remaining 490 constituencies share 52% of estimated revenue
 
-London constituencies contain 48% of high-value property sales but represent just 11% of all constituencies.
+London constituencies account for 48% of high-value property sales while comprising 11% of all constituencies.
 
 ### Distribution by surcharge band
 
