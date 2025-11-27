@@ -398,7 +398,7 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
         const dataHeight = yMax - yMin;
         const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight);
         const geoOffsetX = (width - dataWidth * geoScale) / 2;
-        const geoOffsetY = (height - dataHeight * geoScale) / 2 - 40;
+        const geoOffsetY = (height - dataHeight * geoScale) / 2 - 150;
 
         const projection = d3.geoTransform({
             point: function(x, y) {
