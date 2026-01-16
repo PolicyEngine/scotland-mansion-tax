@@ -71,52 +71,52 @@ def generate_d3_map_html(geojson, impact_data):
         .map-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 16px;
+            gap: 6px;
+            padding: 8px;
             max-width: 900px;
             margin: 0 auto;
         }
         .map-header {
-            padding-bottom: 12px;
+            padding-bottom: 6px;
             border-bottom: 1px solid #e5e7eb;
         }
         .map-header h2 {
-            margin: 0 0 6px 0;
+            margin: 0 0 2px 0;
             color: #374151;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
         }
         .map-header p {
             margin: 0;
             color: #6b7280;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
         }
         .map-top-bar {
             display: flex;
-            gap: 24px;
+            gap: 16px;
             align-items: center;
             flex-wrap: wrap;
         }
         .map-search-section {
             flex: 1;
-            min-width: 200px;
-            max-width: 300px;
+            min-width: 180px;
+            max-width: 250px;
         }
         .map-search-section h3 {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #374151;
-            margin: 0 0 8px 0;
+            margin: 0 0 4px 0;
         }
         .search-container {
             position: relative;
         }
         .constituency-search {
             width: 100%;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 0.875rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-family: 'Roboto', sans-serif;
         }
         .constituency-search:focus {
@@ -356,12 +356,12 @@ def generate_d3_map_html(geojson, impact_data):
         });
 
         // Create scale to fit British National Grid into SVG
-        const padding = 60;
+        const padding = 20;
         const dataWidth = xMax - xMin;
         const dataHeight = yMax - yMin;
-        const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight) * 0.78;
+        const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight) * 0.95;
         const geoOffsetX = (width - dataWidth * geoScale) / 2;
-        const geoOffsetY = (height - dataHeight * geoScale) / 2 + 60;
+        const geoOffsetY = (height - dataHeight * geoScale) / 2;
 
         const projection = d3.geoTransform({
             point: function(x, y) {
