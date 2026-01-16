@@ -164,6 +164,12 @@ Council tax applies to **all properties (stock)**, not just annual sales. Since 
 4. Allocate to constituencies proportionally by sales share
 ```
 
+**Comparison with government estimate:**
+- Our estimate: **£18.5m** (using UK rates as benchmark)
+- Government estimate: [**£16m**](https://www.lbc.co.uk/article/wealthy-scots-in-snp-sights-as-budget-proposes-mansion-house-tax-and-a-tax-on-pr-5HjdQg9_2/) (Finance Secretary Shona Robison, verbal)
+
+The difference likely reflects different rate assumptions or stock estimates.
+
 From [gov.scot](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/):
 > "The Scottish Government has not yet confirmed what the multiplier will be for properties falling within either of the new bands."
 
