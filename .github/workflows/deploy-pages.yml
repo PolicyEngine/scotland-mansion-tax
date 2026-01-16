@@ -30,11 +30,14 @@ jobs:
       - name: Create pages directory
         run: |
           mkdir -p _site
-          cp surcharge_map_by_revenue.html _site/
-          cp mansion_tax_map_1m.html _site/ 2>/dev/null || true
-          cp mansion_tax_map_2m.html _site/ 2>/dev/null || true
+          cp scottish_mansion_tax_map.html _site/
+          cp scottish_parliament_constituency_report.html _site/
+          cp scottish_parliament_mansion_tax_bar.html _site/
+          cp scottish_mansion_tax_council_breakdown.html _site/
+          cp scottish_mansion_tax_edinburgh.html _site/
+          cp scottish_parliament_constituency_impact.csv _site/
           cp -r data _site/ 2>/dev/null || true
-          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=surcharge_map_by_revenue.html"></head></html>' > _site/index.html
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=scottish_mansion_tax_map.html"></head></html>' > _site/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
