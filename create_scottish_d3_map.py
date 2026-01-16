@@ -5,21 +5,11 @@ Create D3 map visualization of Scottish Mansion Tax impact by Parliament Constit
 Generates an interactive D3 map showing the estimated revenue share from the Scottish
 Budget 2025-26 council tax reform for £1m+ properties, distributed to the 73 Scottish
 Parliament constituencies.
-
-Style matches the UK mansion tax blog post map.
 """
 
 import json
 import pandas as pd
 from pathlib import Path
-
-
-def load_hex_coordinates():
-    """Load constituency hex grid coordinates from HexJSON."""
-    print("Loading hex grid coordinates...")
-    with open('data/scottish-parliament-constituencies.hexjson') as f:
-        hexjson = json.load(f)
-    return hexjson
 
 
 def load_geo_json():
@@ -44,8 +34,8 @@ def load_impact_data():
     return df
 
 
-def generate_d3_map_html(hexjson, geojson, impact_data):
-    """Generate D3 HTML map with both geographic and hex views."""
+def generate_d3_map_html(geojson, impact_data):
+    """Generate D3 HTML map with geographic view."""
 
     # Prepare impact data as JavaScript object - key by constituency name
     impact_js = {}
@@ -173,33 +163,6 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
             color: #6b7280;
             margin-top: 2px;
         }
-        .view-toggle {
-            display: flex;
-            gap: 4px;
-            background: #f3f4f6;
-            padding: 4px;
-            border-radius: 8px;
-        }
-        .view-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Roboto', sans-serif;
-            background: transparent;
-            color: #6b7280;
-        }
-        .view-btn:hover {
-            color: #2E86AB;
-        }
-        .view-btn.active {
-            background: white;
-            color: #2E86AB;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
         .map-legend {
             display: flex;
             flex-direction: column;
@@ -237,13 +200,6 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
             transition: opacity 0.1s ease;
         }
         .constituency-path:hover {
-            opacity: 0.8;
-        }
-        .hex {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .hex:hover {
             opacity: 0.8;
         }
         .map-controls {
@@ -344,11 +300,6 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
                 </div>
             </div>
 
-            <div class="view-toggle">
-                <button class="view-btn active" id="btn-geo">Geographic</button>
-                <button class="view-btn" id="btn-hex">Hex</button>
-            </div>
-
             <div class="map-legend">
                 <div class="legend-gradient"></div>
                 <div class="legend-labels">
@@ -376,8 +327,6 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
 
     <script>
         const impactData = ''' + json.dumps(impact_js) + ''';
-
-        const hexjson = ''' + json.dumps(hexjson) + ''';
 
         const geoData = ''' + json.dumps(geojson) + ''';
 
@@ -523,108 +472,6 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
             tooltip.style.display = 'none';
         }
 
-        // Build hex data
-        const hexData = [];
-        for (const [gss, hex] of Object.entries(hexjson.hexes)) {
-            hexData.push({
-                gss: gss,
-                name: hex.n,
-                q: hex.q,
-                r: hex.r
-            });
-        }
-
-        // Calculate hex bounds
-        let hexQMin = Infinity, hexQMax = -Infinity, hexRMin = Infinity, hexRMax = -Infinity;
-        hexData.forEach(h => {
-            hexQMin = Math.min(hexQMin, h.q);
-            hexQMax = Math.max(hexQMax, h.q);
-            hexRMin = Math.min(hexRMin, h.r);
-            hexRMax = Math.max(hexRMax, h.r);
-        });
-
-        // Calculate hex positions
-        const hexSize = 18;
-        const hexWidth = hexSize * 2;
-        const hexHeight = Math.sqrt(3) * hexSize;
-        const hexRangeQ = hexQMax - hexQMin;
-        const hexRangeR = hexRMax - hexRMin;
-        const hexTotalWidth = hexRangeQ * hexWidth * 0.75 + hexWidth;
-        const hexTotalHeight = hexRangeR * hexHeight + hexHeight;
-        const hexOffsetX = (width - hexTotalWidth) / 2;
-        const hexOffsetY = (height - hexTotalHeight) / 2;
-
-        function getHexPosition(q, r) {
-            const x = hexOffsetX + (q - hexQMin) * hexWidth * 0.75 + hexWidth / 2;
-            const y = hexOffsetY + (r - hexRMin) * hexHeight + (q % 2 !== 0 ? hexHeight / 2 : 0) + hexHeight / 2;
-            return { x, y };
-        }
-
-        function hexPoints(cx, cy) {
-            const points = [];
-            for (let i = 0; i < 6; i++) {
-                const angle = Math.PI / 3 * i - Math.PI / 6;
-                points.push([
-                    cx + hexSize * Math.cos(angle),
-                    cy + hexSize * Math.sin(angle)
-                ]);
-            }
-            return points.map(p => p.join(',')).join(' ');
-        }
-
-        // Draw hexagons (initially hidden)
-        const hexes = g.selectAll('.hex')
-            .data(hexData)
-            .join('polygon')
-            .attr('class', 'hex')
-            .attr('points', d => {
-                const pos = getHexPosition(d.q, d.r);
-                return hexPoints(pos.x, pos.y);
-            })
-            .attr('fill', d => {
-                const data = impactData[d.name];
-                return data ? colorScale(data.pct) : '#e5e5e5';
-            })
-            .attr('stroke', 'white')
-            .attr('stroke-width', 1)
-            .attr('opacity', 0.9)
-            .style('display', 'none')
-            .on('mouseenter', function(event, d) {
-                const data = impactData[d.name] || { pct: 0, num: 0, rev: 0, council: 'Unknown' };
-                showTooltip(d.name, data, event);
-                d3.select(this).attr('opacity', 1).attr('stroke-width', 2);
-            })
-            .on('mousemove', function(event, d) {
-                const data = impactData[d.name] || { pct: 0, num: 0, rev: 0, council: 'Unknown' };
-                showTooltip(d.name, data, event);
-            })
-            .on('mouseleave', function(event, d) {
-                d3.select(this).attr('opacity', 0.9).attr('stroke-width', 1);
-                hideTooltip();
-            });
-
-        // View toggle
-        let currentView = 'geo';
-
-        function switchView(view) {
-            currentView = view;
-            if (view === 'geo') {
-                geoPaths.style('display', null);
-                hexes.style('display', 'none');
-                document.getElementById('btn-geo').classList.add('active');
-                document.getElementById('btn-hex').classList.remove('active');
-            } else {
-                geoPaths.style('display', 'none');
-                hexes.style('display', null);
-                document.getElementById('btn-geo').classList.remove('active');
-                document.getElementById('btn-hex').classList.add('active');
-            }
-            svg.transition().call(zoom.transform, d3.zoomIdentity);
-        }
-
-        document.getElementById('btn-geo').addEventListener('click', () => switchView('geo'));
-        document.getElementById('btn-hex').addEventListener('click', () => switchView('hex'));
-
         // Search functionality
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
@@ -675,30 +522,26 @@ def generate_d3_map_html(hexjson, geojson, impact_data):
                     tooltip.style.left = '50%';
                     tooltip.style.top = '50%';
 
-                    if (currentView === 'geo') {
-                        g.selectAll('.constituency-path').attr('opacity', 0.9).attr('stroke-width', 0.5);
-                        g.selectAll('.constituency-path')
-                            .filter(d => d.properties.SPC21NM === name)
-                            .attr('opacity', 1).attr('stroke-width', 2);
+                    // Reset all opacity
+                    g.selectAll('.constituency-path').attr('opacity', 0.9).attr('stroke-width', 0.5);
+                    // Highlight selected
+                    g.selectAll('.constituency-path')
+                        .filter(d => d.properties.SPC21NM === name)
+                        .attr('opacity', 1).attr('stroke-width', 2);
 
-                        const feature = geoData.features.find(f => f.properties.SPC21NM === name);
-                        if (feature) {
-                            const bounds = pathGenerator.bounds(feature);
-                            const dx = bounds[1][0] - bounds[0][0];
-                            const dy = bounds[1][1] - bounds[0][1];
-                            const x = (bounds[0][0] + bounds[1][0]) / 2;
-                            const y = (bounds[0][1] + bounds[1][1]) / 2;
-                            const scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
-                            svg.transition().duration(750).call(
-                                zoom.transform,
-                                d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y)
-                            );
-                        }
-                    } else {
-                        g.selectAll('.hex').attr('opacity', 0.9).attr('stroke-width', 1);
-                        g.selectAll('.hex')
-                            .filter(d => d.name === name)
-                            .attr('opacity', 1).attr('stroke-width', 2);
+                    // Zoom to constituency
+                    const feature = geoData.features.find(f => f.properties.SPC21NM === name);
+                    if (feature) {
+                        const bounds = pathGenerator.bounds(feature);
+                        const dx = bounds[1][0] - bounds[0][0];
+                        const dy = bounds[1][1] - bounds[0][1];
+                        const x = (bounds[0][0] + bounds[1][0]) / 2;
+                        const y = (bounds[0][1] + bounds[1][1]) / 2;
+                        const scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
+                        svg.transition().duration(750).call(
+                            zoom.transform,
+                            d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y)
+                        );
                     }
                 });
             });
@@ -722,7 +565,6 @@ def main():
     print("Scottish Mansion Tax - D3 Map Visualization")
     print("=" * 70)
 
-    hexjson = load_hex_coordinates()
     geojson = load_geo_json()
     impact_data = load_impact_data()
 
@@ -730,7 +572,7 @@ def main():
         return
 
     print("Generating D3 map...")
-    html_content = generate_d3_map_html(hexjson, geojson, impact_data)
+    html_content = generate_d3_map_html(geojson, impact_data)
 
     output_file = 'scottish_mansion_tax_map.html'
     with open(output_file, 'w') as f:
