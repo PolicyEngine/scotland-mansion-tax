@@ -406,7 +406,7 @@ def generate_d3_map_html(geojson, impact_data):
             .clamp(true);
 
         const colorScale = (pct) => {
-            if (pct === 0) return '#f0f0f0';
+            if (pct === 0 || pct < 0.01) return '#e5e5e5';
             const t = logScale(Math.max(pct, minPct));
             if (t < 0.5) {
                 return d3.interpolate('#E8F4F8', '#2E86AB')(t * 2);
