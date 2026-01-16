@@ -28,6 +28,11 @@ from pathlib import Path
 BAND_I_SURCHARGE = 1_500  # £1,500/year (extrapolated, no UK equivalent)
 BAND_J_SURCHARGE = 2_500  # £2,500/year (UK rate for £2m-£2.5m band)
 
+# Stock estimate from Savills (2024)
+# Source: https://www.savills.co.uk/research_articles/229130/372275-0
+# "over 10,000 homes in Scotland worth over £1 million for the first time"
+ESTIMATED_STOCK = 11_000  # ~11,000 properties valued over £1m
+
 # Council-level £1m+ sales data
 # Source: Registers of Scotland Property Market Report 2024-25
 # https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25
@@ -309,8 +314,8 @@ def analyze_constituencies():
         band_i_sales = constituency_sales * BAND_I_RATIO
         band_j_sales = constituency_sales * BAND_J_RATIO
 
-        # Calculate implied revenue using UK rates as benchmark
-        implied_revenue = (band_i_sales * BAND_I_SURCHARGE) + (band_j_sales * BAND_J_SURCHARGE)
+        # Calculate implied revenue from sales using UK rates
+        implied_from_sales = (band_i_sales * BAND_I_SURCHARGE) + (band_j_sales * BAND_J_SURCHARGE)
 
         rounded_sales = round(constituency_sales, 1)
         results.append({
@@ -322,42 +327,54 @@ def analyze_constituencies():
             "band_i_sales": round(band_i_sales, 1),
             "band_j_sales": round(band_j_sales, 1),
             "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
-            "implied_revenue": round(implied_revenue, 0) if rounded_sales > 0 else 0,
+            "implied_from_sales": round(implied_from_sales, 0) if rounded_sales > 0 else 0,
         })
 
     df = pd.DataFrame(results)
     df = df.sort_values("estimated_sales", ascending=False)
 
+    # Calculate stock-based revenue (like UK mansion tax repo)
+    total_implied_from_sales = df['implied_from_sales'].sum()
+    stock_sales_ratio = ESTIMATED_STOCK / total_sales
+    total_stock_revenue = total_implied_from_sales * stock_sales_ratio
+
+    # Allocate stock-based revenue proportionally by share
+    df['allocated_revenue'] = (df['share_pct'] / 100 * total_stock_revenue).round(0)
+
     # Print summary
     print(f"\n📊 Total constituencies: {len(df)}")
     print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f}")
-    print(f"💰 Implied revenue (using UK rates): £{df['implied_revenue'].sum()/1e3:.0f}k")
+    print(f"🏠 Estimated £1m+ stock: {ESTIMATED_STOCK:,} (Savills)")
+    print(f"📊 Stock/sales ratio: {stock_sales_ratio:.0f}x")
+    print(f"\n💰 Revenue calculation (UK rates as benchmark):")
     print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (extrapolated)")
     print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (UK minimum)")
+    print(f"   Implied from sales: £{total_implied_from_sales/1e3:.0f}k")
+    print(f"   Stock-based estimate: £{total_stock_revenue/1e6:.1f}m")
 
     print("\n🏛️  Top 20 Constituencies by Impact:")
-    print("-" * 100)
-    print(f"{'Constituency':<40} {'Council':<20} {'Pop':>8} {'Weight':>7} {'Sales':>6} {'Implied':>12}")
-    print("-" * 100)
+    print("-" * 105)
+    print(f"{'Constituency':<40} {'Council':<20} {'Pop':>8} {'Weight':>7} {'Sales':>6} {'Revenue':>12}")
+    print("-" * 105)
 
     for _, row in df.head(20).iterrows():
         council_short = row['council'][:19] if len(row['council']) > 19 else row['council']
         print(f"{row['constituency']:<40} {council_short:<20} "
               f"{row['population']:>8,} {row['weight']:>6.1%} "
-              f"{row['estimated_sales']:>6.1f} £{row['implied_revenue']:>10,.0f}")
+              f"{row['estimated_sales']:>6.1f} £{row['allocated_revenue']/1e6:>10.2f}m")
 
-    print("-" * 100)
+    print("-" * 105)
 
     # Edinburgh subtotal
     edinburgh_df = df[df['council'] == 'City of Edinburgh']
     print(f"\n📍 Edinburgh Total (6 constituencies):")
     print(f"   {edinburgh_df['estimated_sales'].sum():.0f} sales, "
-          f"£{edinburgh_df['implied_revenue'].sum()/1e3:.0f}k implied "
+          f"£{edinburgh_df['allocated_revenue'].sum()/1e6:.1f}m "
           f"({edinburgh_df['share_pct'].sum():.1f}%)")
 
     for _, row in edinburgh_df.sort_values('estimated_sales', ascending=False).iterrows():
         print(f"   - {row['constituency']}: {row['estimated_sales']:.1f} sales, "
-              f"£{row['implied_revenue']:,.0f} ({row['share_pct']:.1f}%)")
+              f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
 
     return df
 
@@ -377,11 +394,12 @@ def main():
     print(f"  Constituencies analyzed: {len(df)}")
     print(f"  With £1m+ sales: {len(df[df['estimated_sales'] > 0])}")
     print(f"  Total sales: {df['estimated_sales'].sum():.0f}")
-    print(f"  Implied revenue (UK rates): £{df['implied_revenue'].sum()/1e3:.0f}k")
+    print(f"  Estimated stock: {ESTIMATED_STOCK:,}")
+    print(f"  Stock-based revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
     print(f"\n  Top 5 constituencies:")
     for _, row in df.head(5).iterrows():
         print(f"    {row['constituency']}: {row['estimated_sales']:.1f} sales, "
-              f"£{row['implied_revenue']:,.0f} ({row['share_pct']:.1f}%)")
+              f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
     print("=" * 70)
 
     return df

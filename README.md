@@ -24,39 +24,43 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 |--------|-------|--------|
 | £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland |
 | £1m+ property stock | [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0) | Savills |
+| Stock/sales ratio | ~26x | Analysis |
 | Constituencies affected | 69 of 73 | Analysis |
 | Edinburgh share | **>50%** | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) |
 | Glasgow share | ~3% | Analysis |
-| Implied revenue (sales, UK rates) | **~£721k/year** | Analysis |
+| **Stock-based revenue** | **~£18.5m/year** | Analysis |
 
 ### Revenue Calculation
 
-Since Scotland has not announced Band I and J rates, we use [UK Autumn Budget 2025 rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
+Council tax applies to all properties (stock), not just sales. Since Scotland has not announced Band I and J rates, we use [UK Autumn Budget 2025 rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
 
-| Band | Value Range | UK Rate | Scotland Sales | Implied Revenue |
-|------|-------------|---------|----------------|-----------------|
-| Band I | £1m - £2m | £1,500/yr* | ~321 (82%) | £482k |
-| Band J | £2m+ | £2,500/yr | ~70 (18%) | £175k |
-| **Total** | | | **~391** | **~£657k** |
+| Band | Value Range | UK Rate | Est. Stock | Annual Revenue |
+|------|-------------|---------|------------|----------------|
+| Band I | £1m - £2m | £1,500/yr* | ~9,000 (82%) | £13.5m |
+| Band J | £2m+ | £2,500/yr | ~2,000 (18%) | £5.0m |
+| **Total** | | | **~11,000** | **~£18.5m** |
 
 *Band I rate extrapolated (UK starts at £2m)
 
-**Note**: This is implied revenue from **annual sales only**. Total stock of £1m+ properties in Scotland is [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0), which would yield ~£18m/year using UK rates.
+**Methodology** (following [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax)):
+1. Use sales data to determine each constituency's **share** of implied revenue
+2. Multiply by stock/sales ratio (~26x) to get stock-based revenue
+3. Allocate total revenue proportionally by constituency share
 
 ### Top 10 Constituencies by Impact
 
-| Rank | Constituency | Council | Est. Sales | Implied Revenue | Share |
-|------|-------------|---------|------------|-----------------|-------|
-| 1 | Edinburgh Northern and Leith | City of Edinburgh | 37 | £62k | 8.6% |
-| 2 | Edinburgh Central | City of Edinburgh | 36 | £60k | 8.3% |
-| 3 | East Lothian | East Lothian | 35 | £59k | 8.2% |
-| 4 | Edinburgh Eastern | City of Edinburgh | 35 | £59k | 8.1% |
-| 5 | Edinburgh Western | City of Edinburgh | 33 | £55k | 7.6% |
-| 6 | Edinburgh Southern | City of Edinburgh | 30 | £51k | 7.1% |
-| 7 | Edinburgh Pentlands | City of Edinburgh | 30 | £50k | 6.9% |
-| 8 | Strathkelvin and Bearsden | East Dunbartonshire | 25 | £42k | 5.8% |
-| 9 | Stirling | Stirling | 10 | £17k | 2.3% |
-| 10 | Eastwood | East Renfrewshire | 10 | £17k | 2.3% |
+| Rank | Constituency | Council | Est. Sales | Revenue | Share |
+|------|-------------|---------|------------|---------|-------|
+| 1 | Edinburgh Northern and Leith | City of Edinburgh | 37 | £1.58m | 8.6% |
+| 2 | Edinburgh Central | City of Edinburgh | 36 | £1.54m | 8.3% |
+| 3 | East Lothian | East Lothian | 35 | £1.51m | 8.2% |
+| 4 | Edinburgh Eastern | City of Edinburgh | 35 | £1.50m | 8.1% |
+| 5 | Edinburgh Western | City of Edinburgh | 33 | £1.41m | 7.6% |
+| 6 | Edinburgh Southern | City of Edinburgh | 30 | £1.31m | 7.1% |
+| 7 | Edinburgh Pentlands | City of Edinburgh | 30 | £1.27m | 6.9% |
+| 8 | Strathkelvin and Bearsden | East Dunbartonshire | 25 | £1.08m | 5.8% |
+| 9 | Stirling | Stirling | 10 | £0.43m | 2.3% |
+| 10 | Eastwood | East Renfrewshire | 10 | £0.43m | 2.3% |
 
 **Key finding**: Edinburgh dominates with 6 of the top 7 constituencies. The Scottish mansion tax is effectively an "Edinburgh tax".
 
@@ -134,21 +138,23 @@ Example for Edinburgh (6 constituencies):
 
 #### Stage 3: Revenue Calculation (UK Rates as Benchmark)
 
-Since Scotland has **not announced** the Band I and J rates, we use [UK Autumn Budget 2025 surcharge rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
-
-```
-Implied Revenue = (Band I Sales × £1,500) + (Band J Sales × £2,500)
-```
+Council tax applies to **all properties (stock)**, not just annual sales. Since Scotland has **not announced** the Band I and J rates, we use [UK Autumn Budget 2025 surcharge rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
 
 | Rate | Source | Notes |
 |------|--------|-------|
 | Band I: £1,500/yr | Extrapolated | UK starts at £2m, so we extrapolate below |
 | Band J: £2,500/yr | [OBR](https://obr.uk/efo/economic-and-fiscal-outlook-november-2025/) | UK rate for £2m-£2.5m band |
 
+**Stock-based calculation** (following UK mansion tax methodology):
+```
+1. Calculate implied revenue from sales using UK rates
+2. Calculate stock/sales ratio: 11,000 ÷ 429 ≈ 26x
+3. Stock-based revenue = Sales-implied × ratio = £721k × 26 = £18.5m
+4. Allocate to constituencies proportionally by sales share
+```
+
 From [gov.scot](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/):
 > "The Scottish Government has not yet confirmed what the multiplier will be for properties falling within either of the new bands."
-
-**Sales vs Stock**: Our calculation uses annual sales (~391), not total housing stock (~11,000 properties valued over £1m per [Savills](https://www.savills.co.uk/research_articles/229130/372275-0)). Stock-based revenue would be ~20x higher.
 
 ### Validation: Why Our Results Make Sense
 
@@ -205,8 +211,8 @@ Glasgow having only 3.3% of impact vs Edinburgh's 50.1% reflects real market dif
 | **Policy** | UK Autumn Budget 2025 surcharge | Scottish Budget 2026-27 reform |
 | **Threshold** | £2m+ (4 bands) | £1m+ (2 bands) |
 | **Rates announced?** | Yes (£2,500-£7,500/year by band) | **No (awaiting announcement)** |
-| **Revenue calculation** | Properties × OBR rates | UK rates as benchmark |
-| **Implied revenue (sales)** | ~£40m | ~£657k |
+| **Revenue calculation** | Sales share × OBR stock estimate | Sales share × stock estimate (UK rates) |
+| **Stock-based revenue** | £400m (OBR) | **£18.5m** (analysis) |
 | **Geography** | 650 Westminster constituencies | 73 Scottish Parliament constituencies |
 | **Data** | Property-level Land Registry | Council-level aggregates |
 | **Methodology** | Direct transaction analysis | Weighted distribution model |
