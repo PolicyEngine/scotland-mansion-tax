@@ -42,10 +42,21 @@ Council tax applies to all properties (stock), not just sales. Since Scotland ha
 
 *Band I rate extrapolated (UK starts at £2m)
 
+**Why we use sales data to estimate stock distribution:**
+
+| Data | Source | Geographic detail |
+|------|--------|-------------------|
+| Stock: [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0) | Savills | Scotland total only |
+| Sales: [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland | By council area |
+
+The stock figure (11,000) tells us how many £1m+ properties exist in Scotland, but **not where they are**. Sales data provides the geographic breakdown we need to map impact by constituency. We assume stock is distributed similarly to sales.
+
 **Methodology** (following [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax)):
-1. Use sales data to determine each constituency's **share** of implied revenue
-2. Multiply by stock/sales ratio (~26x) to get stock-based revenue
-3. Allocate total revenue proportionally by constituency share
+1. Use sales data to determine each constituency's **share** (geographic distribution)
+2. Calculate total stock-based revenue: 11,000 properties × UK rates = £18.5m
+3. Allocate £18.5m proportionally by constituency share
+
+*Note: Finance Secretary Shona Robison [verbally estimated £16m](https://www.lbc.co.uk/article/wealthy-scots-in-snp-sights-as-budget-proposes-mansion-house-tax-and-a-tax-on-pr-5HjdQg9_2/) - close to our £18.5m estimate using UK rates.*
 
 ### Top 10 Constituencies by Impact
 
