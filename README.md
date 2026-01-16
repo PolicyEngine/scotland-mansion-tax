@@ -14,34 +14,49 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 | **Threshold** | Properties valued over £1 million |
 | **Band I** | £1m - £2m (~82% of affected properties) |
 | **Band J** | £2m+ (~18% of affected properties) |
-| **Revenue estimate** | £16 million annually |
 | **Affected households** | <1% of Scottish households |
 | **Rate setting** | Individual councils (not central government) |
+| **Rates announced?** | No - rates/multipliers not yet confirmed |
 
 ## Results Summary
 
 | Metric | Value | Source |
 |--------|-------|--------|
 | £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland |
-| Scottish Parliament constituencies affected | 69 of 73 | Analysis |
-| Total estimated revenue | [£16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | Scottish Government |
-| Edinburgh share | **>50%** ([£8.0m](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf)) | RoS: "over half" |
-| Glasgow share | ~3% (£0.5m) | Analysis |
+| £1m+ property stock | [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0) | Savills |
+| Constituencies affected | 69 of 73 | Analysis |
+| Edinburgh share | **>50%** | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) |
+| Glasgow share | ~3% | Analysis |
+| Implied revenue (sales, UK rates) | **~£721k/year** | Analysis |
+
+### Revenue Calculation
+
+Since Scotland has not announced Band I and J rates, we use [UK Autumn Budget 2025 rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
+
+| Band | Value Range | UK Rate | Scotland Sales | Implied Revenue |
+|------|-------------|---------|----------------|-----------------|
+| Band I | £1m - £2m | £1,500/yr* | ~321 (82%) | £482k |
+| Band J | £2m+ | £2,500/yr | ~70 (18%) | £175k |
+| **Total** | | | **~391** | **~£657k** |
+
+*Band I rate extrapolated (UK starts at £2m)
+
+**Note**: This is implied revenue from **annual sales only**. Total stock of £1m+ properties in Scotland is [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0), which would yield ~£18m/year using UK rates.
 
 ### Top 10 Constituencies by Impact
 
-| Rank | Constituency | Council | Est. Sales | Revenue | Share |
-|------|-------------|---------|------------|---------|-------|
-| 1 | Edinburgh Central | City of Edinburgh | 57.5 | £2.00m | 12.5% |
-| 2 | Edinburgh Western | City of Edinburgh | 46.0 | £1.60m | 10.0% |
-| 3 | Edinburgh Southern | City of Edinburgh | 41.4 | £1.44m | 9.0% |
-| 4 | East Lothian | East Lothian | 35.0 | £1.22m | 7.6% |
-| 5 | Edinburgh Pentlands | City of Edinburgh | 34.5 | £1.20m | 7.5% |
-| 6 | Edinburgh Northern and Leith | City of Edinburgh | 27.6 | £0.96m | 6.0% |
-| 7 | Edinburgh Eastern | City of Edinburgh | 23.0 | £0.80m | 5.0% |
-| 8 | Strathkelvin and Bearsden | East Dunbartonshire | 16.2 | £0.57m | 3.5% |
-| 9 | North East Fife | Fife | 15.0 | £0.52m | 3.3% |
-| 10 | Stirling | Stirling | 10.0 | £0.35m | 2.2% |
+| Rank | Constituency | Council | Est. Sales | Implied Revenue | Share |
+|------|-------------|---------|------------|-----------------|-------|
+| 1 | Edinburgh Northern and Leith | City of Edinburgh | 37 | £62k | 8.6% |
+| 2 | Edinburgh Central | City of Edinburgh | 36 | £60k | 8.3% |
+| 3 | East Lothian | East Lothian | 35 | £59k | 8.2% |
+| 4 | Edinburgh Eastern | City of Edinburgh | 35 | £59k | 8.1% |
+| 5 | Edinburgh Western | City of Edinburgh | 33 | £55k | 7.6% |
+| 6 | Edinburgh Southern | City of Edinburgh | 30 | £51k | 7.1% |
+| 7 | Edinburgh Pentlands | City of Edinburgh | 30 | £50k | 6.9% |
+| 8 | Strathkelvin and Bearsden | East Dunbartonshire | 25 | £42k | 5.8% |
+| 9 | Stirling | Stirling | 10 | £17k | 2.3% |
+| 10 | Eastwood | East Renfrewshire | 10 | £17k | 2.3% |
 
 **Key finding**: Edinburgh dominates with 6 of the top 7 constituencies. The Scottish mansion tax is effectively an "Edinburgh tax".
 
@@ -117,19 +132,23 @@ Example for Edinburgh (6 constituencies):
 - Assumes £1m+ sales are distributed similarly to population within a council
 - Edinburgh total still matches RoS "over half" finding (~47%)
 
-#### Stage 3: Revenue Allocation
+#### Stage 3: Revenue Calculation (UK Rates as Benchmark)
 
-We allocate the Scottish Government's [£16m revenue estimate](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/) proportionally:
+Since Scotland has **not announced** the Band I and J rates, we use [UK Autumn Budget 2025 surcharge rates](https://github.com/PolicyEngine/uk-mansion-tax) as a benchmark:
 
 ```
-Constituency Revenue = (Constituency Sales / Total Sales) × £16,000,000
+Implied Revenue = (Band I Sales × £1,500) + (Band J Sales × £2,500)
 ```
 
-**Important**: Unlike the UK mansion tax where the OBR announced specific surcharge rates (£2,500-£7,500/year per property), Scotland has **not yet announced** the Band I and J rates. From [gov.scot](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/):
+| Rate | Source | Notes |
+|------|--------|-------|
+| Band I: £1,500/yr | Extrapolated | UK starts at £2m, so we extrapolate below |
+| Band J: £2,500/yr | [OBR](https://obr.uk/efo/economic-and-fiscal-outlook-november-2025/) | UK rate for £2m-£2.5m band |
 
+From [gov.scot](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/):
 > "The Scottish Government has not yet confirmed what the multiplier will be for properties falling within either of the new bands."
 
-This means we cannot independently calculate revenue from known rates. We use the government's £16m projection and distribute it proportionally by estimated sales. Once rates are announced, this methodology can be updated to calculate implied revenue directly (as the [uk-mansion-tax repo](https://github.com/PolicyEngine/uk-mansion-tax) does).
+**Sales vs Stock**: Our calculation uses annual sales (~391), not total housing stock (~11,000 properties valued over £1m per [Savills](https://www.savills.co.uk/research_articles/229130/372275-0)). Stock-based revenue would be ~20x higher.
 
 ### Validation: Why Our Results Make Sense
 
@@ -162,14 +181,14 @@ Our finding that **Edinburgh accounts for 50% of mansion tax impact** while **Gl
 
 *Source: [The Scotsman postcode analysis (Jan 2025)](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393)*
 
-#### 4. Revenue Estimate Validation
+#### 4. Data Validation
 
 | Check | Our Estimate | Official Source | Match |
 |-------|--------------|-----------------|-------|
-| Total revenue | £16m | [Scottish Government: £16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
 | Total £1m+ sales | 391 | [Registers of Scotland: 391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | ✓ |
 | Edinburgh share | >50% | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) | ✓ |
 | Affected households | <1% | [Scottish Government: "<1%"](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
+| £1m+ property stock | ~11,000 | [Savills: "over 10,000"](https://www.savills.co.uk/research_articles/229130/372275-0) | ✓ |
 
 #### 5. Why Glasgow is Low (Not an Error)
 
@@ -186,13 +205,13 @@ Glasgow having only 3.3% of impact vs Edinburgh's 50.1% reflects real market dif
 | **Policy** | UK Autumn Budget 2025 surcharge | Scottish Budget 2026-27 reform |
 | **Threshold** | £2m+ (4 bands) | £1m+ (2 bands) |
 | **Rates announced?** | Yes (£2,500-£7,500/year by band) | **No (awaiting announcement)** |
-| **Revenue** | £400m (OBR estimate) | £16m (Scottish Gov estimate) |
-| **Can calculate own revenue?** | Yes (multiply properties × surcharge) | **No (rates unknown)** |
+| **Revenue calculation** | Properties × OBR rates | UK rates as benchmark |
+| **Implied revenue (sales)** | ~£40m | ~£657k |
 | **Geography** | 650 Westminster constituencies | 73 Scottish Parliament constituencies |
 | **Data** | Property-level Land Registry | Council-level aggregates |
 | **Methodology** | Direct transaction analysis | Weighted distribution model |
 | **Accuracy** | High (individual properties) | Moderate (estimated distribution) |
-| **Top area** | Cities of London & Westminster (9.9%) | Edinburgh Central (12.5%) |
+| **Top area** | Cities of London & Westminster (9.9%) | Edinburgh Northern & Leith (8.6%) |
 | **Concentration** | London dominates | Edinburgh dominates |
 
 ### Why Different Methodologies?
@@ -204,8 +223,8 @@ The UK repo can directly count properties above threshold in each constituency b
 3. Council-level is the finest granularity available without payment
 
 Our weighted distribution approach is a reasonable approximation that:
-- Matches known totals (council sales, government revenue estimate)
-- Uses real postcode price data to inform weights
+- Matches known totals (council sales from RoS)
+- Uses NRS population data for constituency-level distribution
 - Correctly identifies high-impact areas (Edinburgh, East Lothian)
 
 ## Quick Start

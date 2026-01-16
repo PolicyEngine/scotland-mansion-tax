@@ -10,19 +10,23 @@ Based on Scottish Budget 2026-27 council tax reform for £1m+ properties.
 Data sources:
 - Council estimates: Registers of Scotland (391 £1m+ sales in 2024-25)
 - Population data: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
-- Revenue estimate: £16m (Scottish Government)
+- Surcharge rates: UK Autumn Budget 2025 rates used as benchmark (OBR-confirmed)
 
 Methodology:
-Within each council, sales are distributed to constituencies proportionally
-by population. This assumes £1m+ sales are distributed similarly to population
-within a council area - a transparent, reproducible approach using official data.
+1. Within each council, sales are distributed to constituencies proportionally
+   by population (transparent, reproducible approach using official data)
+2. Revenue calculated using UK rates as benchmark since Scotland hasn't announced rates
 """
 
 import pandas as pd
 from pathlib import Path
 
-# Scottish Government revenue estimate
-SCOTTISH_GOV_REVENUE_ESTIMATE = 16_000_000  # £16 million
+# UK surcharge rates (from OBR November 2025)
+# Source: https://github.com/PolicyEngine/uk-mansion-tax
+# Band I (£1m-£2m): Extrapolated below UK minimum (UK starts at £2m)
+# Band J (£2m+): Use UK minimum rate (most Scottish £2m+ are in £2m-£2.5m range)
+BAND_I_SURCHARGE = 1_500  # £1,500/year (extrapolated, no UK equivalent)
+BAND_J_SURCHARGE = 2_500  # £2,500/year (UK rate for £2m-£2.5m band)
 
 # Council-level £1m+ sales data
 # Source: Registers of Scotland Property Market Report 2024-25
@@ -301,12 +305,12 @@ def analyze_constituencies():
         # Calculate share of total
         share = constituency_sales / total_sales if total_sales > 0 else 0
 
-        # Allocate revenue
-        allocated_revenue = share * SCOTTISH_GOV_REVENUE_ESTIMATE
-
         # Band breakdown
         band_i_sales = constituency_sales * BAND_I_RATIO
         band_j_sales = constituency_sales * BAND_J_RATIO
+
+        # Calculate implied revenue using UK rates as benchmark
+        implied_revenue = (band_i_sales * BAND_I_SURCHARGE) + (band_j_sales * BAND_J_SURCHARGE)
 
         rounded_sales = round(constituency_sales, 1)
         results.append({
@@ -318,7 +322,7 @@ def analyze_constituencies():
             "band_i_sales": round(band_i_sales, 1),
             "band_j_sales": round(band_j_sales, 1),
             "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
-            "allocated_revenue": round(allocated_revenue, 0) if rounded_sales > 0 else 0,
+            "implied_revenue": round(implied_revenue, 0) if rounded_sales > 0 else 0,
         })
 
     df = pd.DataFrame(results)
@@ -327,31 +331,33 @@ def analyze_constituencies():
     # Print summary
     print(f"\n📊 Total constituencies: {len(df)}")
     print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f}")
-    print(f"💰 Total revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
+    print(f"💰 Implied revenue (using UK rates): £{df['implied_revenue'].sum()/1e3:.0f}k")
+    print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (extrapolated)")
+    print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (UK minimum)")
 
     print("\n🏛️  Top 20 Constituencies by Impact:")
-    print("-" * 95)
-    print(f"{'Constituency':<40} {'Council':<20} {'Pop':>8} {'Weight':>7} {'Sales':>6} {'Revenue':>10}")
-    print("-" * 95)
+    print("-" * 100)
+    print(f"{'Constituency':<40} {'Council':<20} {'Pop':>8} {'Weight':>7} {'Sales':>6} {'Implied':>12}")
+    print("-" * 100)
 
     for _, row in df.head(20).iterrows():
         council_short = row['council'][:19] if len(row['council']) > 19 else row['council']
         print(f"{row['constituency']:<40} {council_short:<20} "
               f"{row['population']:>8,} {row['weight']:>6.1%} "
-              f"{row['estimated_sales']:>6.1f} £{row['allocated_revenue']/1e6:>7.2f}m")
+              f"{row['estimated_sales']:>6.1f} £{row['implied_revenue']:>10,.0f}")
 
-    print("-" * 95)
+    print("-" * 100)
 
     # Edinburgh subtotal
     edinburgh_df = df[df['council'] == 'City of Edinburgh']
     print(f"\n📍 Edinburgh Total (6 constituencies):")
     print(f"   {edinburgh_df['estimated_sales'].sum():.0f} sales, "
-          f"£{edinburgh_df['allocated_revenue'].sum()/1e6:.2f}m "
+          f"£{edinburgh_df['implied_revenue'].sum()/1e3:.0f}k implied "
           f"({edinburgh_df['share_pct'].sum():.1f}%)")
 
     for _, row in edinburgh_df.sort_values('estimated_sales', ascending=False).iterrows():
         print(f"   - {row['constituency']}: {row['estimated_sales']:.1f} sales, "
-              f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
+              f"£{row['implied_revenue']:,.0f} ({row['share_pct']:.1f}%)")
 
     return df
 
@@ -371,11 +377,11 @@ def main():
     print(f"  Constituencies analyzed: {len(df)}")
     print(f"  With £1m+ sales: {len(df[df['estimated_sales'] > 0])}")
     print(f"  Total sales: {df['estimated_sales'].sum():.0f}")
-    print(f"  Total revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
+    print(f"  Implied revenue (UK rates): £{df['implied_revenue'].sum()/1e3:.0f}k")
     print(f"\n  Top 5 constituencies:")
     for _, row in df.head(5).iterrows():
         print(f"    {row['constituency']}: {row['estimated_sales']:.1f} sales, "
-              f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
+              f"£{row['implied_revenue']:,.0f} ({row['share_pct']:.1f}%)")
     print("=" * 70)
 
     return df
