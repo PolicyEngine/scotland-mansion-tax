@@ -119,11 +119,17 @@ Example for Edinburgh (6 constituencies):
 
 #### Stage 3: Revenue Allocation
 
-We allocate the Scottish Government's £16m revenue estimate proportionally:
+We allocate the Scottish Government's [£16m revenue estimate](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/) proportionally:
 
 ```
 Constituency Revenue = (Constituency Sales / Total Sales) × £16,000,000
 ```
+
+**Important**: Unlike the UK mansion tax where the OBR announced specific surcharge rates (£2,500-£7,500/year per property), Scotland has **not yet announced** the Band I and J rates. From [gov.scot](https://www.gov.scot/publications/scottish-budget-2026-2027/pages/3/):
+
+> "The Scottish Government has not yet confirmed what the multiplier will be for properties falling within either of the new bands."
+
+This means we cannot independently calculate revenue from known rates. We use the government's £16m projection and distribute it proportionally by estimated sales. Once rates are announced, this methodology can be updated to calculate implied revenue directly (as the [uk-mansion-tax repo](https://github.com/PolicyEngine/uk-mansion-tax) does).
 
 ### Validation: Why Our Results Make Sense
 
@@ -179,7 +185,9 @@ Glasgow having only 3.3% of impact vs Edinburgh's 50.1% reflects real market dif
 |---------|-----------------|----------------------|
 | **Policy** | UK Autumn Budget 2025 surcharge | Scottish Budget 2026-27 reform |
 | **Threshold** | £2m+ (4 bands) | £1m+ (2 bands) |
+| **Rates announced?** | Yes (£2,500-£7,500/year by band) | **No (awaiting announcement)** |
 | **Revenue** | £400m (OBR estimate) | £16m (Scottish Gov estimate) |
+| **Can calculate own revenue?** | Yes (multiply properties × surcharge) | **No (rates unknown)** |
 | **Geography** | 650 Westminster constituencies | 73 Scottish Parliament constituencies |
 | **Data** | Property-level Land Registry | Council-level aggregates |
 | **Methodology** | Direct transaction analysis | Weighted distribution model |
