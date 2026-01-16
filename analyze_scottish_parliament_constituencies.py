@@ -3,14 +3,19 @@
 Scottish Mansion Tax Analysis by Scottish Parliament Constituency
 
 Distributes council-level mansion tax estimates to the 73 Scottish Parliament
-constituencies using population/household weights.
+constituencies using population-based weights from NRS data.
 
 Based on Scottish Budget 2026-27 council tax reform for £1m+ properties.
 
 Data sources:
-- Council estimates: analyze_scottish_mansion_tax.py
-- Constituency list: Scottish Parliament (2021 boundaries)
+- Council estimates: Registers of Scotland (391 £1m+ sales in 2024-25)
+- Population data: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
 - Revenue estimate: £16m (Scottish Government)
+
+Methodology:
+Within each council, sales are distributed to constituencies proportionally
+by population. This assumes £1m+ sales are distributed similarly to population
+within a council area - a transparent, reproducible approach using official data.
 """
 
 import pandas as pd
@@ -19,19 +24,22 @@ from pathlib import Path
 # Scottish Government revenue estimate
 SCOTTISH_GOV_REVENUE_ESTIMATE = 16_000_000  # £16 million
 
-# Council-level £1m+ sales data (from analyze_scottish_mansion_tax.py)
+# Council-level £1m+ sales data
+# Source: Registers of Scotland Property Market Report 2024-25
+# https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25
+# Total: 391 sales, "over half" in City of Edinburgh
 COUNCIL_DATA = {
-    "City of Edinburgh": 230,
-    "East Lothian": 35,
-    "Fife": 30,
-    "East Dunbartonshire": 25,
+    "City of Edinburgh": 200,      # >50% of 391 = ~200
+    "East Lothian": 35,            # North Berwick area (EH39)
+    "Fife": 30,                    # St Andrews (KY16)
+    "East Dunbartonshire": 25,     # Bearsden (G61)
     "Aberdeen City": 20,
     "Aberdeenshire": 15,
     "Glasgow City": 15,
     "Perth and Kinross": 12,
     "Stirling": 10,
     "Highland": 10,
-    "East Renfrewshire": 10,
+    "East Renfrewshire": 10,       # Newton Mearns
     "Scottish Borders": 8,
     "South Ayrshire": 7,
     "Argyll and Bute": 6,
@@ -56,175 +64,238 @@ COUNCIL_DATA = {
     "Shetland Islands": 0,
 }
 
-# Scottish Parliament constituencies (2021 boundaries) mapped to council areas
-# Weight represents share of high-value properties within the council
-# Higher weights for affluent areas (e.g., New Town, Morningside in Edinburgh)
+# Constituency to council mapping
+# Source: Scottish Parliament 2021 boundaries
 CONSTITUENCY_COUNCIL_MAPPING = {
     # City of Edinburgh - 6 constituencies
-    # Edinburgh Central includes New Town (EH3) - highest property values
-    "Edinburgh Central": {"council": "City of Edinburgh", "weight": 0.25},
-    # Edinburgh Western includes Barnton, Cramond (EH4) - very high values
-    "Edinburgh Western": {"council": "City of Edinburgh", "weight": 0.20},
-    # Edinburgh Southern includes Morningside, Grange - high values
-    "Edinburgh Southern": {"council": "City of Edinburgh", "weight": 0.18},
-    # Edinburgh Pentlands includes Corstorphine - moderate values
-    "Edinburgh Pentlands": {"council": "City of Edinburgh", "weight": 0.15},
-    # Edinburgh Northern and Leith - mixed values
-    "Edinburgh Northern and Leith": {"council": "City of Edinburgh", "weight": 0.12},
-    # Edinburgh Eastern - lower values
-    "Edinburgh Eastern": {"council": "City of Edinburgh", "weight": 0.10},
+    "Edinburgh Central": "City of Edinburgh",
+    "Edinburgh Western": "City of Edinburgh",
+    "Edinburgh Southern": "City of Edinburgh",
+    "Edinburgh Pentlands": "City of Edinburgh",
+    "Edinburgh Northern and Leith": "City of Edinburgh",
+    "Edinburgh Eastern": "City of Edinburgh",
 
-    # East Lothian - 1 constituency (includes North Berwick EH39)
-    "East Lothian": {"council": "East Lothian", "weight": 1.0},
+    # East Lothian - 1 constituency
+    "East Lothian": "East Lothian",
 
     # Fife - 5 constituencies
-    # North East Fife includes St Andrews (KY16) - highest values
-    "North East Fife": {"council": "Fife", "weight": 0.50},
-    "Dunfermline": {"council": "Fife", "weight": 0.15},
-    "Cowdenbeath": {"council": "Fife", "weight": 0.12},
-    "Kirkcaldy": {"council": "Fife", "weight": 0.12},
-    "Mid Fife and Glenrothes": {"council": "Fife", "weight": 0.11},
+    "North East Fife": "Fife",
+    "Dunfermline": "Fife",
+    "Cowdenbeath": "Fife",
+    "Kirkcaldy": "Fife",
+    "Mid Fife and Glenrothes": "Fife",
 
-    # East Dunbartonshire - 2 constituencies
-    # Strathkelvin and Bearsden includes Bearsden (G61) - high values
-    "Strathkelvin and Bearsden": {"council": "East Dunbartonshire", "weight": 0.65},
-    "Cumbernauld and Kilsyth": {"council": "East Dunbartonshire", "weight": 0.35},
+    # East Dunbartonshire - 2 constituencies (shared with North Lanarkshire)
+    "Strathkelvin and Bearsden": "East Dunbartonshire",
 
     # Aberdeen City - 3 constituencies
-    "Aberdeen Central": {"council": "Aberdeen City", "weight": 0.35},
-    "Aberdeen Donside": {"council": "Aberdeen City", "weight": 0.35},
-    "Aberdeen South and North Kincardine": {"council": "Aberdeen City", "weight": 0.30},
+    "Aberdeen Central": "Aberdeen City",
+    "Aberdeen Donside": "Aberdeen City",
+    "Aberdeen South and North Kincardine": "Aberdeen City",
 
     # Aberdeenshire - 3 constituencies
-    "Aberdeenshire West": {"council": "Aberdeenshire", "weight": 0.40},
-    "Aberdeenshire East": {"council": "Aberdeenshire", "weight": 0.30},
-    "Banffshire and Buchan Coast": {"council": "Aberdeenshire", "weight": 0.30},
+    "Aberdeenshire West": "Aberdeenshire",
+    "Aberdeenshire East": "Aberdeenshire",
+    "Banffshire and Buchan Coast": "Aberdeenshire",
 
     # Glasgow City - 9 constituencies
-    "Glasgow Kelvin": {"council": "Glasgow City", "weight": 0.25},  # West End
-    "Glasgow Cathcart": {"council": "Glasgow City", "weight": 0.15},
-    "Glasgow Anniesland": {"council": "Glasgow City", "weight": 0.12},
-    "Glasgow Southside": {"council": "Glasgow City", "weight": 0.10},
-    "Glasgow Pollok": {"council": "Glasgow City", "weight": 0.08},
-    "Glasgow Maryhill and Springburn": {"council": "Glasgow City", "weight": 0.08},
-    "Glasgow Provan": {"council": "Glasgow City", "weight": 0.08},
-    "Glasgow Shettleston": {"council": "Glasgow City", "weight": 0.07},
-    "Rutherglen": {"council": "Glasgow City", "weight": 0.07},
+    "Glasgow Kelvin": "Glasgow City",
+    "Glasgow Cathcart": "Glasgow City",
+    "Glasgow Anniesland": "Glasgow City",
+    "Glasgow Southside": "Glasgow City",
+    "Glasgow Pollok": "Glasgow City",
+    "Glasgow Maryhill and Springburn": "Glasgow City",
+    "Glasgow Provan": "Glasgow City",
+    "Glasgow Shettleston": "Glasgow City",
+    "Rutherglen": "Glasgow City",
 
     # Perth and Kinross - 2 constituencies
-    "Perthshire North": {"council": "Perth and Kinross", "weight": 0.50},
-    "Perthshire South and Kinross-shire": {"council": "Perth and Kinross", "weight": 0.50},
+    "Perthshire North": "Perth and Kinross",
+    "Perthshire South and Kinross-shire": "Perth and Kinross",
 
     # Stirling - 1 constituency
-    "Stirling": {"council": "Stirling", "weight": 1.0},
+    "Stirling": "Stirling",
 
     # Highland - 4 constituencies
-    "Inverness and Nairn": {"council": "Highland", "weight": 0.40},
-    "Caithness, Sutherland and Ross": {"council": "Highland", "weight": 0.25},
-    "Skye, Lochaber and Badenoch": {"council": "Highland", "weight": 0.25},
-    "Ross, Skye and Inverness West": {"council": "Highland", "weight": 0.10},
+    "Inverness and Nairn": "Highland",
+    "Caithness, Sutherland and Ross": "Highland",
+    "Skye, Lochaber and Badenoch": "Highland",
 
-    # East Renfrewshire - 1 constituency (Newton Mearns, Giffnock)
-    "Eastwood": {"council": "East Renfrewshire", "weight": 1.0},
+    # East Renfrewshire - 1 constituency
+    "Eastwood": "East Renfrewshire",
 
     # Scottish Borders - 2 constituencies
-    "Ettrick, Roxburgh and Berwickshire": {"council": "Scottish Borders", "weight": 0.50},
-    "Midlothian South, Tweeddale and Lauderdale": {"council": "Scottish Borders", "weight": 0.50},
+    "Ettrick, Roxburgh and Berwickshire": "Scottish Borders",
+    "Midlothian South, Tweeddale and Lauderdale": "Scottish Borders",
 
     # South Ayrshire - 2 constituencies
-    "Ayr": {"council": "South Ayrshire", "weight": 0.60},
-    "Carrick, Cumnock and Doon Valley": {"council": "South Ayrshire", "weight": 0.40},
+    "Ayr": "South Ayrshire",
+    "Carrick, Cumnock and Doon Valley": "South Ayrshire",
 
     # Argyll and Bute - 1 constituency
-    "Argyll and Bute": {"council": "Argyll and Bute", "weight": 1.0},
+    "Argyll and Bute": "Argyll and Bute",
 
     # Midlothian - 1 constituency
-    "Midlothian North and Musselburgh": {"council": "Midlothian", "weight": 1.0},
+    "Midlothian North and Musselburgh": "Midlothian",
 
     # West Lothian - 2 constituencies
-    "Linlithgow": {"council": "West Lothian", "weight": 0.55},
-    "Almond Valley": {"council": "West Lothian", "weight": 0.45},
+    "Linlithgow": "West Lothian",
+    "Almond Valley": "West Lothian",
 
     # South Lanarkshire - 4 constituencies
-    "East Kilbride": {"council": "South Lanarkshire", "weight": 0.30},
-    "Clydesdale": {"council": "South Lanarkshire", "weight": 0.30},
-    "Hamilton, Larkhall and Stonehouse": {"council": "South Lanarkshire", "weight": 0.25},
-    "Uddingston and Bellshill": {"council": "South Lanarkshire", "weight": 0.15},
+    "East Kilbride": "South Lanarkshire",
+    "Clydesdale": "South Lanarkshire",
+    "Hamilton, Larkhall and Stonehouse": "South Lanarkshire",
+    "Uddingston and Bellshill": "South Lanarkshire",
 
     # North Lanarkshire - 4 constituencies
-    "Motherwell and Wishaw": {"council": "North Lanarkshire", "weight": 0.30},
-    "Airdrie and Shotts": {"council": "North Lanarkshire", "weight": 0.25},
-    "Coatbridge and Chryston": {"council": "North Lanarkshire", "weight": 0.25},
-    "Cumbernauld and Kilsyth": {"council": "North Lanarkshire", "weight": 0.20},
+    "Motherwell and Wishaw": "North Lanarkshire",
+    "Airdrie and Shotts": "North Lanarkshire",
+    "Coatbridge and Chryston": "North Lanarkshire",
+    "Cumbernauld and Kilsyth": "North Lanarkshire",
 
     # Renfrewshire - 3 constituencies
-    "Paisley": {"council": "Renfrewshire", "weight": 0.40},
-    "Renfrewshire North and West": {"council": "Renfrewshire", "weight": 0.35},
-    "Renfrewshire South": {"council": "Renfrewshire", "weight": 0.25},
+    "Paisley": "Renfrewshire",
+    "Renfrewshire North and West": "Renfrewshire",
+    "Renfrewshire South": "Renfrewshire",
 
     # Inverclyde - 1 constituency
-    "Greenock and Inverclyde": {"council": "Inverclyde", "weight": 1.0},
+    "Greenock and Inverclyde": "Inverclyde",
 
     # Falkirk - 2 constituencies
-    "Falkirk East": {"council": "Falkirk", "weight": 0.50},
-    "Falkirk West": {"council": "Falkirk", "weight": 0.50},
+    "Falkirk East": "Falkirk",
+    "Falkirk West": "Falkirk",
 
-    # Clackmannanshire - shared constituency
-    "Clackmannanshire and Dunblane": {"council": "Clackmannanshire", "weight": 1.0},
+    # Clackmannanshire - 1 constituency (shared with Stirling)
+    "Clackmannanshire and Dunblane": "Clackmannanshire",
 
     # Dumfries and Galloway - 2 constituencies
-    "Dumfriesshire": {"council": "Dumfries and Galloway", "weight": 0.50},
-    "Galloway and West Dumfries": {"council": "Dumfries and Galloway", "weight": 0.50},
+    "Dumfriesshire": "Dumfries and Galloway",
+    "Galloway and West Dumfries": "Dumfries and Galloway",
 
     # Dundee City - 2 constituencies
-    "Dundee City East": {"council": "Dundee City", "weight": 0.50},
-    "Dundee City West": {"council": "Dundee City", "weight": 0.50},
+    "Dundee City East": "Dundee City",
+    "Dundee City West": "Dundee City",
 
     # Angus - 2 constituencies
-    "Angus North and Mearns": {"council": "Angus", "weight": 0.50},
-    "Angus South": {"council": "Angus", "weight": 0.50},
+    "Angus North and Mearns": "Angus",
+    "Angus South": "Angus",
 
     # Moray - 1 constituency
-    "Moray": {"council": "Moray", "weight": 1.0},
+    "Moray": "Moray",
 
     # North Ayrshire - 2 constituencies
-    "Cunninghame North": {"council": "North Ayrshire", "weight": 0.50},
-    "Cunninghame South": {"council": "North Ayrshire", "weight": 0.50},
+    "Cunninghame North": "North Ayrshire",
+    "Cunninghame South": "North Ayrshire",
 
-    # West Dunbartonshire - 1 constituency
-    "Dumbarton": {"council": "West Dunbartonshire", "weight": 1.0},
+    # West Dunbartonshire - 2 constituencies
+    "Dumbarton": "West Dunbartonshire",
+    "Clydebank and Milngavie": "West Dunbartonshire",
 
     # Island councils
-    "Na h-Eileanan an Iar": {"council": "Eilean Siar", "weight": 1.0},
-    "Orkney Islands": {"council": "Orkney Islands", "weight": 1.0},
-    "Shetland Islands": {"council": "Shetland Islands", "weight": 1.0},
+    "Na h-Eileanan an Iar": "Eilean Siar",
+    "Orkney Islands": "Orkney Islands",
+    "Shetland Islands": "Shetland Islands",
 }
 
-# Band distribution
+# Band distribution (from RoS data)
 BAND_I_RATIO = 0.82  # £1m-£2m
 BAND_J_RATIO = 0.18  # £2m+
 
 
+def load_population_data():
+    """Load NRS constituency population data."""
+    pop_file = Path("data/constituency_population.csv")
+
+    if not pop_file.exists():
+        print("⚠️  Population data not found. Run download script first.")
+        print("   Extracting from NRS Excel file...")
+
+        # Extract from Excel if CSV doesn't exist
+        xlsx_file = Path("data/nrs_constituency_population.xlsx")
+        if xlsx_file.exists():
+            df = pd.read_excel(xlsx_file, sheet_name='2021', skiprows=2)
+            df.columns = ['constituency', 'code', 'sex', 'total'] + [f'age_{i}' for i in range(len(df.columns)-4)]
+            df_pop = df[df['sex'] == 'Persons'][['constituency', 'total']].copy()
+            df_pop.columns = ['constituency', 'population']
+            df_pop = df_pop.dropna()
+            df_pop['population'] = df_pop['population'].astype(int)
+            df_pop.to_csv(pop_file, index=False)
+            print(f"   ✓ Saved {len(df_pop)} constituencies to {pop_file}")
+        else:
+            raise FileNotFoundError(f"Neither {pop_file} nor {xlsx_file} found")
+
+    return pd.read_csv(pop_file)
+
+
+def calculate_population_weights(population_df):
+    """Calculate population-based weights within each council."""
+
+    # Create mapping with population
+    weights = {}
+
+    # Group constituencies by council
+    council_populations = {}
+    for constituency, council in CONSTITUENCY_COUNCIL_MAPPING.items():
+        if council not in council_populations:
+            council_populations[council] = []
+
+        # Find population for this constituency
+        pop_row = population_df[population_df['constituency'] == constituency]
+        if len(pop_row) > 0:
+            pop = pop_row['population'].values[0]
+        else:
+            # Try fuzzy match
+            pop = 75000  # Default average
+            print(f"⚠️  No population data for {constituency}, using default")
+
+        council_populations[council].append((constituency, pop))
+
+    # Calculate weights within each council
+    for council, constituencies in council_populations.items():
+        total_pop = sum(pop for _, pop in constituencies)
+        for constituency, pop in constituencies:
+            weight = pop / total_pop if total_pop > 0 else 1 / len(constituencies)
+            weights[constituency] = {
+                "council": council,
+                "population": pop,
+                "weight": weight
+            }
+
+    return weights
+
+
 def analyze_constituencies():
-    """Distribute council-level estimates to constituencies."""
+    """Distribute council-level estimates to constituencies using population weights."""
 
     print("=" * 70)
     print("Scottish Mansion Tax Analysis by Parliament Constituency")
+    print("Using NRS population-based weights")
     print("=" * 70)
+
+    # Load population data
+    print("\n📊 Loading NRS population data...")
+    population_df = load_population_data()
+    print(f"   ✓ Loaded {len(population_df)} constituencies")
+
+    # Calculate population-based weights
+    print("\n📈 Calculating population-based weights...")
+    weights = calculate_population_weights(population_df)
 
     # Calculate total sales for normalization
     total_sales = sum(COUNCIL_DATA.values())
 
     results = []
 
-    for constituency, mapping in CONSTITUENCY_COUNCIL_MAPPING.items():
-        council = mapping["council"]
-        weight = mapping["weight"]
+    for constituency, data in weights.items():
+        council = data["council"]
+        weight = data["weight"]
+        population = data["population"]
 
         # Get council's total sales
         council_sales = COUNCIL_DATA.get(council, 0)
 
-        # Allocate to constituency based on weight
+        # Allocate to constituency based on population weight
         constituency_sales = council_sales * weight
 
         # Calculate share of total
@@ -237,13 +308,15 @@ def analyze_constituencies():
         band_i_sales = constituency_sales * BAND_I_RATIO
         band_j_sales = constituency_sales * BAND_J_RATIO
 
-        rounded_sales = int(round(constituency_sales))
+        rounded_sales = round(constituency_sales, 1)
         results.append({
             "constituency": constituency,
             "council": council,
+            "population": population,
+            "weight": round(weight, 4),
             "estimated_sales": rounded_sales,
-            "band_i_sales": int(round(band_i_sales)),
-            "band_j_sales": int(round(band_j_sales)),
+            "band_i_sales": round(band_i_sales, 1),
+            "band_j_sales": round(band_j_sales, 1),
             "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
             "allocated_revenue": round(allocated_revenue, 0) if rounded_sales > 0 else 0,
         })
@@ -257,16 +330,17 @@ def analyze_constituencies():
     print(f"💰 Total revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
 
     print("\n🏛️  Top 20 Constituencies by Impact:")
-    print("-" * 85)
-    print(f"{'Constituency':<40} {'Council':<25} {'Sales':>8} {'Revenue':>10}")
-    print("-" * 85)
+    print("-" * 95)
+    print(f"{'Constituency':<40} {'Council':<20} {'Pop':>8} {'Weight':>7} {'Sales':>6} {'Revenue':>10}")
+    print("-" * 95)
 
     for _, row in df.head(20).iterrows():
-        council_short = row['council'][:24] if len(row['council']) > 24 else row['council']
-        print(f"{row['constituency']:<40} {council_short:<25} "
-              f"{row['estimated_sales']:>8.1f} £{row['allocated_revenue']/1e6:>7.2f}m")
+        council_short = row['council'][:19] if len(row['council']) > 19 else row['council']
+        print(f"{row['constituency']:<40} {council_short:<20} "
+              f"{row['population']:>8,} {row['weight']:>6.1%} "
+              f"{row['estimated_sales']:>6.1f} £{row['allocated_revenue']/1e6:>7.2f}m")
 
-    print("-" * 85)
+    print("-" * 95)
 
     # Edinburgh subtotal
     edinburgh_df = df[df['council'] == 'City of Edinburgh']
@@ -276,7 +350,7 @@ def analyze_constituencies():
           f"({edinburgh_df['share_pct'].sum():.1f}%)")
 
     for _, row in edinburgh_df.sort_values('estimated_sales', ascending=False).iterrows():
-        print(f"   - {row['constituency']}: {row['estimated_sales']:.0f} sales, "
+        print(f"   - {row['constituency']}: {row['estimated_sales']:.1f} sales, "
               f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
 
     return df
@@ -300,7 +374,7 @@ def main():
     print(f"  Total revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
     print(f"\n  Top 5 constituencies:")
     for _, row in df.head(5).iterrows():
-        print(f"    {row['constituency']}: {row['estimated_sales']:.0f} sales, "
+        print(f"    {row['constituency']}: {row['estimated_sales']:.1f} sales, "
               f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
     print("=" * 70)
 

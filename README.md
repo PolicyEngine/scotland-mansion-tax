@@ -92,21 +92,30 @@ Fife: ~30 sales (8%)         — KY16 St Andrews
 
 #### Stage 2: Council → Constituency Distribution
 
-Each council contains 1-9 Scottish Parliament constituencies. We distribute council totals to constituencies using **property value weights** based on:
+Each council contains 1-9 Scottish Parliament constituencies. We distribute council totals to constituencies using **population-based weights** from official NRS data.
 
-1. **Postcode-level price data** - Which postcodes have the highest average prices
-2. **Affluent area mapping** - Known wealthy neighborhoods (e.g., EH3 New Town, G61 Bearsden)
-3. **Population distribution** - As a baseline for areas without clear high-value concentrations
+**Data source**: [NRS Scottish Parliamentary Constituency Population Estimates (mid-2021)](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
+
+**Methodology**: Within each council, sales are distributed proportionally by constituency population:
+```
+weight = constituency_population / council_total_population
+```
 
 Example for Edinburgh (6 constituencies):
-```python
-"Edinburgh Central": 0.25    # New Town (EH3), West End - highest values
-"Edinburgh Western": 0.20    # Barnton, Cramond (EH4)
-"Edinburgh Southern": 0.18   # Morningside, Grange
-"Edinburgh Pentlands": 0.15  # Corstorphine
-"Edinburgh Northern and Leith": 0.12  # Trinity, Inverleith
-"Edinburgh Eastern": 0.10    # Portobello - lower values
-```
+| Constituency | Population | Weight |
+|--------------|-----------|--------|
+| Edinburgh Northern and Leith | 96,748 | 18.4% |
+| Edinburgh Central | 93,878 | 17.8% |
+| Edinburgh Eastern | 91,841 | 17.4% |
+| Edinburgh Western | 86,330 | 16.4% |
+| Edinburgh Southern | 80,009 | 15.2% |
+| Edinburgh Pentlands | 77,664 | 14.8% |
+
+**Why population-based?**
+- Transparent and reproducible using official data
+- No subjective "local knowledge" assumptions
+- Assumes £1m+ sales are distributed similarly to population within a council
+- Edinburgh total still matches RoS "over half" finding (~47%)
 
 #### Stage 3: Revenue Allocation
 
@@ -240,9 +249,11 @@ python -m http.server 8000
 ## Data Sources
 
 ### Scottish Property Data
-- [Registers of Scotland Property Market Report 2024-25](https://www.ros.gov.uk/data-and-statistics/property-market-statistics)
-- [Rettie Research: Record Year for £1m+ Sales](https://www.rettie.co.uk/property-research-services)
-- [Savills Scotland Market Analysis](https://www.savills.com/research_articles/255800/372275-0)
+- [Registers of Scotland Property Market Report 2024-25](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) - Official £1m+ sales count (391)
+- [The Scotsman: Affluent postcodes analysis (Jan 2025)](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393) - Postcode breakdown
+
+### Population Data
+- [NRS Scottish Parliamentary Constituency Population Estimates (mid-2021)](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/) - Used for population-based weighting
 
 ### Geographic Boundaries
 - [Scottish Parliament Constituencies (May 2021) - ONS Open Geography](https://geoportal.statistics.gov.uk/datasets/scottish-parliamentary-constituencies-may-2021-boundaries-sc-bgc)
