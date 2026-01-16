@@ -49,14 +49,20 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 
 ### Data Challenge: Scotland vs England/Wales
 
-| Aspect | England/Wales (UK repo) | Scotland (this repo) |
+| Data Source | Coverage | Availability | Used In |
+|-------------|----------|--------------|---------|
+| [Land Registry Price Paid](https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads) | England & Wales | **Free**, postcode-level | [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax) |
+| [Registers of Scotland](https://www.ros.gov.uk/) | Scotland only | **Paid**, aggregated only | This repo |
+
+| Aspect | England/Wales ([uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax)) | Scotland (this repo) |
 |--------|------------------------|---------------------|
 | **Data source** | Land Registry Price Paid | Registers of Scotland |
 | **Availability** | Free, postcode-level | Paid, aggregated only |
 | **Transactions** | 881,757 (2024) | [391 £1m+ sales](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) |
 | **Granularity** | Individual property | Council area totals |
+| **Methodology** | Direct transaction analysis | Weighted distribution model |
 
-**Critical limitation**: Unlike England/Wales where [Land Registry provides free transaction-level data](https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads), Scotland's Registers of Scotland **charges** for bulk transaction data rather than providing it freely.
+**Critical limitation**: Scotland has a completely separate property registration system. Unlike England/Wales where [Land Registry provides free transaction-level data](https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads), Scotland's Registers of Scotland **charges** for bulk transaction data and only publishes aggregates (council-level totals, not individual transactions).
 
 ### Our Approach
 
