@@ -310,7 +310,7 @@ def generate_d3_map_html(geojson, impact_data):
         </div>
 
         <div class="map-canvas">
-            <svg id="map" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg id="map" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid meet"></svg>
             <div class="map-controls">
                 <button class="zoom-btn" id="zoom-in" title="Zoom in">+</button>
                 <button class="zoom-btn" id="zoom-out" title="Zoom out">-</button>
@@ -333,7 +333,7 @@ def generate_d3_map_html(geojson, impact_data):
         const allConstituencies = ''' + json.dumps(all_constituencies) + ''';
 
         const width = 600;
-        const height = 800;
+        const height = 900;
 
         const svg = d3.select('#map');
         const g = svg.append('g');
