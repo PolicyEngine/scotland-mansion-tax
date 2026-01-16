@@ -240,9 +240,9 @@ def analyze_constituencies():
         results.append({
             "constituency": constituency,
             "council": council,
-            "estimated_sales": round(constituency_sales, 1),
-            "band_i_sales": round(band_i_sales, 1),
-            "band_j_sales": round(band_j_sales, 1),
+            "estimated_sales": int(round(constituency_sales)),
+            "band_i_sales": int(round(band_i_sales)),
+            "band_j_sales": int(round(band_j_sales)),
             "share_pct": round(share * 100, 2),
             "allocated_revenue": round(allocated_revenue, 0),
         })
