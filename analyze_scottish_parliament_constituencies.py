@@ -5,7 +5,7 @@ Scottish Mansion Tax Analysis by Scottish Parliament Constituency
 Distributes council-level mansion tax estimates to the 73 Scottish Parliament
 constituencies using population/household weights.
 
-Based on Scottish Budget 2025-26 council tax reform for £1m+ properties.
+Based on Scottish Budget 2026-27 council tax reform for £1m+ properties.
 
 Data sources:
 - Council estimates: analyze_scottish_mansion_tax.py

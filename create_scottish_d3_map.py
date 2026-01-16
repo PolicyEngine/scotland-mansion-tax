@@ -3,7 +3,7 @@
 Create D3 map visualization of Scottish Mansion Tax impact by Parliament Constituency.
 
 Generates an interactive D3 map showing the estimated revenue share from the Scottish
-Budget 2025-26 council tax reform for £1m+ properties, distributed to the 73 Scottish
+Budget 2026-27 council tax reform for £1m+ properties, distributed to the 73 Scottish
 Parliament constituencies.
 """
 
@@ -320,7 +320,7 @@ def generate_d3_map_html(geojson, impact_data):
         </div>
 
         <div class="source">
-            Source: Analysis based on Scottish Government Budget 2025-26 |
+            Source: Analysis based on Scottish Government Budget 2026-27 |
             <a href="https://policyengine.org" target="_blank">PolicyEngine</a>
         </div>
     </div>

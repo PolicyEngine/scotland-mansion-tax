@@ -1,12 +1,12 @@
 # Scottish Mansion Tax Analysis
 
-Analysis of Scotland's proposed council tax reform for high-value properties (£1m+), announced in the Scottish Budget 2025-26, estimated by **Scottish Parliament constituency**.
+Analysis of Scotland's proposed council tax reform for high-value properties (£1m+), announced in the Scottish Budget 2026-27, estimated by **Scottish Parliament constituency**.
 
 **Live map**: [policyengine.github.io/scotland-mansion-tax](https://policyengine.github.io/scotland-mansion-tax/scottish_mansion_tax_map.html)
 
 ## Policy Summary
 
-From the [Scottish Budget 2025-26](https://www.gov.scot/publications/scottish-budget-2025-26/):
+From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-budget-2026-27/):
 
 | Detail | Value |
 |--------|-------|
@@ -138,10 +138,10 @@ Our finding that **Edinburgh accounts for 50% of mansion tax impact** while **Gl
 
 | Check | Our Estimate | Official/External | Match |
 |-------|--------------|-------------------|-------|
-| Total revenue | £15.7m | [Scottish Government: £16m](https://www.gov.scot/publications/scottish-budget-2025-26/) | ✓ |
+| Total revenue | £15.7m | [Scottish Government: £16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
 | Total £1m+ sales | 457 | [Rettie: 514](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales), [RoS: 391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics) | ✓ (within range) |
 | Edinburgh share | 50.1% | [Rettie: "over half"](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales) | ✓ |
-| Affected households | <1% | [Scottish Government: "<1%"](https://www.gov.scot/publications/scottish-budget-2025-26/) | ✓ |
+| Affected households | <1% | [Scottish Government: "<1%"](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
 
 #### 5. Why Glasgow is Low (Not an Error)
 
@@ -155,7 +155,7 @@ Glasgow having only 3.3% of impact vs Edinburgh's 50.1% reflects real market dif
 
 | Feature | [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax) | scotland-mansion-tax |
 |---------|-----------------|----------------------|
-| **Policy** | UK Autumn Budget 2025 surcharge | Scottish Budget 2025-26 reform |
+| **Policy** | UK Autumn Budget 2025 surcharge | Scottish Budget 2026-27 reform |
 | **Threshold** | £2m+ (4 bands) | £1m+ (2 bands) |
 | **Revenue** | £400m (OBR estimate) | £16m (Scottish Gov estimate) |
 | **Geography** | 650 Westminster constituencies | 73 Scottish Parliament constituencies |
@@ -236,7 +236,7 @@ python -m http.server 8000
 - [Open Innovations Hex Maps](https://open-innovations.org/projects/hexmaps/)
 
 ### Policy
-- [Scottish Budget 2025-26](https://www.gov.scot/publications/scottish-budget-2025-26/)
+- [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-budget-2026-27/)
 - [Scottish Housing News: Council Tax Reform](https://www.scottishhousingnews.com/)
 
 ## Limitations
