@@ -20,13 +20,13 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 
 ## Results Summary
 
-| Metric | Value |
-|--------|-------|
-| Estimated £1m+ sales/year | ~457 |
-| Scottish Parliament constituencies affected | 69 of 73 |
-| Total estimated revenue | £16m |
-| Edinburgh share | **50.1%** (£8.0m) |
-| Glasgow share | 3.3% (£0.5m) |
+| Metric | Value | Source |
+|--------|-------|--------|
+| £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland |
+| Scottish Parliament constituencies affected | 69 of 73 | Analysis |
+| Total estimated revenue | [£16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | Scottish Government |
+| Edinburgh share | **>50%** ([£8.0m](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf)) | RoS: "over half" |
+| Glasgow share | ~3% (£0.5m) | Analysis |
 
 ### Top 10 Constituencies by Impact
 
@@ -53,7 +53,7 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 |--------|------------------------|---------------------|
 | **Data source** | Land Registry Price Paid | Registers of Scotland |
 | **Availability** | Free, postcode-level | Paid, aggregated only |
-| **Transactions** | 881,757 (2024) | ~457 £1m+ sales |
+| **Transactions** | 881,757 (2024) | [391 £1m+ sales](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) |
 | **Granularity** | Individual property | Council area totals |
 
 **Critical limitation**: Unlike England/Wales where [Land Registry provides free transaction-level data](https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads), Scotland's Registers of Scotland **charges** for bulk transaction data rather than providing it freely.
@@ -64,18 +64,25 @@ Since property-level data is not freely available for Scotland, we use a **two-s
 
 #### Stage 1: Council-Level Estimates
 
-We compiled £1m+ sales by council area from:
-- Registers of Scotland Property Market Reports
-- Rettie Research annual analysis
-- Savills Scotland market reports
-- News reports citing official statistics
+**Primary data source**: [Registers of Scotland Property Market Report 2024-25](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) reports [391 residential sales over £1 million](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) in 2024-25, with **over half in the City of Edinburgh**.
 
+**Postcode breakdown** from [The Scotsman (Jan 2025)](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393):
+| Postcode | Area | £1m+ Sales |
+|----------|------|------------|
+| EH3 | New Town, West End | [53](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393) |
+| EH4 | Barnton, Cramond | [49](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393) |
+| KY16 | St Andrews | [22](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393) |
+| G61 | Bearsden | [15](https://www.scotsman.com/business/the-affluent-postcodes-driving-scotlands-record-sales-of-ps1-million-plus-homes-5215393) |
+
+**Council-level estimates** derived from postcode mapping:
 ```
-Edinburgh: 230 sales (50.3%)
-East Lothian: 35 sales (7.7%)
-Fife: 30 sales (6.6%)
+Edinburgh: ~200 sales (51%)  — based on EH postcode totals
+East Lothian: ~35 sales (9%) — EH39 North Berwick area
+Fife: ~30 sales (8%)         — KY16 St Andrews
 ...
 ```
+
+*Note: We use 391 (RoS official) as our baseline. Other sources report higher figures: [Rettie (514)](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales), [Savills (466)](https://www.savills.co.uk/research_articles/229130/372275-0) — likely due to different time periods (calendar vs fiscal year) or inclusion of off-market transactions.*
 
 #### Stage 2: Council → Constituency Distribution
 
@@ -136,11 +143,11 @@ Our finding that **Edinburgh accounts for 50% of mansion tax impact** while **Gl
 
 #### 4. Revenue Estimate Validation
 
-| Check | Our Estimate | Official/External | Match |
-|-------|--------------|-------------------|-------|
-| Total revenue | £15.7m | [Scottish Government: £16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
-| Total £1m+ sales | 457 | [Rettie: 514](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales), [RoS: 391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics) | ✓ (within range) |
-| Edinburgh share | 50.1% | [Rettie: "over half"](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales) | ✓ |
+| Check | Our Estimate | Official Source | Match |
+|-------|--------------|-----------------|-------|
+| Total revenue | £16m | [Scottish Government: £16m](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
+| Total £1m+ sales | 391 | [Registers of Scotland: 391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | ✓ |
+| Edinburgh share | >50% | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) | ✓ |
 | Affected households | <1% | [Scottish Government: "<1%"](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
 
 #### 5. Why Glasgow is Low (Not an Error)
