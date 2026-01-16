@@ -237,14 +237,15 @@ def analyze_constituencies():
         band_i_sales = constituency_sales * BAND_I_RATIO
         band_j_sales = constituency_sales * BAND_J_RATIO
 
+        rounded_sales = int(round(constituency_sales))
         results.append({
             "constituency": constituency,
             "council": council,
-            "estimated_sales": int(round(constituency_sales)),
+            "estimated_sales": rounded_sales,
             "band_i_sales": int(round(band_i_sales)),
             "band_j_sales": int(round(band_j_sales)),
-            "share_pct": round(share * 100, 2),
-            "allocated_revenue": round(allocated_revenue, 0),
+            "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
+            "allocated_revenue": round(allocated_revenue, 0) if rounded_sales > 0 else 0,
         })
 
     df = pd.DataFrame(results)
