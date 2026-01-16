@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scottish Mansion Tax - Parliament Constituency Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #2E86AB 0%, #1A535C 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2E86AB;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #1A535C;
+            border-bottom: 2px solid #4ECDC4;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th {
+            background: #2E86AB;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .highlight {
+            background: #e3f2fd;
+        }
+        .policy-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Scottish Mansion Tax Impact Analysis</h1>
+        <div class="subtitle">By Scottish Parliament Constituency (2021 Boundaries)</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">£15.7m</div>
+            <div class="stat-label">Total Estimated Revenue</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">450</div>
+            <div class="stat-label">Estimated £1m+ Sales/Year</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">69</div>
+            <div class="stat-label">Constituencies Affected</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">51%</div>
+            <div class="stat-label">Edinburgh Share</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Policy Overview</h2>
+        <div class="policy-box">
+            <strong>Scottish Budget 2025-26 Council Tax Reform</strong><br><br>
+            <ul>
+                <li><strong>Effective:</strong> 1 April 2028</li>
+                <li><strong>New Band I:</strong> Properties £1m-£2m</li>
+                <li><strong>New Band J:</strong> Properties £2m+</li>
+                <li><strong>Expected revenue:</strong> £16 million annually</li>
+                <li><strong>Affected households:</strong> &lt;1% of Scottish households</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Top 20 Constituencies by Impact</h2>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Constituency</th>
+                <th>Council Area</th>
+                <th>Est. Sales</th>
+                <th>Band I</th>
+                <th>Band J</th>
+                <th>Revenue</th>
+                <th>Share</th>
+            </tr>
+            <tr class="highlight">
+                <td>1</td>
+                <td><strong>Edinburgh Central</strong></td>
+                <td>City of Edinburgh</td>
+                <td>57.5</td>
+                <td>47.1</td>
+                <td>10.3</td>
+                <td>£2.00m</td>
+                <td>12.5%</td>
+            </tr>
+            <tr class="highlight">
+                <td>2</td>
+                <td><strong>Edinburgh Western</strong></td>
+                <td>City of Edinburgh</td>
+                <td>46.0</td>
+                <td>37.7</td>
+                <td>8.3</td>
+                <td>£1.60m</td>
+                <td>10.0%</td>
+            </tr>
+            <tr class="highlight">
+                <td>3</td>
+                <td><strong>Edinburgh Southern</strong></td>
+                <td>City of Edinburgh</td>
+                <td>41.4</td>
+                <td>33.9</td>
+                <td>7.5</td>
+                <td>£1.44m</td>
+                <td>9.0%</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><strong>East Lothian</strong></td>
+                <td>East Lothian</td>
+                <td>35.0</td>
+                <td>28.7</td>
+                <td>6.3</td>
+                <td>£1.22m</td>
+                <td>7.6%</td>
+            </tr>
+            <tr class="highlight">
+                <td>5</td>
+                <td><strong>Edinburgh Pentlands</strong></td>
+                <td>City of Edinburgh</td>
+                <td>34.5</td>
+                <td>28.3</td>
+                <td>6.2</td>
+                <td>£1.20m</td>
+                <td>7.5%</td>
+            </tr>
+            <tr class="highlight">
+                <td>6</td>
+                <td><strong>Edinburgh Northern and Leith</strong></td>
+                <td>City of Edinburgh</td>
+                <td>27.6</td>
+                <td>22.6</td>
+                <td>5.0</td>
+                <td>£0.96m</td>
+                <td>6.0%</td>
+            </tr>
+            <tr class="highlight">
+                <td>7</td>
+                <td><strong>Edinburgh Eastern</strong></td>
+                <td>City of Edinburgh</td>
+                <td>23.0</td>
+                <td>18.9</td>
+                <td>4.1</td>
+                <td>£0.80m</td>
+                <td>5.0%</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td><strong>Strathkelvin and Bearsden</strong></td>
+                <td>East Dunbartonshire</td>
+                <td>16.2</td>
+                <td>13.3</td>
+                <td>2.9</td>
+                <td>£0.57m</td>
+                <td>3.5%</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td><strong>North East Fife</strong></td>
+                <td>Fife</td>
+                <td>15.0</td>
+                <td>12.3</td>
+                <td>2.7</td>
+                <td>£0.52m</td>
+                <td>3.3%</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td><strong>Stirling</strong></td>
+                <td>Stirling</td>
+                <td>10.0</td>
+                <td>8.2</td>
+                <td>1.8</td>
+                <td>£0.35m</td>
+                <td>2.2%</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td><strong>Eastwood</strong></td>
+                <td>East Renfrewshire</td>
+                <td>10.0</td>
+                <td>8.2</td>
+                <td>1.8</td>
+                <td>£0.35m</td>
+                <td>2.2%</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td><strong>Aberdeen Central</strong></td>
+                <td>Aberdeen City</td>
+                <td>7.0</td>
+                <td>5.7</td>
+                <td>1.3</td>
+                <td>£0.24m</td>
+                <td>1.5%</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td><strong>Aberdeen Donside</strong></td>
+                <td>Aberdeen City</td>
+                <td>7.0</td>
+                <td>5.7</td>
+                <td>1.3</td>
+                <td>£0.24m</td>
+                <td>1.5%</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td><strong>Argyll and Bute</strong></td>
+                <td>Argyll and Bute</td>
+                <td>6.0</td>
+                <td>4.9</td>
+                <td>1.1</td>
+                <td>£0.21m</td>
+                <td>1.3%</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td><strong>Aberdeenshire West</strong></td>
+                <td>Aberdeenshire</td>
+                <td>6.0</td>
+                <td>4.9</td>
+                <td>1.1</td>
+                <td>£0.21m</td>
+                <td>1.3%</td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td><strong>Perthshire North</strong></td>
+                <td>Perth and Kinross</td>
+                <td>6.0</td>
+                <td>4.9</td>
+                <td>1.1</td>
+                <td>£0.21m</td>
+                <td>1.3%</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td><strong>Perthshire South and Kinross-shire</strong></td>
+                <td>Perth and Kinross</td>
+                <td>6.0</td>
+                <td>4.9</td>
+                <td>1.1</td>
+                <td>£0.21m</td>
+                <td>1.3%</td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td><strong>Aberdeen South and North Kincardine</strong></td>
+                <td>Aberdeen City</td>
+                <td>6.0</td>
+                <td>4.9</td>
+                <td>1.1</td>
+                <td>£0.21m</td>
+                <td>1.3%</td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td><strong>Midlothian North and Musselburgh</strong></td>
+                <td>Midlothian</td>
+                <td>5.0</td>
+                <td>4.1</td>
+                <td>0.9</td>
+                <td>£0.17m</td>
+                <td>1.1%</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td><strong>Aberdeenshire East</strong></td>
+                <td>Aberdeenshire</td>
+                <td>4.5</td>
+                <td>3.7</td>
+                <td>0.8</td>
+                <td>£0.16m</td>
+                <td>1.0%</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Edinburgh Breakdown</h2>
+        <p>Edinburgh constituencies account for over half of the total impact:</p>
+        <table>
+            <tr>
+                <th>Constituency</th>
+                <th>Key Areas</th>
+                <th>Est. Sales</th>
+                <th>Revenue</th>
+                <th>Share of Edinburgh</th>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Central</strong></td>
+                <td>New Town (EH3), West End</td>
+                <td>58</td>
+                <td>£2.00m</td>
+                <td>25%</td>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Western</strong></td>
+                <td>Barnton, Cramond (EH4)</td>
+                <td>46</td>
+                <td>£1.60m</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Southern</strong></td>
+                <td>Morningside, Grange, Merchiston</td>
+                <td>41</td>
+                <td>£1.44m</td>
+                <td>18%</td>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Pentlands</strong></td>
+                <td>Corstorphine, Juniper Green</td>
+                <td>34</td>
+                <td>£1.20m</td>
+                <td>15%</td>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Northern and Leith</strong></td>
+                <td>Trinity, Leith, Inverleith</td>
+                <td>28</td>
+                <td>£0.96m</td>
+                <td>12%</td>
+            </tr>
+            <tr>
+                <td><strong>Edinburgh Eastern</strong></td>
+                <td>Portobello, Duddingston</td>
+                <td>23</td>
+                <td>£0.80m</td>
+                <td>10%</td>
+            </tr>
+        </table>
+        <p><strong>Edinburgh Total:</strong> 230 sales, £8.02m (51.1% of Scotland)</p>
+    </div>
+
+    <div class="section">
+        <h2>Full Constituency Data</h2>
+        <table>
+            <tr>
+                <th>Constituency</th>
+                <th>Council</th>
+                <th>Est. Sales</th>
+                <th>Revenue</th>
+            </tr>
+            <tr>
+                <td>Edinburgh Central</td>
+                <td>City of Edinburgh</td>
+                <td>57.5</td>
+                <td>£2.00m</td>
+            </tr>
+            <tr>
+                <td>Edinburgh Western</td>
+                <td>City of Edinburgh</td>
+                <td>46.0</td>
+                <td>£1.60m</td>
+            </tr>
+            <tr>
+                <td>Edinburgh Southern</td>
+                <td>City of Edinburgh</td>
+                <td>41.4</td>
+                <td>£1.44m</td>
+            </tr>
+            <tr>
+                <td>East Lothian</td>
+                <td>East Lothian</td>
+                <td>35.0</td>
+                <td>£1.22m</td>
+            </tr>
+            <tr>
+                <td>Edinburgh Pentlands</td>
+                <td>City of Edinburgh</td>
+                <td>34.5</td>
+                <td>£1.20m</td>
+            </tr>
+            <tr>
+                <td>Edinburgh Northern and Leith</td>
+                <td>City of Edinburgh</td>
+                <td>27.6</td>
+                <td>£0.96m</td>
+            </tr>
+            <tr>
+                <td>Edinburgh Eastern</td>
+                <td>City of Edinburgh</td>
+                <td>23.0</td>
+                <td>£0.80m</td>
+            </tr>
+            <tr>
+                <td>Strathkelvin and Bearsden</td>
+                <td>East Dunbartonshire</td>
+                <td>16.2</td>
+                <td>£0.57m</td>
+            </tr>
+            <tr>
+                <td>North East Fife</td>
+                <td>Fife</td>
+                <td>15.0</td>
+                <td>£0.52m</td>
+            </tr>
+            <tr>
+                <td>Stirling</td>
+                <td>Stirling</td>
+                <td>10.0</td>
+                <td>£0.35m</td>
+            </tr>
+            <tr>
+                <td>Eastwood</td>
+                <td>East Renfrewshire</td>
+                <td>10.0</td>
+                <td>£0.35m</td>
+            </tr>
+            <tr>
+                <td>Aberdeen Central</td>
+                <td>Aberdeen City</td>
+                <td>7.0</td>
+                <td>£0.24m</td>
+            </tr>
+            <tr>
+                <td>Aberdeen Donside</td>
+                <td>Aberdeen City</td>
+                <td>7.0</td>
+                <td>£0.24m</td>
+            </tr>
+            <tr>
+                <td>Argyll and Bute</td>
+                <td>Argyll and Bute</td>
+                <td>6.0</td>
+                <td>£0.21m</td>
+            </tr>
+            <tr>
+                <td>Aberdeenshire West</td>
+                <td>Aberdeenshire</td>
+                <td>6.0</td>
+                <td>£0.21m</td>
+            </tr>
+            <tr>
+                <td>Perthshire North</td>
+                <td>Perth and Kinross</td>
+                <td>6.0</td>
+                <td>£0.21m</td>
+            </tr>
+            <tr>
+                <td>Perthshire South and Kinross-shire</td>
+                <td>Perth and Kinross</td>
+                <td>6.0</td>
+                <td>£0.21m</td>
+            </tr>
+            <tr>
+                <td>Aberdeen South and North Kincardine</td>
+                <td>Aberdeen City</td>
+                <td>6.0</td>
+                <td>£0.21m</td>
+            </tr>
+            <tr>
+                <td>Midlothian North and Musselburgh</td>
+                <td>Midlothian</td>
+                <td>5.0</td>
+                <td>£0.17m</td>
+            </tr>
+            <tr>
+                <td>Aberdeenshire East</td>
+                <td>Aberdeenshire</td>
+                <td>4.5</td>
+                <td>£0.16m</td>
+            </tr>
+            <tr>
+                <td>Banffshire and Buchan Coast</td>
+                <td>Aberdeenshire</td>
+                <td>4.5</td>
+                <td>£0.16m</td>
+            </tr>
+            <tr>
+                <td>Dunfermline</td>
+                <td>Fife</td>
+                <td>4.5</td>
+                <td>£0.16m</td>
+            </tr>
+            <tr>
+                <td>Ayr</td>
+                <td>South Ayrshire</td>
+                <td>4.2</td>
+                <td>£0.15m</td>
+            </tr>
+            <tr>
+                <td>Midlothian South, Tweeddale and Lauderdale</td>
+                <td>Scottish Borders</td>
+                <td>4.0</td>
+                <td>£0.14m</td>
+            </tr>
+            <tr>
+                <td>Ettrick, Roxburgh and Berwickshire</td>
+                <td>Scottish Borders</td>
+                <td>4.0</td>
+                <td>£0.14m</td>
+            </tr>
+            <tr>
+                <td>Inverness and Nairn</td>
+                <td>Highland</td>
+                <td>4.0</td>
+                <td>£0.14m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Kelvin</td>
+                <td>Glasgow City</td>
+                <td>3.8</td>
+                <td>£0.13m</td>
+            </tr>
+            <tr>
+                <td>Kirkcaldy</td>
+                <td>Fife</td>
+                <td>3.6</td>
+                <td>£0.13m</td>
+            </tr>
+            <tr>
+                <td>Cowdenbeath</td>
+                <td>Fife</td>
+                <td>3.6</td>
+                <td>£0.13m</td>
+            </tr>
+            <tr>
+                <td>Mid Fife and Glenrothes</td>
+                <td>Fife</td>
+                <td>3.3</td>
+                <td>£0.12m</td>
+            </tr>
+            <tr>
+                <td>Linlithgow</td>
+                <td>West Lothian</td>
+                <td>2.8</td>
+                <td>£0.10m</td>
+            </tr>
+            <tr>
+                <td>Carrick, Cumnock and Doon Valley</td>
+                <td>South Ayrshire</td>
+                <td>2.8</td>
+                <td>£0.10m</td>
+            </tr>
+            <tr>
+                <td>Caithness, Sutherland and Ross</td>
+                <td>Highland</td>
+                <td>2.5</td>
+                <td>£0.09m</td>
+            </tr>
+            <tr>
+                <td>Skye, Lochaber and Badenoch</td>
+                <td>Highland</td>
+                <td>2.5</td>
+                <td>£0.09m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Cathcart</td>
+                <td>Glasgow City</td>
+                <td>2.2</td>
+                <td>£0.08m</td>
+            </tr>
+            <tr>
+                <td>Almond Valley</td>
+                <td>West Lothian</td>
+                <td>2.2</td>
+                <td>£0.08m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Anniesland</td>
+                <td>Glasgow City</td>
+                <td>1.8</td>
+                <td>£0.06m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Southside</td>
+                <td>Glasgow City</td>
+                <td>1.5</td>
+                <td>£0.05m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Provan</td>
+                <td>Glasgow City</td>
+                <td>1.2</td>
+                <td>£0.04m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Maryhill and Springburn</td>
+                <td>Glasgow City</td>
+                <td>1.2</td>
+                <td>£0.04m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Pollok</td>
+                <td>Glasgow City</td>
+                <td>1.2</td>
+                <td>£0.04m</td>
+            </tr>
+            <tr>
+                <td>Rutherglen</td>
+                <td>Glasgow City</td>
+                <td>1.1</td>
+                <td>£0.04m</td>
+            </tr>
+            <tr>
+                <td>Glasgow Shettleston</td>
+                <td>Glasgow City</td>
+                <td>1.1</td>
+                <td>£0.04m</td>
+            </tr>
+            <tr>
+                <td>Dumbarton</td>
+                <td>West Dunbartonshire</td>
+                <td>1.0</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Ross, Skye and Inverness West</td>
+                <td>Highland</td>
+                <td>1.0</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Clackmannanshire and Dunblane</td>
+                <td>Clackmannanshire</td>
+                <td>1.0</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Greenock and Inverclyde</td>
+                <td>Inverclyde</td>
+                <td>1.0</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Moray</td>
+                <td>Moray</td>
+                <td>1.0</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>East Kilbride</td>
+                <td>South Lanarkshire</td>
+                <td>0.9</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Clydesdale</td>
+                <td>South Lanarkshire</td>
+                <td>0.9</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Paisley</td>
+                <td>Renfrewshire</td>
+                <td>0.8</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Hamilton, Larkhall and Stonehouse</td>
+                <td>South Lanarkshire</td>
+                <td>0.8</td>
+                <td>£0.03m</td>
+            </tr>
+            <tr>
+                <td>Renfrewshire North and West</td>
+                <td>Renfrewshire</td>
+                <td>0.7</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Motherwell and Wishaw</td>
+                <td>North Lanarkshire</td>
+                <td>0.6</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Cunninghame North</td>
+                <td>North Ayrshire</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Cunninghame South</td>
+                <td>North Ayrshire</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Angus South</td>
+                <td>Angus</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Angus North and Mearns</td>
+                <td>Angus</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Dundee City East</td>
+                <td>Dundee City</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Dundee City West</td>
+                <td>Dundee City</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Coatbridge and Chryston</td>
+                <td>North Lanarkshire</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Galloway and West Dumfries</td>
+                <td>Dumfries and Galloway</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Dumfriesshire</td>
+                <td>Dumfries and Galloway</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Falkirk West</td>
+                <td>Falkirk</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Falkirk East</td>
+                <td>Falkirk</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Renfrewshire South</td>
+                <td>Renfrewshire</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Airdrie and Shotts</td>
+                <td>North Lanarkshire</td>
+                <td>0.5</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Uddingston and Bellshill</td>
+                <td>South Lanarkshire</td>
+                <td>0.4</td>
+                <td>£0.02m</td>
+            </tr>
+            <tr>
+                <td>Cumbernauld and Kilsyth</td>
+                <td>North Lanarkshire</td>
+                <td>0.4</td>
+                <td>£0.01m</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Methodology</h2>
+        <p>This analysis distributes council-level mansion tax estimates to Scottish Parliament constituencies using weighted allocation based on:</p>
+        <ul>
+            <li>Council-level £1m+ property sales data from Registers of Scotland</li>
+            <li>Constituency-to-council geographic mapping (2021 boundaries)</li>
+            <li>Property value distribution weights based on affluent area locations within each council</li>
+        </ul>
+        <p>Higher weights are assigned to constituencies containing known high-value areas (e.g., Edinburgh Central receives 25% of Edinburgh's allocation due to New Town, Stockbridge, and West End).</p>
+    </div>
+
+    <div class="footer">
+        Analysis based on Scottish Government Budget 2025-26 proposals<br>
+        Data: Registers of Scotland property transactions | Scottish Parliament 2021 constituency boundaries
+    </div>
+</body>
+</html>
