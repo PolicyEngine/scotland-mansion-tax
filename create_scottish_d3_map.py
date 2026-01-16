@@ -356,12 +356,12 @@ def generate_d3_map_html(geojson, impact_data):
         });
 
         // Create scale to fit British National Grid into SVG
-        const padding = 80;
+        const padding = 60;
         const dataWidth = xMax - xMin;
         const dataHeight = yMax - yMin;
-        const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight) * 0.85;
+        const geoScale = Math.min((width - 2 * padding) / dataWidth, (height - 2 * padding) / dataHeight) * 0.78;
         const geoOffsetX = (width - dataWidth * geoScale) / 2;
-        const geoOffsetY = (height - dataHeight * geoScale) / 2 + 20;
+        const geoOffsetY = (height - dataHeight * geoScale) / 2 + 60;
 
         const projection = d3.geoTransform({
             point: function(x, y) {
