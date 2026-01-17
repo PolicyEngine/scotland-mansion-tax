@@ -30,9 +30,11 @@ Since Scotland hasn't announced rates, we use [UK Autumn Budget 2025 rates](http
 
 | Band | UK Rate | Est. Stock | Revenue |
 |------|---------|------------|---------|
-| Band I (£1m-£2m) | £1,500/yr | [10,252 (89%)](https://www.savills.co.uk/research_articles/229130/372275-0) | £15.4m |
-| Band J (£2m+) | £2,500/yr | [1,229 (11%)](https://www.savills.co.uk/research_articles/229130/372275-0) | £3.1m |
+| Band I (£1m-£2m) | £1,500/yr | 10,252 (89%) | £15.4m |
+| Band J (£2m+) | £2,500/yr | 1,229 (11%) | £3.1m |
 | **Total** | | **11,481** | **£18.5m** |
+
+*Band split (89%/11%) from [Savills 2024 Scotland £1m+ Market Analysis](https://www.savills.co.uk/research_articles/229130/372275-0): 416 sales £1m-£2m, 50 sales £2m+.*
 
 ```
 Revenue = Stock × Average Rate = 11,481 × £1,607 = £18.5m
