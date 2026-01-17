@@ -12,7 +12,7 @@ Revenue Calculation:
 
     Where:
     - Stock (11,481): Total £1m+ properties in Scotland (Savills, 2022)
-    - Average Rate (£1,680): (82% × £1,500) + (18% × £2,500) using UK benchmark rates
+    - Average Rate (£1,680): (82% × £1,500) + (18% × £2,500)
 
     Sales data (391 from RoS) is only used for GEOGRAPHIC DISTRIBUTION,
     not for calculating total revenue.
@@ -21,7 +21,6 @@ Data sources:
 - Stock: Savills research (11,481 £1m+ homes in Scotland)
 - Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
 - Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
-- Surcharge rates: UK Autumn Budget 2025 (benchmark, Scotland rates not yet announced)
 
 Methodology:
 1. Calculate total revenue: Stock × Average Rate = £19.3m
@@ -32,12 +31,10 @@ Methodology:
 import pandas as pd
 from pathlib import Path
 
-# UK surcharge rates (from OBR November 2025)
-# Source: https://github.com/PolicyEngine/uk-mansion-tax
-# Band I (£1m-£2m): Extrapolated below UK minimum (UK starts at £2m)
-# Band J (£2m+): Use UK minimum rate (most Scottish £2m+ are in £2m-£2.5m range)
-BAND_I_SURCHARGE = 1_500  # £1,500/year (extrapolated, no UK equivalent)
-BAND_J_SURCHARGE = 2_500  # £2,500/year (UK rate for £2m-£2.5m band)
+# Surcharge rates (benchmark - Scotland rates not yet announced)
+# Source: https://www.gov.uk/government/publications/high-value-council-tax-surcharge
+BAND_I_SURCHARGE = 1_500  # £1,500/year for £1m-£2m properties
+BAND_J_SURCHARGE = 2_500  # £2,500/year for £2m+ properties
 
 # Stock estimate from Savills (February 2023)
 # Source: https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills
@@ -360,7 +357,7 @@ def analyze_constituencies():
     print(f"\n📊 Total constituencies: {len(df)}")
     print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f} (for geographic distribution)")
     print(f"🏠 Estimated £1m+ stock: {ESTIMATED_STOCK:,} (Savills)")
-    print(f"\n💰 Revenue calculation (UK rates as benchmark):")
+    print(f"\n💰 Revenue calculation:")
     print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (82% of properties)")
     print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (18% of properties)")
     print(f"   Average rate: £{avg_rate:,.0f}/year")

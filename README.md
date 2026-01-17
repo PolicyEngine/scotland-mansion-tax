@@ -59,32 +59,13 @@ Revenue = Stock × Average Rate = 11,481 × £1,680 = £19.3m
 
 ## Methodology
 
-### Data Challenge
-
-| | England/Wales | Scotland |
-|--|---------------|----------|
-| Data source | Land Registry | Registers of Scotland |
-| Availability | Free, postcode-level | Paid, council-level only |
-| Methodology | Direct property analysis | Weighted distribution |
-
-Scotland's RoS charges for transaction data and only publishes council-level aggregates.
-
-### Our Approach
+Registers of Scotland charges for transaction data and only publishes council-level aggregates. We use a weighted distribution approach:
 
 1. **Stock → Revenue**: 11,481 properties × £1,680 avg rate = £19.3m total
 2. **Sales → Distribution**: Use [391 sales by council](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) for geographic shares
 3. **Council → Constituency**: Distribute within councils using [NRS population weights](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
 
 Stock tells us **how many** properties; sales tells us **where** they are.
-
-## Comparison with UK Mansion Tax
-
-| | [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax) | scotland-mansion-tax |
-|--|-----------------|----------------------|
-| Threshold | £2m+ | £1m+ |
-| Revenue | £400m (OBR) | £19.3m (analysis) |
-| Data | Property-level | Council-level |
-| Top area | Cities of London & Westminster | Edinburgh Northern & Leith |
 
 ## Data Sources
 
