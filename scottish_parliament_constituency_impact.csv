@@ -1,73 +1,73 @@
 constituency,council,population,weight,estimated_sales,band_i_sales,band_j_sales,share_pct,implied_from_sales,allocated_revenue
-Edinburgh Northern and Leith,City of Edinburgh,96748,0.1838,36.8,30.1,6.6,8.57,61746.0,1583743.0
-Edinburgh Central,City of Edinburgh,93878,0.1783,35.7,29.2,6.4,8.31,59914.0,1535694.0
-East Lothian,East Lothian,83560,1.0,35.0,28.7,6.3,8.16,58800.0,1507974.0
-Edinburgh Eastern,City of Edinburgh,91841,0.1744,34.9,28.6,6.3,8.13,58614.0,1502430.0
-Edinburgh Western,City of Edinburgh,86330,0.164,32.8,26.9,5.9,7.64,55097.0,1411878.0
-Edinburgh Southern,City of Edinburgh,80009,0.152,30.4,24.9,5.5,7.08,51063.0,1308389.0
-Edinburgh Pentlands,City of Edinburgh,77664,0.1475,29.5,24.2,5.3,6.88,49566.0,1271429.0
-Strathkelvin and Bearsden,East Dunbartonshire,80314,1.0,25.0,20.5,4.5,5.83,42000.0,1077388.0
-Stirling,Stirling,76742,1.0,10.0,8.2,1.8,2.33,16800.0,430586.0
-Eastwood,East Renfrewshire,71908,1.0,10.0,8.2,1.8,2.33,16800.0,430586.0
-Aberdeen South and North Kincardine,Aberdeen City,82092,0.3372,6.7,5.5,1.2,1.57,11329.0,290137.0
-Aberdeen Central,Aberdeen City,80480,0.3306,6.6,5.4,1.2,1.54,11107.0,284593.0
-Aberdeen Donside,Aberdeen City,80900,0.3323,6.6,5.4,1.2,1.55,11164.0,286441.0
-Dunfermline,Fife,79138,0.2112,6.3,5.2,1.1,1.48,10644.0,273505.0
-Kirkcaldy,Fife,78765,0.2102,6.3,5.2,1.1,1.47,10594.0,271657.0
-Perthshire South and Kinross-shire,Perth and Kinross,80101,0.5208,6.2,5.1,1.1,1.46,10499.0,269809.0
-Argyll and Bute,Argyll and Bute,60386,1.0,6.0,4.9,1.1,1.4,10080.0,258721.0
-North East Fife,Fife,74685,0.1993,6.0,4.9,1.1,1.39,10045.0,256873.0
-Cowdenbeath,Fife,72723,0.1941,5.8,4.8,1.0,1.36,9781.0,251329.0
-Perthshire North,Perth and Kinross,73709,0.4792,5.8,4.7,1.0,1.34,9661.0,247633.0
-Mid Fife and Glenrothes,Fife,69419,0.1853,5.6,4.6,1.0,1.3,9337.0,240241.0
-Aberdeenshire East,Aberdeenshire,81847,0.3498,5.2,4.3,0.9,1.22,8814.0,225457.0
-Midlothian North and Musselburgh,Midlothian,87630,1.0,5.0,4.1,0.9,1.17,8400.0,216217.0
-Aberdeenshire West,Aberdeenshire,76718,0.3279,4.9,4.0,0.9,1.15,8262.0,212521.0
-Banffshire and Buchan Coast,Aberdeenshire,75434,0.3224,4.8,4.0,0.9,1.13,8124.0,208825.0
-"Midlothian South, Tweeddale and Lauderdale",Scottish Borders,80965,0.5431,4.3,3.6,0.8,1.01,7299.0,186649.0
-Inverness and Nairn,Highland,90804,0.3814,3.8,3.1,0.7,0.89,6408.0,164473.0
-"Ettrick, Roxburgh and Berwickshire",Scottish Borders,68125,0.4569,3.7,3.0,0.7,0.85,6141.0,157081.0
-"Carrick, Cumnock and Doon Valley",South Ayrshire,76603,0.5065,3.5,2.9,0.6,0.83,5956.0,153385.0
-Ayr,South Ayrshire,74639,0.4935,3.5,2.8,0.6,0.81,5804.0,149689.0
-"Skye, Lochaber and Badenoch",Highland,77010,0.3235,3.2,2.7,0.6,0.75,5435.0,138601.0
-"Caithness, Sutherland and Ross",Highland,70246,0.2951,3.0,2.4,0.5,0.69,4957.0,127513.0
-Linlithgow,West Lothian,97025,0.5228,2.6,2.1,0.5,0.61,4392.0,112728.0
-Almond Valley,West Lothian,88555,0.4772,2.4,2.0,0.4,0.56,4008.0,103488.0
-Glasgow Kelvin,Glasgow City,94051,0.1319,2.0,1.6,0.4,0.46,3325.0,85008.0
-Glasgow Shettleston,Glasgow City,82424,0.1156,1.7,1.4,0.3,0.4,2914.0,73920.0
-Glasgow Pollok,Glasgow City,81951,0.115,1.7,1.4,0.3,0.4,2897.0,73920.0
-Glasgow Cathcart,Glasgow City,75099,0.1053,1.6,1.3,0.3,0.37,2655.0,68376.0
-Glasgow Anniesland,Glasgow City,75081,0.1053,1.6,1.3,0.3,0.37,2654.0,68376.0
-Rutherglen,Glasgow City,77728,0.109,1.6,1.3,0.3,0.38,2748.0,70224.0
-Glasgow Maryhill and Springburn,Glasgow City,75362,0.1057,1.6,1.3,0.3,0.37,2664.0,68376.0
-Glasgow Provan,Glasgow City,77983,0.1094,1.6,1.3,0.3,0.38,2757.0,70224.0
-Glasgow Southside,Glasgow City,73179,0.1027,1.5,1.3,0.3,0.36,2587.0,66528.0
-Clackmannanshire and Dunblane,Clackmannanshire,68268,1.0,1.0,0.8,0.2,0.23,1680.0,42504.0
-Moray,Moray,81144,1.0,1.0,0.8,0.2,0.23,1680.0,42504.0
-Greenock and Inverclyde,Inverclyde,71426,1.0,1.0,0.8,0.2,0.23,1680.0,42504.0
-East Kilbride,South Lanarkshire,78246,0.2595,0.8,0.6,0.1,0.18,1308.0,33264.0
-Uddingston and Bellshill,South Lanarkshire,74373,0.2467,0.7,0.6,0.1,0.17,1243.0,31416.0
-Paisley,Renfrewshire,72446,0.3452,0.7,0.6,0.1,0.16,1160.0,29568.0
-Renfrewshire South,Renfrewshire,70801,0.3373,0.7,0.6,0.1,0.16,1133.0,29568.0
-"Hamilton, Larkhall and Stonehouse",South Lanarkshire,75065,0.2489,0.7,0.6,0.1,0.17,1255.0,31416.0
-Clydesdale,South Lanarkshire,73847,0.2449,0.7,0.6,0.1,0.17,1234.0,31416.0
-Renfrewshire North and West,Renfrewshire,66639,0.3175,0.6,0.5,0.1,0.15,1067.0,27720.0
-Clydebank and Milngavie,West Dunbartonshire,69481,0.4886,0.5,0.4,0.1,0.11,821.0,20328.0
-Dumbarton,West Dunbartonshire,72729,0.5114,0.5,0.4,0.1,0.12,859.0,22176.0
-Cunninghame South,North Ayrshire,65499,0.488,0.5,0.4,0.1,0.11,820.0,20328.0
-Cunninghame North,North Ayrshire,68721,0.512,0.5,0.4,0.1,0.12,860.0,22176.0
-Dundee City West,Dundee City,76671,0.519,0.5,0.4,0.1,0.12,872.0,22176.0
-Angus South,Angus,73417,0.5097,0.5,0.4,0.1,0.12,856.0,22176.0
-Angus North and Mearns,Angus,70618,0.4903,0.5,0.4,0.1,0.11,824.0,20328.0
-Coatbridge and Chryston,North Lanarkshire,73873,0.2594,0.5,0.4,0.1,0.12,872.0,22176.0
-Dundee City East,Dundee City,71049,0.481,0.5,0.4,0.1,0.11,808.0,20328.0
-Galloway and West Dumfries,Dumfries and Galloway,72684,0.4885,0.5,0.4,0.1,0.11,821.0,20328.0
-Dumfriesshire,Dumfries and Galloway,76106,0.5115,0.5,0.4,0.1,0.12,859.0,22176.0
-Falkirk West,Falkirk,79983,0.4977,0.5,0.4,0.1,0.12,836.0,22176.0
-Falkirk East,Falkirk,80717,0.5023,0.5,0.4,0.1,0.12,844.0,22176.0
-Cumbernauld and Kilsyth,North Lanarkshire,64152,0.2253,0.5,0.4,0.1,0.11,757.0,20328.0
-Airdrie and Shotts,North Lanarkshire,70421,0.2473,0.5,0.4,0.1,0.12,831.0,22176.0
-Motherwell and Wishaw,North Lanarkshire,76325,0.268,0.5,0.4,0.1,0.12,901.0,22176.0
+Edinburgh Northern and Leith,City of Edinburgh,96748,0.1838,36.8,30.1,6.6,8.57,61746.0,1652988.0
+Edinburgh Central,City of Edinburgh,93878,0.1783,35.7,29.2,6.4,8.31,59914.0,1602839.0
+East Lothian,East Lothian,83560,1.0,35.0,28.7,6.3,8.16,58800.0,1573907.0
+Edinburgh Eastern,City of Edinburgh,91841,0.1744,34.9,28.6,6.3,8.13,58614.0,1568121.0
+Edinburgh Western,City of Edinburgh,86330,0.164,32.8,26.9,5.9,7.64,55097.0,1473609.0
+Edinburgh Southern,City of Edinburgh,80009,0.152,30.4,24.9,5.5,7.08,51063.0,1365596.0
+Edinburgh Pentlands,City of Edinburgh,77664,0.1475,29.5,24.2,5.3,6.88,49566.0,1327020.0
+Strathkelvin and Bearsden,East Dunbartonshire,80314,1.0,25.0,20.5,4.5,5.83,42000.0,1124495.0
+Stirling,Stirling,76742,1.0,10.0,8.2,1.8,2.33,16800.0,449412.0
+Eastwood,East Renfrewshire,71908,1.0,10.0,8.2,1.8,2.33,16800.0,449412.0
+Aberdeen South and North Kincardine,Aberdeen City,82092,0.3372,6.7,5.5,1.2,1.57,11329.0,302823.0
+Aberdeen Central,Aberdeen City,80480,0.3306,6.6,5.4,1.2,1.54,11107.0,297036.0
+Aberdeen Donside,Aberdeen City,80900,0.3323,6.6,5.4,1.2,1.55,11164.0,298965.0
+Dunfermline,Fife,79138,0.2112,6.3,5.2,1.1,1.48,10644.0,285464.0
+Kirkcaldy,Fife,78765,0.2102,6.3,5.2,1.1,1.47,10594.0,283535.0
+Perthshire South and Kinross-shire,Perth and Kinross,80101,0.5208,6.2,5.1,1.1,1.46,10499.0,281606.0
+Argyll and Bute,Argyll and Bute,60386,1.0,6.0,4.9,1.1,1.4,10080.0,270033.0
+North East Fife,Fife,74685,0.1993,6.0,4.9,1.1,1.39,10045.0,268104.0
+Cowdenbeath,Fife,72723,0.1941,5.8,4.8,1.0,1.36,9781.0,262318.0
+Perthshire North,Perth and Kinross,73709,0.4792,5.8,4.7,1.0,1.34,9661.0,258460.0
+Mid Fife and Glenrothes,Fife,69419,0.1853,5.6,4.6,1.0,1.3,9337.0,250745.0
+Aberdeenshire East,Aberdeenshire,81847,0.3498,5.2,4.3,0.9,1.22,8814.0,235315.0
+Midlothian North and Musselburgh,Midlothian,87630,1.0,5.0,4.1,0.9,1.17,8400.0,225671.0
+Aberdeenshire West,Aberdeenshire,76718,0.3279,4.9,4.0,0.9,1.15,8262.0,221813.0
+Banffshire and Buchan Coast,Aberdeenshire,75434,0.3224,4.8,4.0,0.9,1.13,8124.0,217955.0
+"Midlothian South, Tweeddale and Lauderdale",Scottish Borders,80965,0.5431,4.3,3.6,0.8,1.01,7299.0,194810.0
+Inverness and Nairn,Highland,90804,0.3814,3.8,3.1,0.7,0.89,6408.0,171664.0
+"Ettrick, Roxburgh and Berwickshire",Scottish Borders,68125,0.4569,3.7,3.0,0.7,0.85,6141.0,163949.0
+"Carrick, Cumnock and Doon Valley",South Ayrshire,76603,0.5065,3.5,2.9,0.6,0.83,5956.0,160091.0
+Ayr,South Ayrshire,74639,0.4935,3.5,2.8,0.6,0.81,5804.0,156233.0
+"Skye, Lochaber and Badenoch",Highland,77010,0.3235,3.2,2.7,0.6,0.75,5435.0,144661.0
+"Caithness, Sutherland and Ross",Highland,70246,0.2951,3.0,2.4,0.5,0.69,4957.0,133088.0
+Linlithgow,West Lothian,97025,0.5228,2.6,2.1,0.5,0.61,4392.0,117657.0
+Almond Valley,West Lothian,88555,0.4772,2.4,2.0,0.4,0.56,4008.0,108013.0
+Glasgow Kelvin,Glasgow City,94051,0.1319,2.0,1.6,0.4,0.46,3325.0,88725.0
+Glasgow Shettleston,Glasgow City,82424,0.1156,1.7,1.4,0.3,0.4,2914.0,77152.0
+Glasgow Pollok,Glasgow City,81951,0.115,1.7,1.4,0.3,0.4,2897.0,77152.0
+Glasgow Cathcart,Glasgow City,75099,0.1053,1.6,1.3,0.3,0.37,2655.0,71366.0
+Glasgow Anniesland,Glasgow City,75081,0.1053,1.6,1.3,0.3,0.37,2654.0,71366.0
+Rutherglen,Glasgow City,77728,0.109,1.6,1.3,0.3,0.38,2748.0,73295.0
+Glasgow Maryhill and Springburn,Glasgow City,75362,0.1057,1.6,1.3,0.3,0.37,2664.0,71366.0
+Glasgow Provan,Glasgow City,77983,0.1094,1.6,1.3,0.3,0.38,2757.0,73295.0
+Glasgow Southside,Glasgow City,73179,0.1027,1.5,1.3,0.3,0.36,2587.0,69437.0
+Clackmannanshire and Dunblane,Clackmannanshire,68268,1.0,1.0,0.8,0.2,0.23,1680.0,44363.0
+Moray,Moray,81144,1.0,1.0,0.8,0.2,0.23,1680.0,44363.0
+Greenock and Inverclyde,Inverclyde,71426,1.0,1.0,0.8,0.2,0.23,1680.0,44363.0
+East Kilbride,South Lanarkshire,78246,0.2595,0.8,0.6,0.1,0.18,1308.0,34719.0
+Uddingston and Bellshill,South Lanarkshire,74373,0.2467,0.7,0.6,0.1,0.17,1243.0,32790.0
+Paisley,Renfrewshire,72446,0.3452,0.7,0.6,0.1,0.16,1160.0,30861.0
+Renfrewshire South,Renfrewshire,70801,0.3373,0.7,0.6,0.1,0.16,1133.0,30861.0
+"Hamilton, Larkhall and Stonehouse",South Lanarkshire,75065,0.2489,0.7,0.6,0.1,0.17,1255.0,32790.0
+Clydesdale,South Lanarkshire,73847,0.2449,0.7,0.6,0.1,0.17,1234.0,32790.0
+Renfrewshire North and West,Renfrewshire,66639,0.3175,0.6,0.5,0.1,0.15,1067.0,28932.0
+Clydebank and Milngavie,West Dunbartonshire,69481,0.4886,0.5,0.4,0.1,0.11,821.0,21217.0
+Dumbarton,West Dunbartonshire,72729,0.5114,0.5,0.4,0.1,0.12,859.0,23146.0
+Cunninghame South,North Ayrshire,65499,0.488,0.5,0.4,0.1,0.11,820.0,21217.0
+Cunninghame North,North Ayrshire,68721,0.512,0.5,0.4,0.1,0.12,860.0,23146.0
+Dundee City West,Dundee City,76671,0.519,0.5,0.4,0.1,0.12,872.0,23146.0
+Angus South,Angus,73417,0.5097,0.5,0.4,0.1,0.12,856.0,23146.0
+Angus North and Mearns,Angus,70618,0.4903,0.5,0.4,0.1,0.11,824.0,21217.0
+Coatbridge and Chryston,North Lanarkshire,73873,0.2594,0.5,0.4,0.1,0.12,872.0,23146.0
+Dundee City East,Dundee City,71049,0.481,0.5,0.4,0.1,0.11,808.0,21217.0
+Galloway and West Dumfries,Dumfries and Galloway,72684,0.4885,0.5,0.4,0.1,0.11,821.0,21217.0
+Dumfriesshire,Dumfries and Galloway,76106,0.5115,0.5,0.4,0.1,0.12,859.0,23146.0
+Falkirk West,Falkirk,79983,0.4977,0.5,0.4,0.1,0.12,836.0,23146.0
+Falkirk East,Falkirk,80717,0.5023,0.5,0.4,0.1,0.12,844.0,23146.0
+Cumbernauld and Kilsyth,North Lanarkshire,64152,0.2253,0.5,0.4,0.1,0.11,757.0,21217.0
+Airdrie and Shotts,North Lanarkshire,70421,0.2473,0.5,0.4,0.1,0.12,831.0,23146.0
+Motherwell and Wishaw,North Lanarkshire,76325,0.268,0.5,0.4,0.1,0.12,901.0,23146.0
 Na h-Eileanan an Iar,Eilean Siar,26640,1.0,0.0,0.0,0.0,0.0,0.0,0.0
 Orkney Islands,Orkney Islands,22540,1.0,0.0,0.0,0.0,0.0,0.0,0.0
 Shetland Islands,Shetland Islands,22940,1.0,0.0,0.0,0.0,0.0,0.0,0.0

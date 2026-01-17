@@ -2,20 +2,31 @@
 """
 Scottish Mansion Tax Analysis by Scottish Parliament Constituency
 
-Distributes council-level mansion tax estimates to the 73 Scottish Parliament
-constituencies using population-based weights from NRS data.
+Estimates revenue impact of Scotland's proposed council tax reform for £1m+ properties
+(Scottish Budget 2026-27) by Scottish Parliament constituency.
 
-Based on Scottish Budget 2026-27 council tax reform for £1m+ properties.
+Revenue Calculation:
+    Revenue = Stock × Average Rate
+            = 11,481 × £1,680
+            = £19.3m
+
+    Where:
+    - Stock (11,481): Total £1m+ properties in Scotland (Savills, 2022)
+    - Average Rate (£1,680): (82% × £1,500) + (18% × £2,500) using UK benchmark rates
+
+    Sales data (391 from RoS) is only used for GEOGRAPHIC DISTRIBUTION,
+    not for calculating total revenue.
 
 Data sources:
-- Council estimates: Registers of Scotland (391 £1m+ sales in 2024-25)
-- Population data: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
-- Surcharge rates: UK Autumn Budget 2025 rates used as benchmark (OBR-confirmed)
+- Stock: Savills research (11,481 £1m+ homes in Scotland)
+- Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
+- Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+- Surcharge rates: UK Autumn Budget 2025 (benchmark, Scotland rates not yet announced)
 
 Methodology:
-1. Within each council, sales are distributed to constituencies proportionally
-   by population (transparent, reproducible approach using official data)
-2. Revenue calculated using UK rates as benchmark since Scotland hasn't announced rates
+1. Calculate total revenue: Stock × Average Rate = £19.3m
+2. Distribute council sales to constituencies using population weights
+3. Allocate £19.3m proportionally by each constituency's share of sales
 """
 
 import pandas as pd
@@ -333,24 +344,27 @@ def analyze_constituencies():
     df = pd.DataFrame(results)
     df = df.sort_values("estimated_sales", ascending=False)
 
-    # Calculate stock-based revenue (like UK mansion tax repo)
+    # Calculate total revenue using simple formula: Stock × Average Rate
+    # This is equivalent to: (sales × avg_rate) × (stock / sales) = stock × avg_rate
+    avg_rate = BAND_I_RATIO * BAND_I_SURCHARGE + BAND_J_RATIO * BAND_J_SURCHARGE
+    total_stock_revenue = ESTIMATED_STOCK * avg_rate  # 11,481 × £1,680 = £19.3m
+
+    # For reference: the ratio-based calculation gives the same result
     total_implied_from_sales = df['implied_from_sales'].sum()
     stock_sales_ratio = ESTIMATED_STOCK / total_sales
-    total_stock_revenue = total_implied_from_sales * stock_sales_ratio
 
-    # Allocate stock-based revenue proportionally by share
+    # Allocate total revenue proportionally by each constituency's share
     df['allocated_revenue'] = (df['share_pct'] / 100 * total_stock_revenue).round(0)
 
     # Print summary
     print(f"\n📊 Total constituencies: {len(df)}")
-    print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f}")
+    print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f} (for geographic distribution)")
     print(f"🏠 Estimated £1m+ stock: {ESTIMATED_STOCK:,} (Savills)")
-    print(f"📊 Stock/sales ratio: {stock_sales_ratio:.0f}x")
     print(f"\n💰 Revenue calculation (UK rates as benchmark):")
-    print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (extrapolated)")
-    print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (UK minimum)")
-    print(f"   Implied from sales: £{total_implied_from_sales/1e3:.0f}k")
-    print(f"   Stock-based estimate: £{total_stock_revenue/1e6:.1f}m")
+    print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (82% of properties)")
+    print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (18% of properties)")
+    print(f"   Average rate: £{avg_rate:,.0f}/year")
+    print(f"   Formula: Stock × Avg Rate = {ESTIMATED_STOCK:,} × £{avg_rate:,.0f} = £{total_stock_revenue/1e6:.1f}m")
 
     print("\n🏛️  Top 20 Constituencies by Impact:")
     print("-" * 105)
