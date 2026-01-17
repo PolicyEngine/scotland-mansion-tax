@@ -23,7 +23,7 @@ From the [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-bu
 | Metric | Value | Source |
 |--------|-------|--------|
 | £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland |
-| £1m+ property stock | [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0) | Savills |
+| £1m+ property stock | [11,481](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) | Savills |
 | Stock/sales ratio | ~26x | Analysis |
 | Constituencies affected | 69 of 73 | Analysis |
 | Edinburgh share | **>50%** | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) |
@@ -38,7 +38,7 @@ Council tax applies to all properties (stock), not just sales. Since Scotland ha
 |------|-------------|---------|------------|----------------|
 | Band I | £1m - £2m | £1,500/yr* | ~9,000 (82%) | £13.5m |
 | Band J | £2m+ | £2,500/yr | ~2,000 (18%) | £5.0m |
-| **Total** | | | **~11,000** | **~£18.5m** |
+| **Total** | | | **11,481** | **~£18.5m** |
 
 *Band I rate extrapolated (UK starts at £2m)
 
@@ -46,14 +46,14 @@ Council tax applies to all properties (stock), not just sales. Since Scotland ha
 
 | Data | Source | Geographic detail |
 |------|--------|-------------------|
-| Stock: [~11,000](https://www.savills.co.uk/research_articles/229130/372275-0) | Savills | Scotland total only |
+| Stock: [11,481](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) | Savills | Scotland total only |
 | Sales: [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland | By council area |
 
-The stock figure (11,000) tells us how many £1m+ properties exist in Scotland, but **not where they are**. Sales data provides the geographic breakdown we need to map impact by constituency. We assume stock is distributed similarly to sales.
+The stock figure (11,481) tells us how many £1m+ properties exist in Scotland, but **not where they are**. Sales data provides the geographic breakdown we need to map impact by constituency. We assume stock is distributed similarly to sales.
 
 **Methodology** (following [uk-mansion-tax](https://github.com/PolicyEngine/uk-mansion-tax)):
 1. Use sales data to determine each constituency's **share** (geographic distribution)
-2. Calculate total stock-based revenue: 11,000 properties × UK rates = £18.5m
+2. Calculate total stock-based revenue: 11,481 properties × UK rates = £18.5m
 3. Allocate £18.5m proportionally by constituency share
 
 *Note: Finance Secretary Shona Robison [verbally estimated £16m](https://www.lbc.co.uk/article/wealthy-scots-in-snp-sights-as-budget-proposes-mansion-house-tax-and-a-tax-on-pr-5HjdQg9_2/) - close to our £18.5m estimate using UK rates.*
@@ -118,7 +118,7 @@ Fife: ~30 sales (8%)         — KY16 St Andrews
 ...
 ```
 
-*Note: We use 391 (RoS official) as our baseline. Other sources report higher figures: [Rettie (514)](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales), [Savills (466)](https://www.savills.co.uk/research_articles/229130/372275-0) — likely due to different time periods (calendar vs fiscal year) or inclusion of off-market transactions.*
+*Note: We use 391 (RoS official) as our baseline. Other sources report higher figures: [Rettie (514)](https://www.rettie.co.uk/property-research-services/2024-a-record-year-for-1m-sales), [Savills (466)](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) — likely due to different time periods (calendar vs fiscal year) or inclusion of off-market transactions.*
 
 #### Stage 2: Council → Constituency Distribution
 
@@ -159,7 +159,7 @@ Council tax applies to **all properties (stock)**, not just annual sales. Since 
 **Stock-based calculation** (following UK mansion tax methodology):
 ```
 1. Calculate implied revenue from sales using UK rates
-2. Calculate stock/sales ratio: 11,000 ÷ 429 ≈ 26x
+2. Calculate stock/sales ratio: 11,481 ÷ 429 ≈ 27x
 3. Stock-based revenue = Sales-implied × ratio = £721k × 26 = £18.5m
 4. Allocate to constituencies proportionally by sales share
 ```
@@ -211,7 +211,7 @@ Our finding that **Edinburgh accounts for 50% of mansion tax impact** while **Gl
 | Total £1m+ sales | 391 | [Registers of Scotland: 391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | ✓ |
 | Edinburgh share | >50% | [RoS: "over half"](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) | ✓ |
 | Affected households | <1% | [Scottish Government: "<1%"](https://www.gov.scot/publications/scottish-budget-2026-27/) | ✓ |
-| £1m+ property stock | ~11,000 | [Savills: "over 10,000"](https://www.savills.co.uk/research_articles/229130/372275-0) | ✓ |
+| £1m+ property stock | 11,481 | [Savills: 11,481](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) | ✓ |
 
 #### 5. Why Glasgow is Low (Not an Error)
 

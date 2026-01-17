@@ -28,10 +28,10 @@ from pathlib import Path
 BAND_I_SURCHARGE = 1_500  # £1,500/year (extrapolated, no UK equivalent)
 BAND_J_SURCHARGE = 2_500  # £2,500/year (UK rate for £2m-£2.5m band)
 
-# Stock estimate from Savills (2024)
-# Source: https://www.savills.co.uk/research_articles/229130/372275-0
-# "over 10,000 homes in Scotland worth over £1 million for the first time"
-ESTIMATED_STOCK = 11_000  # ~11,000 properties valued over £1m
+# Stock estimate from Savills (February 2023)
+# Source: https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills
+# Table shows Scotland: 11,481 £1m+ homes in 2022
+ESTIMATED_STOCK = 11_481  # Exact figure from Savills research
 
 # Council-level £1m+ sales data
 # Source: Registers of Scotland Property Market Report 2024-25
