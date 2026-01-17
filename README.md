@@ -260,52 +260,6 @@ Our weighted distribution approach is a reasonable approximation that:
 - Uses NRS population data for constituency-level distribution
 - Correctly identifies high-impact areas (Edinburgh, East Lothian)
 
-## Quick Start
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run council-level analysis
-python analyze_scottish_mansion_tax.py
-
-# Run constituency-level analysis
-python analyze_scottish_parliament_constituencies.py
-
-# Generate interactive D3 map
-python create_scottish_d3_map.py
-
-# Generate charts and HTML report
-python create_scottish_parliament_map.py
-
-# View map locally
-python -m http.server 8000
-# Open: http://localhost:8000/scottish_mansion_tax_map.html
-```
-
-## Output Files
-
-### Analysis
-| File | Description |
-|------|-------------|
-| `scottish_mansion_tax_impact.csv` | Council-level estimates (19 councils) |
-| `scottish_parliament_constituency_impact.csv` | Constituency-level estimates (72 constituencies) |
-
-### Visualizations
-| File | Description |
-|------|-------------|
-| `scottish_mansion_tax_map.html` | Interactive D3 map with search and zoom |
-| `scottish_parliament_constituency_report.html` | Full HTML report with tables |
-| `scottish_parliament_mansion_tax_bar.html` | Top 25 constituencies bar chart |
-| `scottish_mansion_tax_council_breakdown.html` | Council-level pie chart |
-| `scottish_mansion_tax_edinburgh.html` | Edinburgh constituency breakdown |
-
-### Data
-| File | Description |
-|------|-------------|
-| `data/scottish_parliament_constituencies.geojson` | Official ONS boundaries (May 2021) |
-| `data/scottish-parliament-constituencies.hexjson` | Hex cartogram layout |
-
 ## Data Sources
 
 ### Scottish Property Data
@@ -329,11 +283,3 @@ python -m http.server 8000
 2. **Annual variation**: £1m+ sales vary year-to-year; we use a single year estimate
 3. **Weight assumptions**: Affluent area weights are based on available price data, not verified transaction counts
 4. **No behavioral response**: Assumes no change in buying patterns from policy announcement
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-## Contributing
-
-Contributions welcome! If you have access to more granular Scottish property data, please open an issue or PR.
