@@ -215,9 +215,11 @@ CONSTITUENCY_COUNCIL_MAPPING = {
     "Shetland Islands": "Shetland Islands",
 }
 
-# Band distribution (from RoS data)
-BAND_I_RATIO = 0.82  # £1m-£2m
-BAND_J_RATIO = 0.18  # £2m+
+# Band distribution (from Savills 2024 data)
+# Source: https://www.savills.co.uk/research_articles/229130/372275-0
+# 2024: 416 sales £1m-£2m, 50 sales £2m+ (total 466)
+BAND_I_RATIO = 416 / 466  # £1m-£2m = 89.3%
+BAND_J_RATIO = 50 / 466   # £2m+ = 10.7%
 
 
 def load_population_data():
@@ -358,8 +360,8 @@ def analyze_constituencies():
     print(f"📈 Total £1m+ sales: {df['estimated_sales'].sum():.0f} (for geographic distribution)")
     print(f"🏠 Estimated £1m+ stock: {ESTIMATED_STOCK:,} (Savills)")
     print(f"\n💰 Revenue calculation:")
-    print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year (82% of properties)")
-    print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year (18% of properties)")
+    print(f"   Band I rate: £{BAND_I_SURCHARGE:,}/year ({BAND_I_RATIO:.1%} of properties)")
+    print(f"   Band J rate: £{BAND_J_SURCHARGE:,}/year ({BAND_J_RATIO:.1%} of properties)")
     print(f"   Average rate: £{avg_rate:,.0f}/year")
     print(f"   Formula: Stock × Avg Rate = {ESTIMATED_STOCK:,} × £{avg_rate:,.0f} = £{total_stock_revenue/1e6:.1f}m")
 
