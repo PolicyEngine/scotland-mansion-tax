@@ -154,7 +154,7 @@ Council tax applies to **all properties (stock)**, not just annual sales. Since 
 | Rate | Source | Notes |
 |------|--------|-------|
 | Band I: £1,500/yr | Extrapolated | UK starts at £2m, so we extrapolate below |
-| Band J: £2,500/yr | [OBR](https://obr.uk/efo/economic-and-fiscal-outlook-november-2025/) | UK rate for £2m-£2.5m band |
+| Band J: £2,500/yr | [GOV.UK](https://www.gov.uk/government/publications/high-value-council-tax-surcharge/high-value-council-tax-surcharge) | UK rate for £2m-£2.5m band |
 
 **Stock-based calculation** (following UK mansion tax methodology):
 ```
