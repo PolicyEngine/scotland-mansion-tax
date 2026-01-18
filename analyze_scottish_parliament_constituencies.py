@@ -19,10 +19,14 @@ Revenue Calculation:
     not for calculating total revenue.
 
 Data sources:
-- Stock: Savills research (11,481 £1m+ homes in Scotland)
+- Stock: Savills research (11,481 £1m+ homes in Scotland, 2022)
 - Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
 - Band split: Savills 2024 Scotland £1m+ Market Analysis (89%/11%)
 - Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+
+Note: Stock data (2022) predates sales data (2024-25) by ~2 years. With ~5-10% house
+price growth over this period, actual stock may be higher, potentially underestimating
+revenue by a similar margin.
 
 Methodology:
 1. Calculate total revenue: Stock × Average Rate = £18.5m

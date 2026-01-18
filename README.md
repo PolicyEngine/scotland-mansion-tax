@@ -19,8 +19,8 @@ Analysis of Scotland's proposed council tax reform for £1m+ properties ([Scotti
 
 | Metric | Value | Source |
 |--------|-------|--------|
-| £1m+ property stock | [11,481](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) | Savills |
-| £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | Registers of Scotland |
+| £1m+ property stock | [11,481](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills) | Savills (2022) |
+| £1m+ sales/year | [391](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) | RoS (2024-25) |
 | Edinburgh share | >50% | [RoS](https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf) |
 | **Estimated revenue** | **£18.5m/year** | Analysis |
 
@@ -102,3 +102,4 @@ Stock tells us **how many** properties; sales tells us **where** they are.
 2. Sales data from single year; may vary annually
 3. Assumes stock distributed geographically like sales
 4. No behavioral response modeled
+5. **Temporal mismatch**: Stock data (2022) predates sales data (2024-25) by ~2 years. Scottish house prices rose ~5-10% over this period, so actual 2024 stock may be higher than 11,481, potentially underestimating revenue by a similar margin
