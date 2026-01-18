@@ -378,7 +378,7 @@ def analyze_constituencies():
     # Calculate total revenue using simple formula: Stock × Average Rate
     # This is equivalent to: (sales × avg_rate) × (stock / sales) = stock × avg_rate
     avg_rate = BAND_I_RATIO * BAND_I_SURCHARGE + BAND_J_RATIO * BAND_J_SURCHARGE
-    total_stock_revenue = ESTIMATED_STOCK * avg_rate  # 11,481 × £1,680 = £19.3m
+    total_stock_revenue = ESTIMATED_STOCK * avg_rate  # 11,481 × £1,607 = £18.5m
 
     # For reference: the ratio-based calculation gives the same result
     total_implied_from_sales = df['implied_from_sales'].sum()
