@@ -10,8 +10,8 @@ Analysis of Scotland's proposed council tax reform for £1m+ properties ([Scotti
 |--------|-------|
 | **Effective date** | 1 April 2028 |
 | **Threshold** | £1 million |
-| **Band I** | £1m - £2m (82% of properties) |
-| **Band J** | £2m+ (18% of properties) |
+| **Band I** | £1m - £2m (89% of properties) |
+| **Band J** | £2m+ (11% of properties) |
 | **Affected households** | <1% of Scottish households |
 | **Rates announced?** | No - rates not yet confirmed |
 
