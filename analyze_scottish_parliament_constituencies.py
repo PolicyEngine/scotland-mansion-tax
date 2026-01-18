@@ -7,12 +7,13 @@ Estimates revenue impact of Scotland's proposed council tax reform for £1m+ pro
 
 Revenue Calculation:
     Revenue = Stock × Average Rate
-            = 11,481 × £1,680
-            = £19.3m
+            = 11,481 × £1,607
+            = £18.5m
 
     Where:
     - Stock (11,481): Total £1m+ properties in Scotland (Savills, 2022)
-    - Average Rate (£1,680): (82% × £1,500) + (18% × £2,500)
+    - Average Rate (£1,607): (89% × £1,500) + (11% × £2,500)
+    - Band split from Savills 2024: 416 sales £1m-£2m, 50 sales £2m+
 
     Sales data (391 from RoS) is only used for GEOGRAPHIC DISTRIBUTION,
     not for calculating total revenue.
@@ -20,12 +21,13 @@ Revenue Calculation:
 Data sources:
 - Stock: Savills research (11,481 £1m+ homes in Scotland)
 - Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
+- Band split: Savills 2024 Scotland £1m+ Market Analysis (89%/11%)
 - Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
 
 Methodology:
-1. Calculate total revenue: Stock × Average Rate = £19.3m
+1. Calculate total revenue: Stock × Average Rate = £18.5m
 2. Distribute council sales to constituencies using population weights
-3. Allocate £19.3m proportionally by each constituency's share of sales
+3. Allocate £18.5m proportionally by each constituency's share of sales
 """
 
 import pandas as pd
@@ -205,6 +207,9 @@ CONSTITUENCY_COUNCIL_MAPPING = {
     "Cunninghame North": "North Ayrshire",
     "Cunninghame South": "North Ayrshire",
 
+    # East Ayrshire - 1 constituency
+    "Kilmarnock and Irvine Valley": "East Ayrshire",
+
     # West Dunbartonshire - 2 constituencies
     "Dumbarton": "West Dunbartonshire",
     "Clydebank and Milngavie": "West Dunbartonshire",
@@ -214,6 +219,11 @@ CONSTITUENCY_COUNCIL_MAPPING = {
     "Orkney Islands": "Orkney Islands",
     "Shetland Islands": "Shetland Islands",
 }
+
+# Validate mapping completeness (73 constituencies required)
+EXPECTED_CONSTITUENCIES = 73
+assert len(CONSTITUENCY_COUNCIL_MAPPING) == EXPECTED_CONSTITUENCIES, \
+    f"Expected {EXPECTED_CONSTITUENCIES} constituencies, got {len(CONSTITUENCY_COUNCIL_MAPPING)}"
 
 # Band distribution (from Savills 2024 data)
 # Source: https://www.savills.co.uk/research_articles/229130/372275-0
