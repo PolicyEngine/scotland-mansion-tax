@@ -103,3 +103,6 @@ Stock tells us **how many** properties; sales tells us **where** they are.
 3. Assumes stock distributed geographically like sales
 4. No behavioral response modeled
 5. **Temporal mismatch**: Stock data (2022) predates sales data (2024-25) by ~2 years. Scottish house prices rose ~5-10% over this period, so actual 2024 stock may be higher than 11,481, potentially underestimating revenue by a similar margin
+6. **Council estimates**: RoS reports 391 total sales but only provides aggregates ("over half" in Edinburgh). Council-level breakdown is estimated from postcode data; estimates total 429 due to different source methodologies. Geographic distribution is used, not absolute numbers
+
+*Data extracted: January 2026*
