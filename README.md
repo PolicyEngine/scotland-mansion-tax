@@ -61,18 +61,18 @@ The Finance Secretary's £16m estimate implies lower rates than the UK benchmark
 
 | Rank | Constituency | Revenue | Share |
 |------|-------------|---------|-------|
-| 1 | Edinburgh Central | £2.21m | 12.0% |
-| 2 | Edinburgh Western | £1.80m | 9.8% |
-| 3 | Edinburgh Southern | £1.57m | 8.5% |
+| 1 | Edinburgh Western | £1.97m | 10.7% |
+| 2 | Edinburgh Southern | £1.88m | 10.2% |
+| 3 | Edinburgh Central | £1.67m | 9.1% |
 | 4 | East Lothian | £1.51m | 8.2% |
-| 5 | Edinburgh Northern and Leith | £1.39m | 7.5% |
+| 5 | Edinburgh Pentlands | £1.33m | 7.2% |
 | 6 | Strathkelvin and Bearsden | £1.08m | 5.8% |
-| 7 | Edinburgh Pentlands | £0.91m | 5.0% |
-| 8 | Edinburgh Eastern | £0.72m | 3.9% |
-| 9 | Stirling | £0.43m | 2.3% |
+| 7 | Edinburgh Eastern | £1.04m | 5.7% |
+| 8 | Edinburgh Northern and Leith | £0.71m | 3.8% |
+| 9 | Aberdeen South and North Kincardine | £0.49m | 2.7% |
 | 10 | Eastwood | £0.43m | 2.3% |
 
-**Key finding**: Edinburgh Central now leads (was 2nd with population weights), reflecting its high £1m+ property concentration in New Town/Stockbridge areas. Edinburgh has 6 of top 8 constituencies (~47% of total revenue).
+**Key finding**: Edinburgh Western leads with £1.97m (10.7%), reflecting its high Band F-H property concentration (29.7% vs 13.8% Scotland average). Edinburgh has 6 of top 8 constituencies (~47% of total revenue).
 
 ## Methodology
 
@@ -92,16 +92,18 @@ Scotland's RoS charges for transaction data and only publishes council-level agg
 2. **Sales → Distribution**: Use [391 sales by council](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) for geographic shares
 3. **Council → Constituency**: Distribute within councils using **wealth-adjusted weights**:
    - Base: [NRS population weights](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
-   - Adjustment: Wealth factors derived from postcode sales concentrations (EH3, EH4, etc.)
+   - Adjustment: [Council Tax Band F-H data](https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries) (2023) as wealth proxy
    - Formula: `Weight = (Population × Wealth Factor) / Council Total`
+   - Wealth Factor = constituency Band F-H % ÷ Scotland average Band F-H %
 
-**Wealth factors** account for £1m+ property concentrations within councils:
-- Edinburgh Central (New Town): 1.8× (highest density)
-- Edinburgh Western (Barnton): 1.6×
-- Edinburgh Southern (Morningside): 1.5×
-- Edinburgh Eastern (Portobello): 0.6× (lower density)
+**Data-driven wealth factors** from Council Tax Band F-H (highest bands):
+- Eastwood: 3.26× (45.1% Band F-H vs 13.8% Scotland avg)
+- Edinburgh Southern: 2.22× (30.8% Band F-H)
+- Edinburgh Western: 2.15× (29.7% Band F-H)
+- Edinburgh Central: 1.68× (23.2% Band F-H)
+- Edinburgh Northern and Leith: 0.69× (9.6% Band F-H - lower density)
 
-Stock tells us **how many** properties; sales tells us **where** they are; wealth factors tell us **how properties are distributed within councils**.
+Stock tells us **how many** properties; sales tells us **where** they are; Band F-H data tells us **how high-value properties are distributed within councils**.
 
 ## Comparison with UK Mansion Tax
 
@@ -110,13 +112,14 @@ Stock tells us **how many** properties; sales tells us **where** they are; wealt
 | Threshold | £2m+ | £1m+ |
 | Revenue | £400m (OBR) | £18.5m (analysis) |
 | Data | Property-level | Council-level |
-| Top area | Cities of London & Westminster | Edinburgh Northern & Leith |
+| Top area | Cities of London & Westminster | Edinburgh Western |
 
 ## Data Sources
 
 - [Registers of Scotland Property Market Report 2024-25](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25)
 - [Savills £1m+ property stock](https://www.savills.com/insight-and-opinion/savills-news/339380/1-in-40-homes-now-valued-£1-million-or-more--according-to-savills)
 - [NRS Constituency Population Estimates](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
+- [Council Tax Band F-H by Constituency](https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries) (statistics.gov.scot, 2023)
 - [Scottish Budget 2026-27](https://www.gov.scot/publications/scottish-budget-2026-27/)
 - [UK High Value Council Tax Surcharge](https://www.gov.uk/government/publications/high-value-council-tax-surcharge/high-value-council-tax-surcharge)
 
