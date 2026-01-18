@@ -42,6 +42,21 @@ Revenue = Stock × Average Rate = 11,481 × £1,607 = £18.5m
 
 *Finance Secretary verbally estimated [£16m](https://www.lbc.co.uk/article/wealthy-scots-in-snp-sights-as-budget-proposes-mansion-house-tax-and-a-tax-on-pr-5HjdQg9_2/). Our estimate uses UK benchmark rates.*
 
+### Rate Uncertainty
+
+> **Important**: Scotland has not announced rates. Our £18.5m estimate uses UK benchmark rates. Actual revenue will depend on rates Scotland chooses.
+
+The Finance Secretary's £16m estimate implies lower rates than the UK benchmark. Here's how revenue varies with different rate assumptions:
+
+| Scenario | Band I | Band J | Avg Rate | Revenue |
+|----------|--------|--------|----------|---------|
+| **UK benchmark** | £1,500 | £2,500 | £1,607 | **£18.5m** |
+| Mid estimate | £1,350 | £2,250 | £1,447 | £16.6m |
+| Matches £16m target | £1,200 | £2,000 | £1,286 | £14.8m |
+| Conservative | £1,000 | £1,750 | £1,080 | £12.4m |
+
+*Revenue range: £12.4m - £18.5m depending on rates chosen.*
+
 ### Top 10 Constituencies
 
 | Rank | Constituency | Revenue | Share |
@@ -104,5 +119,6 @@ Stock tells us **how many** properties; sales tells us **where** they are.
 4. No behavioral response modeled
 5. **Temporal mismatch**: Stock data (2022) predates sales data (2024-25) by ~2 years. Scottish house prices rose ~5-10% over this period, so actual 2024 stock may be higher than 11,481, potentially underestimating revenue by a similar margin
 6. **Council estimates**: RoS reports 391 total sales but only provides aggregates ("over half" in Edinburgh). Council-level breakdown is estimated from postcode data; estimates total 429 due to different source methodologies. Geographic distribution is used, not absolute numbers
+7. **Rate uncertainty**: Scotland has not announced rates. Revenue estimates use UK benchmark rates (£1,500/£2,500); actual revenue could range from £12.4m to £18.5m depending on rates chosen (see sensitivity table above)
 
 *Data extracted: January 2026*
