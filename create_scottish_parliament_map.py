@@ -436,13 +436,15 @@ def create_html_report(df):
 
     <div class="section">
         <h2>Methodology</h2>
-        <p>This analysis distributes council-level mansion tax estimates to Scottish Parliament constituencies using population-based allocation:</p>
+        <p>This analysis distributes council-level mansion tax estimates to Scottish Parliament constituencies using <strong>wealth-adjusted allocation</strong>:</p>
         <ul>
             <li>Council-level £1m+ property sales data from Registers of Scotland (391 sales)</li>
             <li>Constituency-to-council geographic mapping (2021 boundaries)</li>
             <li>Population weights from NRS Scottish Parliamentary Constituency Estimates (mid-2021)</li>
+            <li><strong>Wealth factors</strong> from Council Tax Band F-H data (<a href="https://statistics.gov.scot">statistics.gov.scot</a>, 2023)</li>
         </ul>
-        <p>Within each council, revenue is allocated proportionally by constituency population. This assumes £1m+ properties are distributed similarly to population within a council area.</p>
+        <p>Within each council, revenue is allocated using: <code>Weight = (Population × Wealth Factor) / Council Total</code></p>
+        <p>Wealth Factor = constituency Band F-H % ÷ Scotland average (13.8%). Band F-H properties are the highest council tax bands, serving as a proxy for high-value property concentration.</p>
     </div>
 
     <div class="footer">
