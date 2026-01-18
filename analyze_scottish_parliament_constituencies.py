@@ -260,6 +260,53 @@ assert len(CONSTITUENCY_COUNCIL_MAPPING) == EXPECTED_CONSTITUENCIES, \
 BAND_I_RATIO = 416 / 466  # £1m-£2m = 89.3%
 BAND_J_RATIO = 50 / 466   # £2m+ = 10.7%
 
+def download_council_tax_data():
+    """Download Council Tax Band data from statistics.gov.scot SPARQL endpoint."""
+    import urllib.request
+    import urllib.parse
+
+    sparql_query = """
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sdmx: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX dim: <http://statistics.gov.scot/def/dimension/>
+
+SELECT ?constituency ?band ?dwellings
+WHERE {
+  ?obs qb:dataSet <http://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries> ;
+       sdmx:refArea ?areaUri ;
+       sdmx:refPeriod ?periodUri ;
+       dim:councilTaxBand ?bandUri ;
+       <http://statistics.gov.scot/def/measure-properties/count> ?dwellings .
+
+  ?areaUri rdfs:label ?constituency .
+  ?bandUri rdfs:label ?band .
+  ?periodUri rdfs:label ?year .
+
+  FILTER(CONTAINS(STR(?areaUri), 'S16'))
+  FILTER(?year = '2023')
+}
+ORDER BY ?constituency ?band
+"""
+    endpoint = "https://statistics.gov.scot/sparql.csv"
+    url = f"{endpoint}?query={urllib.parse.quote(sparql_query)}"
+
+    print("   Downloading from statistics.gov.scot...")
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            data = response.read().decode('utf-8')
+
+        # Save to file
+        band_file = Path("data/council_tax_bands_by_constituency.csv")
+        band_file.parent.mkdir(exist_ok=True)
+        band_file.write_text(data)
+        print(f"   ✓ Downloaded and saved {len(data.splitlines())} rows")
+        return True
+    except Exception as e:
+        print(f"   ⚠️ Download failed: {e}")
+        return False
+
+
 def load_wealth_factors():
     """Load wealth factors from Council Tax Band F-H data.
 
@@ -274,9 +321,12 @@ def load_wealth_factors():
     """
     band_file = Path("data/council_tax_bands_by_constituency.csv")
 
+    # Download if not present
     if not band_file.exists():
-        print("⚠️  Council tax band data not found. Using population-only weights.")
-        return {}
+        print("   Council tax band data not found locally.")
+        if not download_council_tax_data():
+            print("⚠️  Could not load Council Tax data. Using population-only weights.")
+            return {}
 
     # Load the data
     df = pd.read_csv(band_file)
