@@ -61,18 +61,18 @@ The Finance Secretary's £16m estimate implies lower rates than the UK benchmark
 
 | Rank | Constituency | Revenue | Share |
 |------|-------------|---------|-------|
-| 1 | Edinburgh Northern and Leith | £1.58m | 8.6% |
-| 2 | Edinburgh Central | £1.53m | 8.3% |
-| 3 | East Lothian | £1.51m | 8.2% |
-| 4 | Edinburgh Eastern | £1.50m | 8.1% |
-| 5 | Edinburgh Western | £1.41m | 7.6% |
-| 6 | Edinburgh Southern | £1.31m | 7.1% |
-| 7 | Edinburgh Pentlands | £1.27m | 6.9% |
-| 8 | Strathkelvin and Bearsden | £1.08m | 5.8% |
+| 1 | Edinburgh Central | £2.21m | 12.0% |
+| 2 | Edinburgh Western | £1.80m | 9.8% |
+| 3 | Edinburgh Southern | £1.57m | 8.5% |
+| 4 | East Lothian | £1.51m | 8.2% |
+| 5 | Edinburgh Northern and Leith | £1.39m | 7.5% |
+| 6 | Strathkelvin and Bearsden | £1.08m | 5.8% |
+| 7 | Edinburgh Pentlands | £0.91m | 5.0% |
+| 8 | Edinburgh Eastern | £0.72m | 3.9% |
 | 9 | Stirling | £0.43m | 2.3% |
 | 10 | Eastwood | £0.43m | 2.3% |
 
-**Key finding**: Edinburgh has 6 of top 7 constituencies (~47% of total revenue).
+**Key finding**: Edinburgh Central now leads (was 2nd with population weights), reflecting its high £1m+ property concentration in New Town/Stockbridge areas. Edinburgh has 6 of top 8 constituencies (~47% of total revenue).
 
 ## Methodology
 
@@ -90,9 +90,18 @@ Scotland's RoS charges for transaction data and only publishes council-level agg
 
 1. **Stock → Revenue**: 11,481 properties × £1,607 avg rate = £18.5m total
 2. **Sales → Distribution**: Use [391 sales by council](https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25) for geographic shares
-3. **Council → Constituency**: Distribute within councils using [NRS population weights](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
+3. **Council → Constituency**: Distribute within councils using **wealth-adjusted weights**:
+   - Base: [NRS population weights](https://www.nrscotland.gov.uk/publications/scottish-parliamentary-constituency-population-estimates/)
+   - Adjustment: Wealth factors derived from postcode sales concentrations (EH3, EH4, etc.)
+   - Formula: `Weight = (Population × Wealth Factor) / Council Total`
 
-Stock tells us **how many** properties; sales tells us **where** they are.
+**Wealth factors** account for £1m+ property concentrations within councils:
+- Edinburgh Central (New Town): 1.8× (highest density)
+- Edinburgh Western (Barnton): 1.6×
+- Edinburgh Southern (Morningside): 1.5×
+- Edinburgh Eastern (Portobello): 0.6× (lower density)
+
+Stock tells us **how many** properties; sales tells us **where** they are; wealth factors tell us **how properties are distributed within councils**.
 
 ## Comparison with UK Mansion Tax
 

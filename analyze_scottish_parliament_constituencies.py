@@ -22,7 +22,8 @@ Data sources:
 - Stock: Savills research (11,481 £1m+ homes in Scotland, 2022)
 - Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
 - Band split: Savills 2024 Scotland £1m+ Market Analysis (89%/11%)
-- Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+- Population: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+- Wealth factors: Derived from postcode sales concentrations (EH3, EH4, etc.)
 
 Note: Stock data (2022) predates sales data (2024-25) by ~2 years. With ~5-10% house
 price growth over this period, actual stock may be higher, potentially underestimating
@@ -30,8 +31,11 @@ revenue by a similar margin.
 
 Methodology:
 1. Calculate total revenue: Stock × Average Rate = £18.5m
-2. Distribute council sales to constituencies using population weights
-3. Allocate £18.5m proportionally by each constituency's share of sales
+2. Within each council, calculate wealth-adjusted weights:
+   Weight = (Population × Wealth Factor) / Sum(Pop × Wealth Factor)
+   where Wealth Factor reflects £1m+ property density (e.g., Edinburgh Central=1.8)
+3. Distribute council sales to constituencies using wealth-adjusted weights
+4. Allocate £18.5m proportionally by each constituency's share of sales
 """
 
 import pandas as pd
@@ -253,6 +257,45 @@ assert len(CONSTITUENCY_COUNCIL_MAPPING) == EXPECTED_CONSTITUENCIES, \
 BAND_I_RATIO = 416 / 466  # £1m-£2m = 89.3%
 BAND_J_RATIO = 50 / 466   # £2m+ = 10.7%
 
+# Wealth adjustment factors for constituencies with known £1m+ property concentrations
+# These adjust the pure population weights to reflect actual property value distributions
+# Factors > 1.0 indicate higher-than-average £1m+ density; < 1.0 indicates lower density
+# Source: Derived from postcode analysis (EH3, EH4, EH9, EH10 concentrations) and
+# Scottish Housing News affluent area reporting
+#
+# Edinburgh constituencies (most critical - 50%+ of market):
+# - EH3 (53 sales): New Town, West End → Edinburgh Central
+# - EH4 (49 sales): Barnton, Cramond → Edinburgh Western
+# - EH9/EH10 (53 sales): Morningside, Grange, Marchmont → Edinburgh Southern
+# - EH12 (20 sales): Corstorphine → Edinburgh Pentlands
+# - Trinity, Inverleith → Edinburgh Northern and Leith
+# - Portobello → Edinburgh Eastern
+WEALTH_ADJUSTMENT_FACTORS = {
+    # Edinburgh - based on postcode sales data
+    "Edinburgh Central": 1.8,           # EH3 New Town, Stockbridge - highest density
+    "Edinburgh Western": 1.6,           # EH4 Barnton, Cramond - very high density
+    "Edinburgh Southern": 1.5,          # EH9/EH10 Morningside, Grange - high density
+    "Edinburgh Northern and Leith": 1.1,  # Trinity, Inverleith - moderate-high
+    "Edinburgh Pentlands": 0.9,         # EH12 Corstorphine - moderate
+    "Edinburgh Eastern": 0.6,           # Portobello area - lower density
+
+    # Other councils with known affluent pockets
+    "Strathkelvin and Bearsden": 1.0,   # Bearsden is affluent (single constituency)
+    "Eastwood": 1.0,                    # Newton Mearns is affluent (single constituency)
+    "North East Fife": 1.4,             # St Andrews (KY16) concentration
+    "Stirling": 1.0,                    # Bridge of Allan, Dunblane (single constituency)
+
+    # Aberdeen - more distributed
+    "Aberdeen South and North Kincardine": 1.2,  # Cults, Bieldside areas
+    "Aberdeen Central": 0.9,
+    "Aberdeen Donside": 0.9,
+
+    # Aberdeenshire
+    "Aberdeenshire West": 1.2,          # Banchory, Westhill
+    "Aberdeenshire East": 0.9,
+    "Banffshire and Buchan Coast": 0.9,
+}
+
 
 def load_population_data():
     """Load NRS constituency population data."""
@@ -279,17 +322,23 @@ def load_population_data():
     return pd.read_csv(pop_file)
 
 
-def calculate_population_weights(population_df):
-    """Calculate population-based weights within each council."""
+def calculate_wealth_adjusted_weights(population_df):
+    """Calculate wealth-adjusted weights within each council.
+
+    Uses population as base, then applies wealth adjustment factors to reflect
+    actual £1m+ property concentrations within councils.
+
+    Weight = (Population × Wealth Factor) / Sum(Population × Wealth Factor for council)
+    """
 
     # Create mapping with population
     weights = {}
 
-    # Group constituencies by council
-    council_populations = {}
+    # Group constituencies by council with adjusted values
+    council_data = {}
     for constituency, council in CONSTITUENCY_COUNCIL_MAPPING.items():
-        if council not in council_populations:
-            council_populations[council] = []
+        if council not in council_data:
+            council_data[council] = []
 
         # Find population for this constituency
         pop_row = population_df[population_df['constituency'] == constituency]
@@ -300,16 +349,24 @@ def calculate_population_weights(population_df):
             pop = 75000  # Default average
             print(f"⚠️  No population data for {constituency}, using default")
 
-        council_populations[council].append((constituency, pop))
+        # Get wealth adjustment factor (default 1.0 if not specified)
+        wealth_factor = WEALTH_ADJUSTMENT_FACTORS.get(constituency, 1.0)
 
-    # Calculate weights within each council
-    for council, constituencies in council_populations.items():
-        total_pop = sum(pop for _, pop in constituencies)
-        for constituency, pop in constituencies:
-            weight = pop / total_pop if total_pop > 0 else 1 / len(constituencies)
+        # Adjusted value = population × wealth factor
+        adjusted_value = pop * wealth_factor
+
+        council_data[council].append((constituency, pop, wealth_factor, adjusted_value))
+
+    # Calculate weights within each council using adjusted values
+    for council, constituencies in council_data.items():
+        total_adjusted = sum(adj for _, _, _, adj in constituencies)
+        for constituency, pop, wealth_factor, adjusted_value in constituencies:
+            # Weight based on adjusted value, not raw population
+            weight = adjusted_value / total_adjusted if total_adjusted > 0 else 1 / len(constituencies)
             weights[constituency] = {
                 "council": council,
                 "population": pop,
+                "wealth_factor": wealth_factor,
                 "weight": weight
             }
 
@@ -317,11 +374,11 @@ def calculate_population_weights(population_df):
 
 
 def analyze_constituencies():
-    """Distribute council-level estimates to constituencies using population weights."""
+    """Distribute council-level estimates to constituencies using wealth-adjusted weights."""
 
     print("=" * 70)
     print("Scottish Mansion Tax Analysis by Parliament Constituency")
-    print("Using NRS population-based weights")
+    print("Using wealth-adjusted weights (population × affluence factor)")
     print("=" * 70)
 
     # Load population data
@@ -329,9 +386,9 @@ def analyze_constituencies():
     population_df = load_population_data()
     print(f"   ✓ Loaded {len(population_df)} constituencies")
 
-    # Calculate population-based weights
-    print("\n📈 Calculating population-based weights...")
-    weights = calculate_population_weights(population_df)
+    # Calculate wealth-adjusted weights
+    print("\n📈 Calculating wealth-adjusted weights...")
+    weights = calculate_wealth_adjusted_weights(population_df)
 
     # Calculate total sales for normalization
     total_sales = sum(COUNCIL_DATA.values())
@@ -342,11 +399,12 @@ def analyze_constituencies():
         council = data["council"]
         weight = data["weight"]
         population = data["population"]
+        wealth_factor = data.get("wealth_factor", 1.0)
 
         # Get council's total sales
         council_sales = COUNCIL_DATA.get(council, 0)
 
-        # Allocate to constituency based on population weight
+        # Allocate to constituency based on wealth-adjusted weight
         constituency_sales = council_sales * weight
 
         # Calculate share of total
@@ -364,6 +422,7 @@ def analyze_constituencies():
             "constituency": constituency,
             "council": council,
             "population": population,
+            "wealth_factor": wealth_factor,
             "weight": round(weight, 4),
             "estimated_sales": rounded_sales,
             "band_i_sales": round(band_i_sales, 1),
