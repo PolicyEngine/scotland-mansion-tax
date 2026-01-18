@@ -313,11 +313,29 @@ def load_wealth_factors():
     Uses Band F-H (highest bands) as a proxy for high-value property concentration.
     Wealth factor = constituency's Band F-H % / Scotland average Band F-H %
 
+    Why Band F-H instead of Band H alone?
+    -------------------------------------
+    Band H (>£212k in 1991, ~>£1.15m in 2024) would be the ideal proxy for £1m+
+    properties. However, statistics.gov.scot only provides constituency-level data
+    in the "summary" dataset which groups bands as A-C, D-E, F-H. The "detailed"
+    dataset with individual bands A-H is only available at Data Zone level, not
+    constituency level.
+
+    Band F-H includes:
+    - Band F: £80k-£106k (1991) → ~£430k-£570k (2024)
+    - Band G: £106k-£212k (1991) → ~£570k-£1.15m (2024)
+    - Band H: >£212k (1991) → >£1.15m (2024)
+
+    This dilutes the signal with £400k-£1m properties, but is the best available
+    proxy at constituency level. Areas with high Band F-H concentration still
+    correlate strongly with £1m+ property density.
+
     Source: statistics.gov.scot (2023)
     https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries
 
     Returns:
-        dict: Mapping of constituency name to wealth factor
+        tuple: (dict mapping constituency -> wealth factor, str data source indicator)
+               Returns ({}, "fallback") if data unavailable
     """
     band_file = Path("data/council_tax_bands_by_constituency.csv")
 
@@ -325,8 +343,12 @@ def load_wealth_factors():
     if not band_file.exists():
         print("   Council tax band data not found locally.")
         if not download_council_tax_data():
-            print("⚠️  Could not load Council Tax data. Using population-only weights.")
-            return {}
+            print("=" * 60)
+            print("⚠️  WARNING: Council Tax data unavailable!")
+            print("   Results will use POPULATION-ONLY weights (less accurate).")
+            print("   To fix: ensure statistics.gov.scot is accessible and retry.")
+            print("=" * 60)
+            return {}, "fallback_population_only"
 
     # Load the data
     df = pd.read_csv(band_file)
@@ -368,11 +390,7 @@ def load_wealth_factors():
         pct = df_merged[df_merged['constituency'] == name]['fh_pct'].values[0]
         print(f"      {name}: {factor:.2f}x ({pct:.1%} Band F-H)")
 
-    return wealth_factors
-
-
-# Global variable to cache wealth factors (loaded once)
-_WEALTH_FACTORS_CACHE = None
+    return wealth_factors, "band_fh"
 
 
 def load_population_data():
@@ -470,8 +488,11 @@ def analyze_constituencies():
 
     # Load wealth factors from Council Tax Band F-H data
     print("\n💎 Loading Council Tax Band F-H data (wealth proxy)...")
-    wealth_factors = load_wealth_factors()
-    print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
+    wealth_factors, wealth_data_source = load_wealth_factors()
+    if wealth_data_source == "fallback_population_only":
+        print("   ⚠️  Using population-only weights (no wealth adjustment)")
+    else:
+        print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
 
     # Calculate wealth-adjusted weights
     print("\n📈 Calculating wealth-adjusted weights...")
@@ -510,6 +531,7 @@ def analyze_constituencies():
             "council": council,
             "population": population,
             "wealth_factor": wealth_factor,
+            "wealth_data_source": wealth_data_source,
             "weight": round(weight, 4),
             "estimated_sales": rounded_sales,
             "band_i_sales": round(band_i_sales, 1),
