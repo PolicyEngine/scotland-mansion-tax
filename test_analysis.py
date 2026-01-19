@@ -113,18 +113,17 @@ class TestWealthFactors:
     def test_wealth_factors_load(self):
         """Wealth factors should load successfully."""
         factors, source = load_wealth_factors()
-        assert len(factors) > 0 or source == "fallback_population_only"
+        assert len(factors) > 0
 
     def test_wealth_data_source_column_present(self):
         """Output should include wealth_data_source column."""
         df = analyze_constituencies()
         assert "wealth_data_source" in df.columns
 
-    def test_wealth_data_source_valid_values(self):
-        """wealth_data_source should be 'band_fh' or 'fallback_population_only'."""
+    def test_wealth_data_source_is_band_fh(self):
+        """wealth_data_source should be 'band_fh'."""
         df = analyze_constituencies()
-        valid_sources = {"band_fh", "fallback_population_only"}
-        assert df["wealth_data_source"].isin(valid_sources).all()
+        assert (df["wealth_data_source"] == "band_fh").all()
 
     def test_edinburgh_central_higher_factor_than_pentlands(self):
         """Edinburgh Central should have higher wealth factor than Pentlands."""

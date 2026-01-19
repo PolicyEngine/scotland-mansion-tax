@@ -335,20 +335,21 @@ def load_wealth_factors():
 
     Returns:
         tuple: (dict mapping constituency -> wealth factor, str data source indicator)
-               Returns ({}, "fallback") if data unavailable
+
+    Raises:
+        RuntimeError: If required data files cannot be downloaded.
     """
     band_file = Path("data/council_tax_bands_by_constituency.csv")
 
-    # Download if not present
+    # Download if not present - fail if unavailable
     if not band_file.exists():
         print("   Council tax band data not found locally.")
         if not download_council_tax_data():
-            print("=" * 60)
-            print("⚠️  WARNING: Council Tax data unavailable!")
-            print("   Results will use POPULATION-ONLY weights (less accurate).")
-            print("   To fix: ensure statistics.gov.scot is accessible and retry.")
-            print("=" * 60)
-            return {}, "fallback_population_only"
+            raise RuntimeError(
+                "Failed to download Council Tax band data.\n"
+                "This data is required for wealth-adjusted analysis.\n\n"
+                "Please ensure statistics.gov.scot is accessible and retry."
+            )
 
     # Load the data
     df = pd.read_csv(band_file)
@@ -489,10 +490,7 @@ def analyze_constituencies():
     # Load wealth factors from Council Tax Band F-H data
     print("\n💎 Loading Council Tax Band F-H data (wealth proxy)...")
     wealth_factors, wealth_data_source = load_wealth_factors()
-    if wealth_data_source == "fallback_population_only":
-        print("   ⚠️  Using population-only weights (no wealth adjustment)")
-    else:
-        print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
+    print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
 
     # Calculate wealth-adjusted weights
     print("\n📈 Calculating wealth-adjusted weights...")

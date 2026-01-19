@@ -114,11 +114,10 @@ class TestWealthFactors:
         df = analyze_constituencies(verbose=False)
         assert "wealth_data_source" in df.columns
 
-    def test_wealth_data_source_valid_values(self):
-        """wealth_data_source should be 'band_h' or 'fallback_population_only'."""
+    def test_wealth_data_source_is_band_h(self):
+        """wealth_data_source should be 'band_h'."""
         df = analyze_constituencies(verbose=False)
-        valid_sources = {"band_h", "fallback_population_only"}
-        assert df["wealth_data_source"].isin(valid_sources).all()
+        assert (df["wealth_data_source"] == "band_h").all()
 
     def test_edinburgh_central_higher_factor_than_pentlands(self):
         """Edinburgh Central should have higher wealth factor than Pentlands."""

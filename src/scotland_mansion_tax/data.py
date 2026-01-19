@@ -225,8 +225,10 @@ def load_wealth_factors(
         verbose: Print progress messages.
 
     Returns:
-        tuple: (dict mapping constituency code -> wealth factor, str data source)
-               Returns ({}, "fallback_population_only") if data unavailable
+        tuple: (dict mapping constituency name -> wealth factor, str data source)
+
+    Raises:
+        RuntimeError: If required data files cannot be downloaded.
     """
     if data_dir is None:
         data_dir = get_data_dir()
@@ -235,28 +237,28 @@ def load_wealth_factors(
     lookup_file = data_dir / "dz_to_constituency_lookup.csv"
     names_file = data_dir / "constituency_names.csv"
 
-    # Download missing files
+    # Download missing files - fail if unavailable
     if not dwelling_file.exists():
         if verbose:
             print("   Dwelling estimates not found locally.")
         if not download_dwelling_estimates(data_dir, verbose):
-            if verbose:
-                print("=" * 60)
-                print("⚠️  WARNING: Dwelling estimates unavailable!")
-                print("   Results will use POPULATION-ONLY weights (less accurate).")
-                print("=" * 60)
-            return {}, "fallback_population_only"
+            raise RuntimeError(
+                "Failed to download NRS dwelling estimates.\n"
+                "This data is required for wealth-adjusted analysis.\n\n"
+                "Please run 'scotland-mansion-tax download --all' or download manually from:\n"
+                f"  {NRS_DWELLING_URL}"
+            )
 
     if not lookup_file.exists():
         if verbose:
             print("   Data Zone lookup not found locally.")
         if not download_dz_lookup(data_dir, verbose):
-            if verbose:
-                print("=" * 60)
-                print("⚠️  WARNING: Data Zone lookup unavailable!")
-                print("   Results will use POPULATION-ONLY weights (less accurate).")
-                print("=" * 60)
-            return {}, "fallback_population_only"
+            raise RuntimeError(
+                "Failed to download Data Zone lookup.\n"
+                "This data is required for wealth-adjusted analysis.\n\n"
+                "Please run 'scotland-mansion-tax download --all' or download manually from:\n"
+                f"  {SSPL_URL}"
+            )
 
     if not names_file.exists():
         download_constituency_names(data_dir, verbose)  # Optional, just for display

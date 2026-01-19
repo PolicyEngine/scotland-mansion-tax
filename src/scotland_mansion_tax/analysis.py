@@ -275,16 +275,12 @@ def analyze_constituencies(
     if verbose:
         print(f"   ✓ Loaded {len(population_df)} constituencies")
 
-    # Load wealth factors from Council Tax Band F-H data
+    # Load wealth factors from Council Tax Band H data
     if verbose:
-        print("\n💎 Loading Council Tax Band F-H data (wealth proxy)...")
+        print("\n💎 Loading Council Tax Band H data (wealth proxy)...")
     wealth_factors, wealth_data_source = load_wealth_factors(data_dir, verbose)
-    if wealth_data_source == "fallback_population_only":
-        if verbose:
-            print("   ⚠️  Using population-only weights (no wealth adjustment)")
-    else:
-        if verbose:
-            print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
+    if verbose:
+        print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
 
     # Calculate wealth-adjusted weights
     if verbose:
