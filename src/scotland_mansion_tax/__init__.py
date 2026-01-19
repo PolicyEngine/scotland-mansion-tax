@@ -10,14 +10,14 @@ __author__ = "PolicyEngine"
 
 from scotland_mansion_tax.analysis import analyze_constituencies
 from scotland_mansion_tax.data import (
-    download_council_tax_data,
+    download_all,
     load_population_data,
     load_wealth_factors,
 )
 
 __all__ = [
     "analyze_constituencies",
-    "download_council_tax_data",
+    "download_all",
     "load_population_data",
     "load_wealth_factors",
 ]

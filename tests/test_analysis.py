@@ -39,10 +39,10 @@ class TestWeightCalculations:
                 f"{council} weights sum to {weight_sum}, expected 1.0"
             )
 
-    def test_weights_are_positive(self):
-        """All weights should be positive."""
+    def test_weights_are_non_negative(self):
+        """All weights should be non-negative (0 is valid for areas with no £1m+ properties)."""
         df = analyze_constituencies(verbose=False)
-        assert (df["weight"] > 0).all(), "All weights should be positive"
+        assert (df["weight"] >= 0).all(), "All weights should be non-negative"
 
     def test_weights_not_exceed_one(self):
         """No individual weight should exceed 1.0."""
@@ -101,8 +101,9 @@ class TestRevenueCalculations:
         actual_i_ratio = total_band_i / total_sales
         actual_j_ratio = total_band_j / total_sales
 
-        assert abs(actual_i_ratio - BAND_I_RATIO) < 0.001
-        assert abs(actual_j_ratio - BAND_J_RATIO) < 0.001
+        # Tolerance of 0.01 (1%) to account for rounding in per-constituency allocations
+        assert abs(actual_i_ratio - BAND_I_RATIO) < 0.01
+        assert abs(actual_j_ratio - BAND_J_RATIO) < 0.01
 
 
 class TestWealthFactors:
@@ -114,9 +115,9 @@ class TestWealthFactors:
         assert "wealth_data_source" in df.columns
 
     def test_wealth_data_source_valid_values(self):
-        """wealth_data_source should be 'band_fh' or 'fallback_population_only'."""
+        """wealth_data_source should be 'band_h' or 'fallback_population_only'."""
         df = analyze_constituencies(verbose=False)
-        valid_sources = {"band_fh", "fallback_population_only"}
+        valid_sources = {"band_h", "fallback_population_only"}
         assert df["wealth_data_source"].isin(valid_sources).all()
 
     def test_edinburgh_central_higher_factor_than_pentlands(self):

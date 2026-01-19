@@ -295,35 +295,44 @@ def load_wealth_factors(
             f"({scotland_avg_pct * 100:.2f}% of {scotland_total:,} dwellings)"
         )
 
-    # Calculate wealth factors
-    wealth_factors = {}
-    for _, row in constituency_data.iterrows():
-        pct = row["BandH"] / row["TotalDwellings"] if row["TotalDwellings"] > 0 else 0
-        factor = pct / scotland_avg_pct if scotland_avg_pct > 0 else 1.0
-        wealth_factors[row["ConstituencyCode"]] = round(factor, 2)
-
-    # Load constituency names for display
+    # Load constituency names - needed for output keys
     if names_file.exists():
         names = pd.read_csv(names_file)
         name_lookup = dict(zip(names["Code"], names["Name"]))
     else:
         name_lookup = {}
 
+    # Calculate wealth factors (keyed by constituency NAME for compatibility with analysis.py)
+    wealth_factors = {}
+    for _, row in constituency_data.iterrows():
+        pct = row["BandH"] / row["TotalDwellings"] if row["TotalDwellings"] > 0 else 0
+        factor = pct / scotland_avg_pct if scotland_avg_pct > 0 else 1.0
+        code = row["ConstituencyCode"]
+        # Use name if available, fall back to code
+        name = name_lookup.get(code, code)
+        wealth_factors[name] = round(factor, 2)
+
     if verbose:
+        # Create reverse lookup (name -> code) for accessing constituency_data
+        code_lookup = {v: k for k, v in name_lookup.items()}
         sorted_factors = sorted(wealth_factors.items(), key=lambda x: x[1], reverse=True)
         print("   Top 5 by Band H concentration (actual £1m+ proxy):")
-        for code, factor in sorted_factors[:5]:
-            name = name_lookup.get(code, code)
-            row = constituency_data[constituency_data["ConstituencyCode"] == code].iloc[0]
-            pct = row["BandH"] / row["TotalDwellings"] * 100
-            print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
+        for name, factor in sorted_factors[:5]:
+            code = code_lookup.get(name, name)
+            rows = constituency_data[constituency_data["ConstituencyCode"] == code]
+            if len(rows) > 0:
+                row = rows.iloc[0]
+                pct = row["BandH"] / row["TotalDwellings"] * 100
+                print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
 
         print("   Bottom 3 by Band H concentration:")
-        for code, factor in sorted_factors[-3:]:
-            name = name_lookup.get(code, code)
-            row = constituency_data[constituency_data["ConstituencyCode"] == code].iloc[0]
-            pct = row["BandH"] / row["TotalDwellings"] * 100
-            print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
+        for name, factor in sorted_factors[-3:]:
+            code = code_lookup.get(name, name)
+            rows = constituency_data[constituency_data["ConstituencyCode"] == code]
+            if len(rows) > 0:
+                row = rows.iloc[0]
+                pct = row["BandH"] / row["TotalDwellings"] * 100
+                print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
 
     return wealth_factors, "band_h"
 
