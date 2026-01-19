@@ -2,21 +2,30 @@
 Data loading and downloading module.
 
 Handles:
-- Council Tax Band data from statistics.gov.scot
+- Council Tax Band H data from NRS dwelling estimates (aggregated from Data Zone level)
+- Data Zone to Constituency mapping via SSPL (Scottish Statistics Postcode Lookup)
 - NRS constituency population data
-- Wealth factor calculations
+- Wealth factor calculations based on actual Band H (best proxy for £1m+ properties)
 """
 
+import json
 import urllib.parse
 import urllib.request
+from io import BytesIO
 from pathlib import Path
-from typing import Tuple, Dict
+from typing import Dict, Tuple
+from zipfile import ZipFile
 
 import pandas as pd
 
-# Default data directory (can be overridden)
-# Try to find the data directory relative to the current working directory first,
-# then fall back to relative to the package location
+# URLs for data sources
+NRS_DWELLING_URL = (
+    "https://www.nrscotland.gov.uk/media/bhjk5m00/dwelling-est-by-2011-dz-05-24.xlsx"
+)
+SSPL_URL = "https://www.nrscotland.gov.uk/media/rpvjxnpv/sspl-2025-2.zip"
+MAPIT_SPC_URL = "https://mapit.mysociety.org/areas/SPC"
+
+
 def get_data_dir() -> Path:
     """Get the data directory, creating if necessary.
 
@@ -24,23 +33,27 @@ def get_data_dir() -> Path:
     1. ./data (relative to current working directory)
     2. Package installation directory (for installed packages)
     """
-    # First try current working directory
     cwd_data = Path.cwd() / "data"
     if cwd_data.exists():
         return cwd_data
 
-    # Try relative to package location (for development)
     pkg_data = Path(__file__).parent.parent.parent.parent / "data"
     if pkg_data.exists():
         return pkg_data
 
-    # Create in current working directory if doesn't exist
     cwd_data.mkdir(exist_ok=True)
     return cwd_data
 
 
-def download_council_tax_data(data_dir: Path = None, verbose: bool = True) -> bool:
-    """Download Council Tax Band data from statistics.gov.scot SPARQL endpoint.
+def download_dwelling_estimates(data_dir: Path = None, verbose: bool = True) -> bool:
+    """Download NRS dwelling estimates by Data Zone.
+
+    Contains Council Tax Band A-H counts for each of Scotland's ~7,000 Data Zones.
+    This is the source for actual Band H data (not available pre-aggregated at
+    constituency level).
+
+    Source: National Records of Scotland - Small Area Statistics 2024
+    https://www.nrscotland.gov.uk/publications/small-area-statistics-on-households-and-dwellings-2024/
 
     Args:
         data_dir: Directory to save data to. Defaults to package data dir.
@@ -52,44 +65,127 @@ def download_council_tax_data(data_dir: Path = None, verbose: bool = True) -> bo
     if data_dir is None:
         data_dir = get_data_dir()
 
-    sparql_query = """
-PREFIX qb: <http://purl.org/linked-data/cube#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX sdmx: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX dim: <http://statistics.gov.scot/def/dimension/>
-
-SELECT ?constituency ?band ?dwellings
-WHERE {
-  ?obs qb:dataSet <http://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries> ;
-       sdmx:refArea ?areaUri ;
-       sdmx:refPeriod ?periodUri ;
-       dim:councilTaxBand ?bandUri ;
-       <http://statistics.gov.scot/def/measure-properties/count> ?dwellings .
-
-  ?areaUri rdfs:label ?constituency .
-  ?bandUri rdfs:label ?band .
-  ?periodUri rdfs:label ?year .
-
-  FILTER(CONTAINS(STR(?areaUri), 'S16'))
-  FILTER(?year = '2023')
-}
-ORDER BY ?constituency ?band
-"""
-    endpoint = "https://statistics.gov.scot/sparql.csv"
-    url = f"{endpoint}?query={urllib.parse.quote(sparql_query)}"
+    output_file = data_dir / "dwelling_estimates_by_dz.xlsx"
 
     if verbose:
-        print("   Downloading Council Tax data from statistics.gov.scot...")
+        print("   Downloading NRS dwelling estimates (~16 MB)...")
 
     try:
-        with urllib.request.urlopen(url, timeout=60) as response:
-            data = response.read().decode("utf-8")
-
-        # Save to file
-        band_file = data_dir / "council_tax_bands_by_constituency.csv"
-        band_file.write_text(data)
+        req = urllib.request.Request(
+            NRS_DWELLING_URL,
+            headers={"User-Agent": "scotland-mansion-tax/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=120) as response:
+            data = response.read()
+        output_file.write_bytes(data)
         if verbose:
-            print(f"   ✓ Downloaded and saved {len(data.splitlines())} rows")
+            print(f"   ✓ Downloaded dwelling estimates ({len(data) / 1e6:.1f} MB)")
+        return True
+    except Exception as e:
+        if verbose:
+            print(f"   ⚠️ Download failed: {e}")
+        return False
+
+
+def download_dz_lookup(data_dir: Path = None, verbose: bool = True) -> bool:
+    """Download SSPL for Data Zone to Constituency mapping.
+
+    The Scottish Statistics Postcode Lookup (SSPL) contains mappings from
+    postcodes to various geographies including Data Zones and Scottish
+    Parliament Constituencies. We extract the unique DZ → Constituency mapping.
+
+    Source: National Records of Scotland - SSPL 2025/2
+    https://www.nrscotland.gov.uk/publications/scottish-statistics-postcode-lookup-20252/
+
+    Args:
+        data_dir: Directory to save data to. Defaults to package data dir.
+        verbose: Print progress messages.
+
+    Returns:
+        True if download succeeded, False otherwise.
+    """
+    if data_dir is None:
+        data_dir = get_data_dir()
+
+    lookup_file = data_dir / "dz_to_constituency_lookup.csv"
+
+    if verbose:
+        print("   Downloading SSPL postcode lookup (~95 MB compressed)...")
+
+    try:
+        req = urllib.request.Request(
+            SSPL_URL,
+            headers={"User-Agent": "scotland-mansion-tax/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=180) as response:
+            zip_data = BytesIO(response.read())
+
+        with ZipFile(zip_data) as zf:
+            with zf.open("singlerecord.csv") as f:
+                df = pd.read_csv(
+                    f,
+                    usecols=[
+                        "DataZone2011Code",
+                        "ScottishParliamentaryConstituency2021Code",
+                    ],
+                )
+
+        # Get unique DZ to Constituency mappings
+        lookup = df.drop_duplicates().dropna()
+        lookup.columns = ["DataZone", "ConstituencyCode"]
+        lookup.to_csv(lookup_file, index=False)
+
+        if verbose:
+            print(f"   ✓ Extracted {len(lookup)} Data Zone → Constituency mappings")
+        return True
+    except Exception as e:
+        if verbose:
+            print(f"   ⚠️ Download failed: {e}")
+        return False
+
+
+def download_constituency_names(data_dir: Path = None, verbose: bool = True) -> bool:
+    """Download constituency names from MapIt API.
+
+    MapIt (by mySociety) provides a mapping from GSS codes to constituency names.
+
+    Source: https://mapit.mysociety.org/
+
+    Args:
+        data_dir: Directory to save data to. Defaults to package data dir.
+        verbose: Print progress messages.
+
+    Returns:
+        True if download succeeded, False otherwise.
+    """
+    if data_dir is None:
+        data_dir = get_data_dir()
+
+    names_file = data_dir / "constituency_names.csv"
+
+    if verbose:
+        print("   Downloading constituency names from MapIt...")
+
+    try:
+        req = urllib.request.Request(
+            MAPIT_SPC_URL,
+            headers={"Accept": "application/json", "User-Agent": "scotland-mansion-tax/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=30) as response:
+            data = json.loads(response.read().decode())
+
+        constituencies = []
+        for area_id, info in data.items():
+            code = info.get("codes", {}).get("gss", "")
+            name = info.get("name", "")
+            if code.startswith("S16"):
+                constituencies.append({"Code": code, "Name": name})
+
+        df = pd.DataFrame(constituencies)
+        df.to_csv(names_file, index=False)
+
+        if verbose:
+            print(f"   ✓ Downloaded {len(df)} constituency names")
         return True
     except Exception as e:
         if verbose:
@@ -100,105 +196,136 @@ ORDER BY ?constituency ?band
 def load_wealth_factors(
     data_dir: Path = None, verbose: bool = True
 ) -> Tuple[Dict[str, float], str]:
-    """Load wealth factors from Council Tax Band F-H data.
+    """Load wealth factors from Council Tax Band H data.
 
-    Uses Band F-H (highest bands) as a proxy for high-value property concentration.
-    Wealth factor = constituency's Band F-H % / Scotland average Band F-H %
+    Uses ACTUAL Band H data aggregated from Data Zone level, not the Band F-H
+    grouping from the summary dataset. This provides a much more accurate proxy
+    for £1m+ property concentration.
 
-    Why Band F-H instead of Band H alone?
-    -------------------------------------
-    Band H (>£212k in 1991, ~>£1.15m in 2024) would be the ideal proxy for £1m+
-    properties. However, statistics.gov.scot only provides constituency-level data
-    in the "summary" dataset which groups bands as A-C, D-E, F-H. The "detailed"
-    dataset with individual bands A-H is only available at Data Zone level, not
-    constituency level.
+    Why Band H instead of Band F-H?
+    -------------------------------
+    Band H (>£212k in 1991, ~>£1.15m in 2024) directly captures £1m+ properties.
+    Band F-H includes £430k-£1.15m properties which dilutes the signal:
 
-    Band F-H includes:
-    - Band F: £80k-£106k (1991) → ~£430k-£570k (2024)
-    - Band G: £106k-£212k (1991) → ~£570k-£1.15m (2024)
-    - Band H: >£212k (1991) → >£1.15m (2024)
+    - Scotland has 16,011 Band H properties (0.57% of dwellings)
+    - Scotland has 402,034 Band F-H properties (14.2% of dwellings)
+    - Correlation between Band H and F-H factors is only 0.79
 
-    This dilutes the signal with £400k-£1m properties, but is the best available
-    proxy at constituency level. Areas with high Band F-H concentration still
-    correlate strongly with £1m+ property density.
+    Key differences in wealth factors:
+    - Edinburgh Southern: 5.26x (Band H) vs 2.04x (Band F-H)
+    - Edinburgh Central: 4.85x (Band H) vs 1.63x (Band F-H)
+    - Aberdeenshire West: 1.68x (Band H) vs 2.75x (Band F-H) - many £500k farms
 
-    Source: statistics.gov.scot (2023)
-    https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries
+    Data sources:
+    - NRS Small Area Statistics 2024: Dwelling estimates by 2011 Data Zone
+    - SSPL 2025/2: Data Zone to Constituency lookup
 
     Args:
         data_dir: Directory containing data files. Defaults to package data dir.
         verbose: Print progress messages.
 
     Returns:
-        tuple: (dict mapping constituency -> wealth factor, str data source indicator)
+        tuple: (dict mapping constituency code -> wealth factor, str data source)
                Returns ({}, "fallback_population_only") if data unavailable
     """
     if data_dir is None:
         data_dir = get_data_dir()
 
-    band_file = data_dir / "council_tax_bands_by_constituency.csv"
+    dwelling_file = data_dir / "dwelling_estimates_by_dz.xlsx"
+    lookup_file = data_dir / "dz_to_constituency_lookup.csv"
+    names_file = data_dir / "constituency_names.csv"
 
-    # Download if not present
-    if not band_file.exists():
+    # Download missing files
+    if not dwelling_file.exists():
         if verbose:
-            print("   Council tax band data not found locally.")
-        if not download_council_tax_data(data_dir, verbose):
+            print("   Dwelling estimates not found locally.")
+        if not download_dwelling_estimates(data_dir, verbose):
             if verbose:
                 print("=" * 60)
-                print("⚠️  WARNING: Council Tax data unavailable!")
+                print("⚠️  WARNING: Dwelling estimates unavailable!")
                 print("   Results will use POPULATION-ONLY weights (less accurate).")
-                print("   To fix: ensure statistics.gov.scot is accessible and retry.")
                 print("=" * 60)
             return {}, "fallback_population_only"
 
-    # Load the data
-    df = pd.read_csv(band_file)
+    if not lookup_file.exists():
+        if verbose:
+            print("   Data Zone lookup not found locally.")
+        if not download_dz_lookup(data_dir, verbose):
+            if verbose:
+                print("=" * 60)
+                print("⚠️  WARNING: Data Zone lookup unavailable!")
+                print("   Results will use POPULATION-ONLY weights (less accurate).")
+                print("=" * 60)
+            return {}, "fallback_population_only"
 
-    # Pivot to get Band F-H and Total for each constituency
-    df_fh = df[df["band"] == "Bands F-H"][["constituency", "dwellings"]].copy()
-    df_fh.columns = ["constituency", "band_fh"]
+    if not names_file.exists():
+        download_constituency_names(data_dir, verbose)  # Optional, just for display
 
-    df_total = df[df["band"] == "Total Dwellings"][["constituency", "dwellings"]].copy()
-    df_total.columns = ["constituency", "total"]
+    if verbose:
+        print("   Loading Band H data from NRS dwelling estimates...")
 
-    # Merge and calculate percentages
-    df_merged = df_fh.merge(df_total, on="constituency")
-    df_merged["fh_pct"] = df_merged["band_fh"] / df_merged["total"]
+    # Load 2023 dwelling data with Band H counts
+    df = pd.read_excel(dwelling_file, sheet_name="2023", header=4)
+    df.columns = df.columns.str.replace("\n", " ").str.strip()
 
-    # Calculate Scotland average Band F-H percentage
-    scotland_fh = df_merged["band_fh"].sum()
-    scotland_total = df_merged["total"].sum()
-    scotland_avg_pct = scotland_fh / scotland_total
+    dz_data = df[
+        ["Data Zone code", "Total number of dwellings", "Council Tax band: H"]
+    ].copy()
+    dz_data.columns = ["DataZone", "TotalDwellings", "BandH"]
+    dz_data = dz_data.dropna(subset=["DataZone"])
+
+    # Load DZ to Constituency lookup
+    lookup = pd.read_csv(lookup_file)
+
+    # Merge and aggregate to constituency level
+    merged = dz_data.merge(lookup, on="DataZone", how="left")
+
+    constituency_data = merged.groupby("ConstituencyCode").agg(
+        {"TotalDwellings": "sum", "BandH": "sum"}
+    ).reset_index()
+
+    # Calculate Scotland averages and wealth factors
+    scotland_band_h = constituency_data["BandH"].sum()
+    scotland_total = constituency_data["TotalDwellings"].sum()
+    scotland_avg_pct = scotland_band_h / scotland_total
 
     if verbose:
         print(
-            f"   Scotland average Band F-H: {scotland_avg_pct:.1%} "
-            f"({scotland_fh:,} of {scotland_total:,} dwellings)"
+            f"   Scotland Band H: {scotland_band_h:,} properties "
+            f"({scotland_avg_pct * 100:.2f}% of {scotland_total:,} dwellings)"
         )
 
-    # Calculate wealth factor for each constituency
-    # Factor = constituency Band F-H % / Scotland average Band F-H %
+    # Calculate wealth factors
     wealth_factors = {}
-    for _, row in df_merged.iterrows():
-        factor = row["fh_pct"] / scotland_avg_pct
-        wealth_factors[row["constituency"]] = round(factor, 2)
+    for _, row in constituency_data.iterrows():
+        pct = row["BandH"] / row["TotalDwellings"] if row["TotalDwellings"] > 0 else 0
+        factor = pct / scotland_avg_pct if scotland_avg_pct > 0 else 1.0
+        wealth_factors[row["ConstituencyCode"]] = round(factor, 2)
+
+    # Load constituency names for display
+    if names_file.exists():
+        names = pd.read_csv(names_file)
+        name_lookup = dict(zip(names["Code"], names["Name"]))
+    else:
+        name_lookup = {}
 
     if verbose:
-        # Print top and bottom constituencies for verification
-        sorted_factors = sorted(
-            wealth_factors.items(), key=lambda x: x[1], reverse=True
-        )
-        print("   Top 5 by Band F-H concentration:")
-        for name, factor in sorted_factors[:5]:
-            pct = df_merged[df_merged["constituency"] == name]["fh_pct"].values[0]
-            print(f"      {name}: {factor:.2f}x ({pct:.1%} Band F-H)")
+        sorted_factors = sorted(wealth_factors.items(), key=lambda x: x[1], reverse=True)
+        print("   Top 5 by Band H concentration (actual £1m+ proxy):")
+        for code, factor in sorted_factors[:5]:
+            name = name_lookup.get(code, code)
+            row = constituency_data[constituency_data["ConstituencyCode"] == code].iloc[0]
+            pct = row["BandH"] / row["TotalDwellings"] * 100
+            print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
 
-        print("   Bottom 3 by Band F-H concentration:")
-        for name, factor in sorted_factors[-3:]:
-            pct = df_merged[df_merged["constituency"] == name]["fh_pct"].values[0]
-            print(f"      {name}: {factor:.2f}x ({pct:.1%} Band F-H)")
+        print("   Bottom 3 by Band H concentration:")
+        for code, factor in sorted_factors[-3:]:
+            name = name_lookup.get(code, code)
+            row = constituency_data[constituency_data["ConstituencyCode"] == code].iloc[0]
+            pct = row["BandH"] / row["TotalDwellings"] * 100
+            print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
 
-    return wealth_factors, "band_fh"
+    return wealth_factors, "band_h"
 
 
 def load_population_data(data_dir: Path = None, verbose: bool = True) -> pd.DataFrame:
@@ -269,19 +396,54 @@ def download_all(data_dir: Path = None, verbose: bool = True) -> bool:
         print("Downloading required data files...")
         print()
 
-    # Council Tax data
+    # 1. NRS Dwelling Estimates (for Band H data)
     if verbose:
-        print("1. Council Tax Band data (statistics.gov.scot):")
-    if not download_council_tax_data(data_dir, verbose):
-        success = False
+        print("1. NRS Dwelling Estimates (Band H data by Data Zone):")
+    dwelling_file = data_dir / "dwelling_estimates_by_dz.xlsx"
+    if dwelling_file.exists():
+        if verbose:
+            print("   ✓ Already present")
+    else:
+        if not download_dwelling_estimates(data_dir, verbose):
+            success = False
 
     if verbose:
         print()
 
-    # Check population data
+    # 2. SSPL Data Zone Lookup
+    if verbose:
+        print("2. Data Zone to Constituency lookup (SSPL):")
+    lookup_file = data_dir / "dz_to_constituency_lookup.csv"
+    if lookup_file.exists():
+        if verbose:
+            print("   ✓ Already present")
+    else:
+        if not download_dz_lookup(data_dir, verbose):
+            success = False
+
+    if verbose:
+        print()
+
+    # 3. Constituency Names
+    if verbose:
+        print("3. Constituency names (MapIt):")
+    names_file = data_dir / "constituency_names.csv"
+    if names_file.exists():
+        if verbose:
+            print("   ✓ Already present")
+    else:
+        if not download_constituency_names(data_dir, verbose):
+            # Not critical - just for display
+            if verbose:
+                print("   ⚠️ Optional - analysis will use codes instead of names")
+
+    if verbose:
+        print()
+
+    # 4. Population data
     pop_file = data_dir / "constituency_population.csv"
     if verbose:
-        print("2. Population data (NRS):")
+        print("4. Population data (NRS):")
     if pop_file.exists():
         if verbose:
             print("   ✓ Already present")
@@ -290,11 +452,11 @@ def download_all(data_dir: Path = None, verbose: bool = True) -> bool:
             print("   ⚠️ Not found - include in repo or download manually from NRS")
         success = False
 
-    # Check geojson
+    # 5. GeoJSON boundaries
     geojson_file = data_dir / "scottish_parliament_constituencies.geojson"
     if verbose:
         print()
-        print("3. Constituency boundaries (GeoJSON):")
+        print("5. Constituency boundaries (GeoJSON):")
     if geojson_file.exists():
         if verbose:
             print("   ✓ Already present")
