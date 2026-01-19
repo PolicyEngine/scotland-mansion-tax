@@ -30,7 +30,7 @@ def test_population_data_loads():
 
 def test_wealth_factors_load():
     """Wealth factors load and are non-negative."""
-    factors, _ = load_wealth_factors(verbose=False)
+    factors = load_wealth_factors(verbose=False)
     assert len(factors) > 0
     assert all(f >= 0 for f in factors.values())
 

@@ -9,11 +9,10 @@ Handles:
 """
 
 import json
-import urllib.parse
 import urllib.request
 from io import BytesIO
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict
 from zipfile import ZipFile
 
 import pandas as pd
@@ -195,26 +194,10 @@ def download_constituency_names(data_dir: Path = None, verbose: bool = True) -> 
 
 def load_wealth_factors(
     data_dir: Path = None, verbose: bool = True
-) -> Tuple[Dict[str, float], str]:
+) -> Dict[str, float]:
     """Load wealth factors from Council Tax Band H data.
 
-    Uses ACTUAL Band H data aggregated from Data Zone level, not the Band F-H
-    grouping from the summary dataset. This provides a much more accurate proxy
-    for £1m+ property concentration.
-
-    Why Band H instead of Band F-H?
-    -------------------------------
-    Band H (>£212k in 1991, ~>£1.06m in 2024 per UK HPI) directly captures £1m+ properties.
-    Band F-H includes £430k-£1.15m properties which dilutes the signal:
-
-    - Scotland has 16,011 Band H properties (0.57% of dwellings)
-    - Scotland has 402,034 Band F-H properties (14.2% of dwellings)
-    - Correlation between Band H and F-H factors is only 0.79
-
-    Key differences in wealth factors:
-    - Edinburgh Southern: 5.26x (Band H) vs 2.04x (Band F-H)
-    - Edinburgh Central: 4.85x (Band H) vs 1.63x (Band F-H)
-    - Aberdeenshire West: 1.68x (Band H) vs 2.75x (Band F-H) - many £500k farms
+    Band H (>£212k in 1991, ~>£1.06m in 2024) is the best proxy for £1m+ properties.
 
     Data sources:
     - NRS Small Area Statistics 2024: Dwelling estimates by 2011 Data Zone
@@ -225,7 +208,7 @@ def load_wealth_factors(
         verbose: Print progress messages.
 
     Returns:
-        tuple: (dict mapping constituency name -> wealth factor, str data source)
+        Dict mapping constituency name -> wealth factor.
 
     Raises:
         RuntimeError: If required data files cannot be downloaded.
@@ -336,7 +319,7 @@ def load_wealth_factors(
                 pct = row["BandH"] / row["TotalDwellings"] * 100
                 print(f"      {name}: {factor:.2f}x ({pct:.2f}% Band H)")
 
-    return wealth_factors, "band_h"
+    return wealth_factors
 
 
 def load_population_data(data_dir: Path = None, verbose: bool = True) -> pd.DataFrame:

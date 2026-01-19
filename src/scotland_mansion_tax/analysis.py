@@ -193,17 +193,14 @@ def calculate_wealth_adjusted_weights(
 ) -> Dict[str, dict]:
     """Calculate wealth-adjusted weights within each council.
 
-    Uses population as base, then applies wealth adjustment factors from
-    Council Tax Band F-H data to reflect high-value property concentrations.
-
     Weight = (Population × Wealth Factor) / Sum(Population × Wealth Factor for council)
 
     Args:
-        population_df: DataFrame with constituency populations
-        wealth_factors: Dict mapping constituency -> wealth factor (from Band F-H data)
+        population_df: DataFrame with constituency populations.
+        wealth_factors: Dict mapping constituency -> wealth factor.
 
     Returns:
-        Dict mapping constituency -> {council, population, wealth_factor, weight}
+        Dict mapping constituency -> {council, population, wealth_factor, weight}.
     """
     weights = {}
 
@@ -265,7 +262,7 @@ def analyze_constituencies(
     if verbose:
         print("=" * 70)
         print("Scottish Mansion Tax Analysis by Parliament Constituency")
-        print("Using wealth-adjusted weights (population × Band F-H factor)")
+        print("Using wealth-adjusted weights (population × Band H factor)")
         print("=" * 70)
 
     # Load population data
@@ -278,7 +275,7 @@ def analyze_constituencies(
     # Load wealth factors from Council Tax Band H data
     if verbose:
         print("\n💎 Loading Council Tax Band H data (wealth proxy)...")
-    wealth_factors, _ = load_wealth_factors(data_dir, verbose)
+    wealth_factors = load_wealth_factors(data_dir, verbose)
     if verbose:
         print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
 
