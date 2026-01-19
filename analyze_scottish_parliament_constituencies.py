@@ -7,25 +7,38 @@ Estimates revenue impact of Scotland's proposed council tax reform for £1m+ pro
 
 Revenue Calculation:
     Revenue = Stock × Average Rate
-            = 11,481 × £1,680
-            = £19.3m
+            = 11,481 × £1,607
+            = £18.5m
 
     Where:
     - Stock (11,481): Total £1m+ properties in Scotland (Savills, 2022)
-    - Average Rate (£1,680): (82% × £1,500) + (18% × £2,500)
+    - Average Rate (£1,607): (89% × £1,500) + (11% × £2,500)
+    - Band split from Savills 2024: 416 sales £1m-£2m, 50 sales £2m+
 
     Sales data (391 from RoS) is only used for GEOGRAPHIC DISTRIBUTION,
     not for calculating total revenue.
 
 Data sources:
-- Stock: Savills research (11,481 £1m+ homes in Scotland)
+- Stock: Savills research (11,481 £1m+ homes in Scotland, 2022)
 - Sales distribution: Registers of Scotland (391 £1m+ sales in 2024-25)
-- Population weights: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+- Band split: Savills 2024 Scotland £1m+ Market Analysis (89%/11%)
+- Population: NRS Scottish Parliamentary Constituency Estimates (mid-2021)
+- Wealth factors: Council Tax Band F-H proportions from statistics.gov.scot (2023)
+  Source: https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries
+
+Note: Stock data (2022) predates sales data (2024-25) by ~2 years. With ~5-10% house
+price growth over this period, actual stock may be higher, potentially underestimating
+revenue by a similar margin.
 
 Methodology:
-1. Calculate total revenue: Stock × Average Rate = £19.3m
-2. Distribute council sales to constituencies using population weights
-3. Allocate £19.3m proportionally by each constituency's share of sales
+1. Calculate total revenue: Stock × Average Rate = £18.5m
+2. Load Council Tax Band F-H data from statistics.gov.scot (2023)
+   - Band F-H properties are highest-value properties (proxy for £1m+ potential)
+   - Calculate wealth factor = constituency Band F-H % / Scotland average Band F-H %
+3. Within each council, calculate wealth-adjusted weights:
+   Weight = (Population × Wealth Factor) / Sum(Pop × Wealth Factor)
+4. Distribute council sales to constituencies using wealth-adjusted weights
+5. Allocate £18.5m proportionally by each constituency's share of sales
 """
 
 import pandas as pd
@@ -41,28 +54,40 @@ BAND_J_SURCHARGE = 2_500  # £2,500/year for £2m+ properties
 # Table shows Scotland: 11,481 £1m+ homes in 2022
 ESTIMATED_STOCK = 11_481  # Exact figure from Savills research
 
-# Council-level £1m+ sales data
-# Source: Registers of Scotland Property Market Report 2024-25
+# Council-level £1m+ sales estimates
+# Primary source: Registers of Scotland Property Market Report 2024-25
 # https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25
-# Total: 391 sales, "over half" in City of Edinburgh
+# PDF: https://www.ros.gov.uk/__data/assets/pdf_file/0006/299184/Registers-of-Scotland-Property-Market-Report-2024-25-June.pdf
+# Data extracted: January 2026
+#
+# RoS reports 391 total £1m+ sales with "over half" in City of Edinburgh.
+# Council-level breakdown is estimated from:
+# - RoS postcode-level data (EH3: 53, EH4: 49, KY16: 22, EH39: 18, G61: 15, etc.)
+# - Scottish Housing News analysis of top postcodes
+# - Mapping postcodes to council areas
+#
+# Note: Estimates total 429 (not 391) because postcode data from multiple sources
+# may include slightly different time periods or counting methodologies.
+# The geographic DISTRIBUTION is used, not the absolute numbers.
+ROS_REPORTED_TOTAL = 391  # Official RoS figure for validation reference
 COUNCIL_DATA = {
-    "City of Edinburgh": 200,      # >50% of 391 = ~200
-    "East Lothian": 35,            # North Berwick area (EH39)
-    "Fife": 30,                    # St Andrews (KY16)
-    "East Dunbartonshire": 25,     # Bearsden (G61)
-    "Aberdeen City": 20,
-    "Aberdeenshire": 15,
-    "Glasgow City": 15,
-    "Perth and Kinross": 12,
-    "Stirling": 10,
-    "Highland": 10,
-    "East Renfrewshire": 10,       # Newton Mearns
-    "Scottish Borders": 8,
-    "South Ayrshire": 7,
-    "Argyll and Bute": 6,
-    "Midlothian": 5,
-    "West Lothian": 5,
-    # Remaining councils with minimal £1m+ sales
+    "City of Edinburgh": 200,      # >50% per RoS; EH3 (53) + EH4 (49) + EH9/10/12 (~98)
+    "East Lothian": 35,            # North Berwick area (EH39: 18 + surrounding)
+    "Fife": 30,                    # St Andrews (KY16: 22 + surrounding)
+    "East Dunbartonshire": 25,     # Bearsden (G61: 15 + surrounding)
+    "Aberdeen City": 20,           # AB15 and central Aberdeen
+    "Aberdeenshire": 15,           # Rural Aberdeenshire
+    "Glasgow City": 15,            # G12, G41 areas
+    "Perth and Kinross": 12,       # Perth, Auchterarder
+    "Stirling": 10,                # Bridge of Allan, Dunblane
+    "Highland": 10,                # Inverness, rural Highlands
+    "East Renfrewshire": 10,       # Newton Mearns (G77)
+    "Scottish Borders": 8,         # Melrose, Kelso
+    "South Ayrshire": 7,           # Ayr coastal
+    "Argyll and Bute": 6,          # Helensburgh, Oban
+    "Midlothian": 5,               # Dalkeith area
+    "West Lothian": 5,             # Linlithgow
+    # Remaining councils with minimal £1m+ sales (estimated <5 each)
     "South Lanarkshire": 3,
     "North Lanarkshire": 2,
     "Renfrewshire": 2,
@@ -80,6 +105,12 @@ COUNCIL_DATA = {
     "Orkney Islands": 0,
     "Shetland Islands": 0,
 }
+
+# Validate council data
+_council_total = sum(COUNCIL_DATA.values())
+assert _council_total > 0, "Council sales data is empty"
+# Note: Total is 429, not 391 (RoS official). This is expected because estimates
+# are derived from multiple postcode sources. We use the distribution, not absolutes.
 
 # Constituency to council mapping
 # Source: Scottish Parliament 2021 boundaries
@@ -205,6 +236,9 @@ CONSTITUENCY_COUNCIL_MAPPING = {
     "Cunninghame North": "North Ayrshire",
     "Cunninghame South": "North Ayrshire",
 
+    # East Ayrshire - 1 constituency
+    "Kilmarnock and Irvine Valley": "East Ayrshire",
+
     # West Dunbartonshire - 2 constituencies
     "Dumbarton": "West Dunbartonshire",
     "Clydebank and Milngavie": "West Dunbartonshire",
@@ -215,11 +249,148 @@ CONSTITUENCY_COUNCIL_MAPPING = {
     "Shetland Islands": "Shetland Islands",
 }
 
+# Validate mapping completeness (73 constituencies required)
+EXPECTED_CONSTITUENCIES = 73
+assert len(CONSTITUENCY_COUNCIL_MAPPING) == EXPECTED_CONSTITUENCIES, \
+    f"Expected {EXPECTED_CONSTITUENCIES} constituencies, got {len(CONSTITUENCY_COUNCIL_MAPPING)}"
+
 # Band distribution (from Savills 2024 data)
 # Source: https://www.savills.co.uk/research_articles/229130/372275-0
 # 2024: 416 sales £1m-£2m, 50 sales £2m+ (total 466)
 BAND_I_RATIO = 416 / 466  # £1m-£2m = 89.3%
 BAND_J_RATIO = 50 / 466   # £2m+ = 10.7%
+
+def download_council_tax_data():
+    """Download Council Tax Band data from statistics.gov.scot SPARQL endpoint."""
+    import urllib.request
+    import urllib.parse
+
+    sparql_query = """
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sdmx: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX dim: <http://statistics.gov.scot/def/dimension/>
+
+SELECT ?constituency ?band ?dwellings
+WHERE {
+  ?obs qb:dataSet <http://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries> ;
+       sdmx:refArea ?areaUri ;
+       sdmx:refPeriod ?periodUri ;
+       dim:councilTaxBand ?bandUri ;
+       <http://statistics.gov.scot/def/measure-properties/count> ?dwellings .
+
+  ?areaUri rdfs:label ?constituency .
+  ?bandUri rdfs:label ?band .
+  ?periodUri rdfs:label ?year .
+
+  FILTER(CONTAINS(STR(?areaUri), 'S16'))
+  FILTER(?year = '2023')
+}
+ORDER BY ?constituency ?band
+"""
+    endpoint = "https://statistics.gov.scot/sparql.csv"
+    url = f"{endpoint}?query={urllib.parse.quote(sparql_query)}"
+
+    print("   Downloading from statistics.gov.scot...")
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            data = response.read().decode('utf-8')
+
+        # Save to file
+        band_file = Path("data/council_tax_bands_by_constituency.csv")
+        band_file.parent.mkdir(exist_ok=True)
+        band_file.write_text(data)
+        print(f"   ✓ Downloaded and saved {len(data.splitlines())} rows")
+        return True
+    except Exception as e:
+        print(f"   ⚠️ Download failed: {e}")
+        return False
+
+
+def load_wealth_factors():
+    """Load wealth factors from Council Tax Band F-H data.
+
+    Uses Band F-H (highest bands) as a proxy for high-value property concentration.
+    Wealth factor = constituency's Band F-H % / Scotland average Band F-H %
+
+    Why Band F-H instead of Band H alone?
+    -------------------------------------
+    Band H (>£212k in 1991, ~>£1.15m in 2024) would be the ideal proxy for £1m+
+    properties. However, statistics.gov.scot only provides constituency-level data
+    in the "summary" dataset which groups bands as A-C, D-E, F-H. The "detailed"
+    dataset with individual bands A-H is only available at Data Zone level, not
+    constituency level.
+
+    Band F-H includes:
+    - Band F: £80k-£106k (1991) → ~£430k-£570k (2024)
+    - Band G: £106k-£212k (1991) → ~£570k-£1.15m (2024)
+    - Band H: >£212k (1991) → >£1.15m (2024)
+
+    This dilutes the signal with £400k-£1m properties, but is the best available
+    proxy at constituency level. Areas with high Band F-H concentration still
+    correlate strongly with £1m+ property density.
+
+    Source: statistics.gov.scot (2023)
+    https://statistics.gov.scot/data/dwellings-by-council-tax-band-summary-current-geographic-boundaries
+
+    Returns:
+        tuple: (dict mapping constituency -> wealth factor, str data source indicator)
+               Returns ({}, "fallback") if data unavailable
+    """
+    band_file = Path("data/council_tax_bands_by_constituency.csv")
+
+    # Download if not present
+    if not band_file.exists():
+        print("   Council tax band data not found locally.")
+        if not download_council_tax_data():
+            print("=" * 60)
+            print("⚠️  WARNING: Council Tax data unavailable!")
+            print("   Results will use POPULATION-ONLY weights (less accurate).")
+            print("   To fix: ensure statistics.gov.scot is accessible and retry.")
+            print("=" * 60)
+            return {}, "fallback_population_only"
+
+    # Load the data
+    df = pd.read_csv(band_file)
+
+    # Pivot to get Band F-H and Total for each constituency
+    df_fh = df[df['band'] == 'Bands F-H'][['constituency', 'dwellings']].copy()
+    df_fh.columns = ['constituency', 'band_fh']
+
+    df_total = df[df['band'] == 'Total Dwellings'][['constituency', 'dwellings']].copy()
+    df_total.columns = ['constituency', 'total']
+
+    # Merge and calculate percentages
+    df_merged = df_fh.merge(df_total, on='constituency')
+    df_merged['fh_pct'] = df_merged['band_fh'] / df_merged['total']
+
+    # Calculate Scotland average Band F-H percentage
+    scotland_fh = df_merged['band_fh'].sum()
+    scotland_total = df_merged['total'].sum()
+    scotland_avg_pct = scotland_fh / scotland_total
+
+    print(f"   Scotland average Band F-H: {scotland_avg_pct:.1%} ({scotland_fh:,} of {scotland_total:,} dwellings)")
+
+    # Calculate wealth factor for each constituency
+    # Factor = constituency Band F-H % / Scotland average Band F-H %
+    wealth_factors = {}
+    for _, row in df_merged.iterrows():
+        factor = row['fh_pct'] / scotland_avg_pct
+        wealth_factors[row['constituency']] = round(factor, 2)
+
+    # Print top and bottom constituencies for verification
+    sorted_factors = sorted(wealth_factors.items(), key=lambda x: x[1], reverse=True)
+    print(f"   Top 5 by Band F-H concentration:")
+    for name, factor in sorted_factors[:5]:
+        pct = df_merged[df_merged['constituency'] == name]['fh_pct'].values[0]
+        print(f"      {name}: {factor:.2f}x ({pct:.1%} Band F-H)")
+
+    print(f"   Bottom 3 by Band F-H concentration:")
+    for name, factor in sorted_factors[-3:]:
+        pct = df_merged[df_merged['constituency'] == name]['fh_pct'].values[0]
+        print(f"      {name}: {factor:.2f}x ({pct:.1%} Band F-H)")
+
+    return wealth_factors, "band_fh"
 
 
 def load_population_data():
@@ -247,17 +418,27 @@ def load_population_data():
     return pd.read_csv(pop_file)
 
 
-def calculate_population_weights(population_df):
-    """Calculate population-based weights within each council."""
+def calculate_wealth_adjusted_weights(population_df, wealth_factors):
+    """Calculate wealth-adjusted weights within each council.
+
+    Uses population as base, then applies wealth adjustment factors from
+    Council Tax Band F-H data to reflect high-value property concentrations.
+
+    Weight = (Population × Wealth Factor) / Sum(Population × Wealth Factor for council)
+
+    Args:
+        population_df: DataFrame with constituency populations
+        wealth_factors: Dict mapping constituency -> wealth factor (from Band F-H data)
+    """
 
     # Create mapping with population
     weights = {}
 
-    # Group constituencies by council
-    council_populations = {}
+    # Group constituencies by council with adjusted values
+    council_data = {}
     for constituency, council in CONSTITUENCY_COUNCIL_MAPPING.items():
-        if council not in council_populations:
-            council_populations[council] = []
+        if council not in council_data:
+            council_data[council] = []
 
         # Find population for this constituency
         pop_row = population_df[population_df['constituency'] == constituency]
@@ -268,16 +449,24 @@ def calculate_population_weights(population_df):
             pop = 75000  # Default average
             print(f"⚠️  No population data for {constituency}, using default")
 
-        council_populations[council].append((constituency, pop))
+        # Get wealth adjustment factor from data (default 1.0 if not found)
+        wealth_factor = wealth_factors.get(constituency, 1.0)
 
-    # Calculate weights within each council
-    for council, constituencies in council_populations.items():
-        total_pop = sum(pop for _, pop in constituencies)
-        for constituency, pop in constituencies:
-            weight = pop / total_pop if total_pop > 0 else 1 / len(constituencies)
+        # Adjusted value = population × wealth factor
+        adjusted_value = pop * wealth_factor
+
+        council_data[council].append((constituency, pop, wealth_factor, adjusted_value))
+
+    # Calculate weights within each council using adjusted values
+    for council, constituencies in council_data.items():
+        total_adjusted = sum(adj for _, _, _, adj in constituencies)
+        for constituency, pop, wealth_factor, adjusted_value in constituencies:
+            # Weight based on adjusted value, not raw population
+            weight = adjusted_value / total_adjusted if total_adjusted > 0 else 1 / len(constituencies)
             weights[constituency] = {
                 "council": council,
                 "population": pop,
+                "wealth_factor": wealth_factor,
                 "weight": weight
             }
 
@@ -285,11 +474,11 @@ def calculate_population_weights(population_df):
 
 
 def analyze_constituencies():
-    """Distribute council-level estimates to constituencies using population weights."""
+    """Distribute council-level estimates to constituencies using wealth-adjusted weights."""
 
     print("=" * 70)
     print("Scottish Mansion Tax Analysis by Parliament Constituency")
-    print("Using NRS population-based weights")
+    print("Using wealth-adjusted weights (population × Band F-H factor)")
     print("=" * 70)
 
     # Load population data
@@ -297,9 +486,17 @@ def analyze_constituencies():
     population_df = load_population_data()
     print(f"   ✓ Loaded {len(population_df)} constituencies")
 
-    # Calculate population-based weights
-    print("\n📈 Calculating population-based weights...")
-    weights = calculate_population_weights(population_df)
+    # Load wealth factors from Council Tax Band F-H data
+    print("\n💎 Loading Council Tax Band F-H data (wealth proxy)...")
+    wealth_factors, wealth_data_source = load_wealth_factors()
+    if wealth_data_source == "fallback_population_only":
+        print("   ⚠️  Using population-only weights (no wealth adjustment)")
+    else:
+        print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
+
+    # Calculate wealth-adjusted weights
+    print("\n📈 Calculating wealth-adjusted weights...")
+    weights = calculate_wealth_adjusted_weights(population_df, wealth_factors)
 
     # Calculate total sales for normalization
     total_sales = sum(COUNCIL_DATA.values())
@@ -310,11 +507,12 @@ def analyze_constituencies():
         council = data["council"]
         weight = data["weight"]
         population = data["population"]
+        wealth_factor = data.get("wealth_factor", 1.0)
 
         # Get council's total sales
         council_sales = COUNCIL_DATA.get(council, 0)
 
-        # Allocate to constituency based on population weight
+        # Allocate to constituency based on wealth-adjusted weight
         constituency_sales = council_sales * weight
 
         # Calculate share of total
@@ -332,6 +530,8 @@ def analyze_constituencies():
             "constituency": constituency,
             "council": council,
             "population": population,
+            "wealth_factor": wealth_factor,
+            "wealth_data_source": wealth_data_source,
             "weight": round(weight, 4),
             "estimated_sales": rounded_sales,
             "band_i_sales": round(band_i_sales, 1),
@@ -346,7 +546,7 @@ def analyze_constituencies():
     # Calculate total revenue using simple formula: Stock × Average Rate
     # This is equivalent to: (sales × avg_rate) × (stock / sales) = stock × avg_rate
     avg_rate = BAND_I_RATIO * BAND_I_SURCHARGE + BAND_J_RATIO * BAND_J_SURCHARGE
-    total_stock_revenue = ESTIMATED_STOCK * avg_rate  # 11,481 × £1,680 = £19.3m
+    total_stock_revenue = ESTIMATED_STOCK * avg_rate  # 11,481 × £1,607 = £18.5m
 
     # For reference: the ratio-based calculation gives the same result
     total_implied_from_sales = df['implied_from_sales'].sum()

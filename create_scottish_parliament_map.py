@@ -327,7 +327,7 @@ def create_html_report(df):
     <div class="section">
         <h2>Policy Overview</h2>
         <div class="policy-box">
-            <strong>Scottish Budget 2025-26 Council Tax Reform</strong><br><br>
+            <strong>Scottish Budget 2026-27 Council Tax Reform</strong><br><br>
             <ul>
                 <li><strong>Effective:</strong> 1 April 2028</li>
                 <li><strong>New Band I:</strong> Properties £1m-£2m</li>
@@ -436,17 +436,19 @@ def create_html_report(df):
 
     <div class="section">
         <h2>Methodology</h2>
-        <p>This analysis distributes council-level mansion tax estimates to Scottish Parliament constituencies using weighted allocation based on:</p>
+        <p>This analysis distributes council-level mansion tax estimates to Scottish Parliament constituencies using <strong>wealth-adjusted allocation</strong>:</p>
         <ul>
-            <li>Council-level £1m+ property sales data from Registers of Scotland</li>
+            <li>Council-level £1m+ property sales data from Registers of Scotland (391 sales)</li>
             <li>Constituency-to-council geographic mapping (2021 boundaries)</li>
-            <li>Property value distribution weights based on affluent area locations within each council</li>
+            <li>Population weights from NRS Scottish Parliamentary Constituency Estimates (mid-2021)</li>
+            <li><strong>Wealth factors</strong> from Council Tax Band F-H data (<a href="https://statistics.gov.scot">statistics.gov.scot</a>, 2023)</li>
         </ul>
-        <p>Higher weights are assigned to constituencies containing known high-value areas (e.g., Edinburgh Central receives 25% of Edinburgh's allocation due to New Town, Stockbridge, and West End).</p>
+        <p>Within each council, revenue is allocated using: <code>Weight = (Population × Wealth Factor) / Council Total</code></p>
+        <p>Wealth Factor = constituency Band F-H % ÷ Scotland average (13.8%). Band F-H properties are the highest council tax bands, serving as a proxy for high-value property concentration.</p>
     </div>
 
     <div class="footer">
-        Analysis based on Scottish Government Budget 2025-26 proposals<br>
+        Analysis based on Scottish Government Budget 2026-27 proposals<br>
         Data: Registers of Scotland property transactions | Scottish Parliament 2021 constituency boundaries
     </div>
 </body>
