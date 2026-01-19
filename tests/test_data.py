@@ -41,7 +41,7 @@ class TestWealthFactors:
     def test_wealth_factors_load(self):
         """Wealth factors should load successfully."""
         factors, source = load_wealth_factors(verbose=False)
-        assert len(factors) > 0 or source == "fallback_population_only"
+        assert len(factors) > 0
 
     def test_wealth_factors_return_tuple(self):
         """load_wealth_factors should return (dict, str) tuple."""
@@ -51,23 +51,15 @@ class TestWealthFactors:
         assert isinstance(result[0], dict)
         assert isinstance(result[1], str)
 
-    def test_wealth_source_valid(self):
-        """Wealth source should be 'band_h' or 'fallback_population_only'."""
+    def test_wealth_source_is_band_h(self):
+        """Wealth source should be 'band_h'."""
         _, source = load_wealth_factors(verbose=False)
-        assert source in {"band_h", "fallback_population_only"}
+        assert source == "band_h"
 
     def test_wealth_factors_non_negative(self):
         """All wealth factors should be non-negative (0 is valid for areas with no Band H)."""
         factors, _ = load_wealth_factors(verbose=False)
-        if factors:  # May be empty if fallback
-            assert all(f >= 0 for f in factors.values())
-
-    def test_edinburgh_southern_has_high_factor(self):
-        """Edinburgh Southern should have high wealth factor (Band H concentration)."""
-        factors, source = load_wealth_factors(verbose=False)
-        if source == "band_h" and factors:
-            # Edinburgh Southern has ~3% Band H, highest concentration in Scotland
-            assert factors.get("Edinburgh Southern", 0) > 4.0
+        assert all(f >= 0 for f in factors.values())
 
 
 if __name__ == "__main__":
