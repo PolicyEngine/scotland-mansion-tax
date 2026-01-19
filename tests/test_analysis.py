@@ -109,16 +109,6 @@ class TestRevenueCalculations:
 class TestWealthFactors:
     """Tests for wealth factor loading and application."""
 
-    def test_wealth_data_source_column_present(self):
-        """Output should include wealth_data_source column."""
-        df = analyze_constituencies(verbose=False)
-        assert "wealth_data_source" in df.columns
-
-    def test_wealth_data_source_is_band_h(self):
-        """wealth_data_source should be 'band_h'."""
-        df = analyze_constituencies(verbose=False)
-        assert (df["wealth_data_source"] == "band_h").all()
-
     def test_edinburgh_central_higher_factor_than_pentlands(self):
         """Edinburgh Central should have higher wealth factor than Pentlands."""
         df = analyze_constituencies(verbose=False)
@@ -158,7 +148,6 @@ class TestOutputFormat:
             "council",
             "population",
             "wealth_factor",
-            "wealth_data_source",
             "weight",
             "estimated_sales",
             "band_i_sales",

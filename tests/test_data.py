@@ -40,21 +40,8 @@ class TestWealthFactors:
 
     def test_wealth_factors_load(self):
         """Wealth factors should load successfully."""
-        factors, source = load_wealth_factors(verbose=False)
+        factors, _ = load_wealth_factors(verbose=False)
         assert len(factors) > 0
-
-    def test_wealth_factors_return_tuple(self):
-        """load_wealth_factors should return (dict, str) tuple."""
-        result = load_wealth_factors(verbose=False)
-        assert isinstance(result, tuple)
-        assert len(result) == 2
-        assert isinstance(result[0], dict)
-        assert isinstance(result[1], str)
-
-    def test_wealth_source_is_band_h(self):
-        """Wealth source should be 'band_h'."""
-        _, source = load_wealth_factors(verbose=False)
-        assert source == "band_h"
 
     def test_wealth_factors_non_negative(self):
         """All wealth factors should be non-negative (0 is valid for areas with no Band H)."""

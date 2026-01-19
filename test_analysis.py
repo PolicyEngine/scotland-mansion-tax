@@ -41,10 +41,10 @@ class TestWeightCalculations:
                 f"{council} weights sum to {weight_sum}, expected 1.0"
             )
 
-    def test_weights_are_positive(self):
-        """All weights should be positive."""
+    def test_weights_are_non_negative(self):
+        """All weights should be non-negative (0 is valid for areas with no Band H)."""
         df = analyze_constituencies()
-        assert (df["weight"] > 0).all(), "All weights should be positive"
+        assert (df["weight"] >= 0).all(), "All weights should be non-negative"
 
     def test_weights_not_exceed_one(self):
         """No individual weight should exceed 1.0."""
@@ -112,28 +112,13 @@ class TestWealthFactors:
 
     def test_wealth_factors_load(self):
         """Wealth factors should load successfully."""
-        factors, source = load_wealth_factors()
+        factors, _ = load_wealth_factors()
         assert len(factors) > 0
 
-    def test_wealth_data_source_column_present(self):
-        """Output should include wealth_data_source column."""
-        df = analyze_constituencies()
-        assert "wealth_data_source" in df.columns
-
-    def test_wealth_data_source_is_band_fh(self):
-        """wealth_data_source should be 'band_fh'."""
-        df = analyze_constituencies()
-        assert (df["wealth_data_source"] == "band_fh").all()
-
-    def test_edinburgh_central_higher_factor_than_pentlands(self):
-        """Edinburgh Central should have higher wealth factor than Pentlands."""
-        df = analyze_constituencies()
-        central = df[df["constituency"] == "Edinburgh Central"]["wealth_factor"].values[0]
-        pentlands = df[df["constituency"] == "Edinburgh Pentlands"]["wealth_factor"].values[0]
-        # Edinburgh Central (New Town, Stockbridge) should be wealthier
-        assert central > pentlands, (
-            f"Expected Edinburgh Central ({central}) > Edinburgh Pentlands ({pentlands})"
-        )
+    def test_wealth_factors_non_negative(self):
+        """All wealth factors should be non-negative."""
+        factors, _ = load_wealth_factors()
+        assert all(f >= 0 for f in factors.values())
 
 
 class TestDataIntegrity:
@@ -171,7 +156,6 @@ class TestOutputFormat:
             "council",
             "population",
             "wealth_factor",
-            "wealth_data_source",
             "weight",
             "estimated_sales",
             "band_i_sales",
