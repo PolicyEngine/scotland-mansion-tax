@@ -424,15 +424,14 @@ def calculate_wealth_adjusted_weights(population_df, wealth_factors):
 
         # Find population for this constituency
         pop_row = population_df[population_df['constituency'] == constituency]
-        if len(pop_row) > 0:
-            pop = pop_row['population'].values[0]
-        else:
-            # Try fuzzy match
-            pop = 75000  # Default average
-            print(f"⚠️  No population data for {constituency}, using default")
+        if len(pop_row) == 0:
+            raise ValueError(f"No population data for {constituency}")
+        pop = pop_row['population'].values[0]
 
-        # Get wealth adjustment factor from data (default 1.0 if not found)
-        wealth_factor = wealth_factors.get(constituency, 1.0)
+        # Get wealth adjustment factor
+        if constituency not in wealth_factors:
+            raise ValueError(f"No wealth factor for {constituency}")
+        wealth_factor = wealth_factors[constituency]
 
         # Adjusted value = population × wealth factor
         adjusted_value = pop * wealth_factor
@@ -486,10 +485,12 @@ def analyze_constituencies():
         council = data["council"]
         weight = data["weight"]
         population = data["population"]
-        wealth_factor = data.get("wealth_factor", 1.0)
+        wealth_factor = data["wealth_factor"]
 
         # Get council's total sales
-        council_sales = COUNCIL_DATA.get(council, 0)
+        if council not in COUNCIL_DATA:
+            raise ValueError(f"Council {council} not in COUNCIL_DATA")
+        council_sales = COUNCIL_DATA[council]
 
         # Allocate to constituency based on wealth-adjusted weight
         constituency_sales = council_sales * weight
