@@ -523,7 +523,7 @@ def analyze_constituencies():
         # Calculate implied revenue from sales using UK rates
         implied_from_sales = (band_i_sales * BAND_I_SURCHARGE) + (band_j_sales * BAND_J_SURCHARGE)
 
-        rounded_sales = round(constituency_sales, 1)
+        rounded_sales = round(constituency_sales)
         results.append({
             "constituency": constituency,
             "council": council,
@@ -532,10 +532,10 @@ def analyze_constituencies():
             "wealth_data_source": wealth_data_source,
             "weight": round(weight, 4),
             "estimated_sales": rounded_sales,
-            "band_i_sales": round(band_i_sales, 1),
-            "band_j_sales": round(band_j_sales, 1),
+            "band_i_sales": round(band_i_sales),
+            "band_j_sales": round(band_j_sales),
             "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
-            "implied_from_sales": round(implied_from_sales, 0) if rounded_sales > 0 else 0,
+            "implied_from_sales": round(implied_from_sales) if rounded_sales > 0 else 0,
         })
 
     df = pd.DataFrame(results)
@@ -572,7 +572,7 @@ def analyze_constituencies():
         council_short = row['council'][:19] if len(row['council']) > 19 else row['council']
         print(f"{row['constituency']:<40} {council_short:<20} "
               f"{row['population']:>8,} {row['weight']:>6.1%} "
-              f"{row['estimated_sales']:>6.1f} £{row['allocated_revenue']/1e6:>10.2f}m")
+              f"{row['estimated_sales']:>6} £{row['allocated_revenue']/1e6:>10.2f}m")
 
     print("-" * 105)
 
@@ -584,7 +584,7 @@ def analyze_constituencies():
           f"({edinburgh_df['share_pct'].sum():.1f}%)")
 
     for _, row in edinburgh_df.sort_values('estimated_sales', ascending=False).iterrows():
-        print(f"   - {row['constituency']}: {row['estimated_sales']:.1f} sales, "
+        print(f"   - {row['constituency']}: {row['estimated_sales']} sales, "
               f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
 
     return df
@@ -609,7 +609,7 @@ def main():
     print(f"  Stock-based revenue: £{df['allocated_revenue'].sum()/1e6:.1f}m")
     print(f"\n  Top 5 constituencies:")
     for _, row in df.head(5).iterrows():
-        print(f"    {row['constituency']}: {row['estimated_sales']:.1f} sales, "
+        print(f"    {row['constituency']}: {row['estimated_sales']} sales, "
               f"£{row['allocated_revenue']/1e6:.2f}m ({row['share_pct']:.1f}%)")
     print("=" * 70)
 

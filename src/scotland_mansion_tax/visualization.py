@@ -348,7 +348,7 @@ def create_html_report(df: pd.DataFrame) -> str:
                 <td>{i}</td>
                 <td><strong>{row['constituency']}</strong></td>
                 <td>{row['council']}</td>
-                <td>{row['estimated_sales']:.1f}</td>
+                <td>{row['estimated_sales']}</td>
                 <td>£{row['allocated_revenue']/1e6:.2f}m</td>
                 <td>{row['share_pct']:.1f}%</td>
             </tr>

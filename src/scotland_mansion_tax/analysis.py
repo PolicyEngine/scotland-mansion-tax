@@ -278,7 +278,7 @@ def analyze_constituencies(
     # Load wealth factors from Council Tax Band H data
     if verbose:
         print("\n💎 Loading Council Tax Band H data (wealth proxy)...")
-    wealth_factors, wealth_data_source = load_wealth_factors(data_dir, verbose)
+    wealth_factors, _ = load_wealth_factors(data_dir, verbose)
     if verbose:
         print(f"   ✓ Loaded wealth factors for {len(wealth_factors)} constituencies")
 
@@ -316,20 +316,19 @@ def analyze_constituencies(
             band_j_sales * BAND_J_SURCHARGE
         )
 
-        rounded_sales = round(constituency_sales, 1)
+        rounded_sales = round(constituency_sales)
         results.append(
             {
                 "constituency": constituency,
                 "council": council,
                 "population": population,
                 "wealth_factor": wealth_factor,
-                "wealth_data_source": wealth_data_source,
                 "weight": round(weight, 4),
                 "estimated_sales": rounded_sales,
-                "band_i_sales": round(band_i_sales, 1),
-                "band_j_sales": round(band_j_sales, 1),
+                "band_i_sales": round(band_i_sales),
+                "band_j_sales": round(band_j_sales),
                 "share_pct": round(share * 100, 2) if rounded_sales > 0 else 0,
-                "implied_from_sales": round(implied_from_sales, 0)
+                "implied_from_sales": round(implied_from_sales)
                 if rounded_sales > 0
                 else 0,
             }
@@ -371,7 +370,7 @@ def analyze_constituencies(
             )
             print(
                 f"{row['constituency']:<40} {council_short:<20} "
-                f"{row['estimated_sales']:>6.1f} £{row['allocated_revenue']/1e6:>10.2f}m"
+                f"{row['estimated_sales']:>6} £{row['allocated_revenue']/1e6:>10.2f}m"
             )
 
         # Edinburgh subtotal
