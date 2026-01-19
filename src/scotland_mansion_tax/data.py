@@ -204,7 +204,7 @@ def load_wealth_factors(
 
     Why Band H instead of Band F-H?
     -------------------------------
-    Band H (>£212k in 1991, ~>£1.15m in 2024) directly captures £1m+ properties.
+    Band H (>£212k in 1991, ~>£1.06m in 2024 per UK HPI) directly captures £1m+ properties.
     Band F-H includes £430k-£1.15m properties which dilutes the signal:
 
     - Scotland has 16,011 Band H properties (0.57% of dwellings)

@@ -52,9 +52,9 @@ class TestWealthFactors:
         assert isinstance(result[1], str)
 
     def test_wealth_source_valid(self):
-        """Wealth source should be 'band_fh' or 'fallback_population_only'."""
+        """Wealth source should be 'band_h' or 'fallback_population_only'."""
         _, source = load_wealth_factors(verbose=False)
-        assert source in {"band_fh", "fallback_population_only"}
+        assert source in {"band_h", "fallback_population_only"}
 
     def test_wealth_factors_positive(self):
         """All wealth factors should be positive."""
@@ -62,12 +62,14 @@ class TestWealthFactors:
         if factors:  # May be empty if fallback
             assert all(f > 0 for f in factors.values())
 
-    def test_eastwood_has_highest_factor(self):
-        """Eastwood should have highest wealth factor (45% Band F-H)."""
+    def test_edinburgh_southern_has_high_factor(self):
+        """Edinburgh Southern should have high wealth factor (Band H concentration)."""
         factors, source = load_wealth_factors(verbose=False)
-        if source == "band_fh" and factors:
-            # Eastwood has 45.1% Band F-H, highest in Scotland
-            assert factors.get("Eastwood", 0) > 3.0
+        if source == "band_h" and factors:
+            # Edinburgh Southern has ~3% Band H, highest concentration in Scotland
+            # Factor is based on constituency code, not name
+            edinburgh_southern_code = "S16000108"
+            assert factors.get(edinburgh_southern_code, 0) > 4.0
 
 
 if __name__ == "__main__":
