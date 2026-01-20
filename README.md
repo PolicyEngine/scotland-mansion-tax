@@ -168,55 +168,6 @@ Stock tells us **how many** properties; sales tells us **where** they are; Band 
 | House price multiplier | [UK HPI](https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-april-2025) | 1991-2024 |
 | Policy rates | [UK Budget 2025](https://www.gov.uk/government/publications/high-value-council-tax-surcharge/high-value-council-tax-surcharge) | 2025 |
 
-## Project Structure
-
-```
-scotland-mansion-tax/
-├── pyproject.toml              # Package configuration
-├── src/
-│   └── scotland_mansion_tax/
-│       ├── __init__.py
-│       ├── cli.py              # Command-line interface
-│       ├── data.py             # Data loading/downloading
-│       ├── analysis.py         # Core calculations
-│       └── visualization.py    # Charts and maps
-├── data/                       # Input data (some auto-downloaded)
-│   ├── constituency_population.csv
-│   └── scottish_parliament_constituencies.geojson
-├── output/                     # Generated outputs
-└── tests/
-    └── test_analysis.py        # Unit tests
-```
-
-## CLI Commands
-
-```bash
-# Download all required data files
-scotland-mansion-tax download --all
-
-# Run analysis and save results
-scotland-mansion-tax analyze --output results.csv
-
-# Generate visualizations
-scotland-mansion-tax visualize --output-dir ./output
-
-# Run full pipeline (download → analyze → visualize)
-scotland-mansion-tax run
-```
-
-## Development
-
-```bash
-# Install in development mode
-pip install -e .
-
-# Run tests
-pytest tests/
-
-# Run specific test
-pytest tests/test_analysis.py -v
-```
-
 ## Limitations
 
 1. **Modeled estimates**: Constituency figures are modeled estimates, not direct observations
@@ -227,9 +178,3 @@ pytest tests/test_analysis.py -v
 6. **Council estimates**: RoS reports 391 total sales but only provides aggregates. Council-level breakdown estimated from postcode data; totals 429 due to different source methodologies
 7. **Rate uncertainty**: Scotland has not announced rates. Revenue estimates use UK benchmark rates (£1,500/£2,500); actual revenue could range from £12.4m to £18.5m
 8. **Band H as proxy**: While Band H (>£212k in 1991, ~£1.06m today) is the best available proxy for £1m+ properties, it may not perfectly capture all mansion tax-affected properties. The Scottish Government's £5m allocation for targeted revaluation acknowledges that 1991-based banding is increasingly disconnected from current values
-
-*Data extracted: January 2026*
-
-## License
-
-MIT
