@@ -3,7 +3,7 @@
 Scottish Mansion Tax Analysis
 
 Analyzes the impact of Scotland's proposed council tax reform for high-value
-properties (£1m+), announced in the Scottish Budget 2025-26.
+properties (£1m+), announced in the Scottish Budget 2026-27.
 
 Policy details:
 - From April 2028, two new council tax bands for properties over £1m
@@ -24,11 +24,10 @@ from pathlib import Path
 # Scottish Government revenue estimate
 SCOTTISH_GOV_REVENUE_ESTIMATE = 16_000_000  # £16 million
 
-# £1m+ sales data from public reports (2024)
-# Sources: RoS Property Market Report, Savills, Rettie, Scottish Housing News
+# £1m+ sales data from Registers of Scotland Property Market Report 2024-25
+# Source: https://www.ros.gov.uk/data-and-statistics/property-market-statistics/property-market-report-2024-25
 MILLION_PLUS_SALES_2024 = {
-    # Using average of different sources: RoS (391), Savills (466), Rettie (514)
-    "total": 457,  # Average estimate
+    "total": 391,  # RoS official figure
 
     # Top postcodes from Scottish Housing News / Scotsman analysis
     # EH = Edinburgh, G = Glasgow, KY = Fife
@@ -43,13 +42,13 @@ MILLION_PLUS_SALES_2024 = {
         "G61": 15,   # Bearsden
         "EH30": 12,  # South Queensferry (estimated)
         "AB15": 10,  # Aberdeen West (estimated)
-        "Other": 205,  # Remaining sales
+        "Other": 139,  # Remaining sales
     },
 
     # Local authority distribution (estimated from postcode data)
-    # Edinburgh accounts for 50%+ per reports
+    # Edinburgh accounts for 50%+ per RoS reports
     "by_council": {
-        "City of Edinburgh": 230,      # ~50% of total
+        "City of Edinburgh": 200,      # >50% of total
         "East Lothian": 35,            # North Berwick area
         "Fife": 30,                    # St Andrews
         "East Dunbartonshire": 25,     # Bearsden
@@ -65,16 +64,15 @@ MILLION_PLUS_SALES_2024 = {
         "Argyll and Bute": 6,          # Argyll
         "Midlothian": 5,               # Midlothian
         "West Lothian": 5,             # West Lothian
-        "Other councils": 14,          # Remaining
     }
 }
 
-# Band breakdown (estimated based on UK patterns)
-# Band I (£1m-£2m) typically 80-85% of £1m+ sales
-# Band J (£2m+) typically 15-20% of £1m+ sales
+# Band breakdown from Savills 2024 Scotland £1m+ Market Analysis
+# Source: https://www.savills.co.uk/research_articles/229130/372275-0
+# 2024: 416 sales £1m-£2m, 50 sales £2m+ (total 466)
 BAND_DISTRIBUTION = {
-    "Band I (£1m-£2m)": 0.82,  # ~82% of £1m+ sales
-    "Band J (£2m+)": 0.18,     # ~18% of £1m+ sales
+    "Band I (£1m-£2m)": 416 / 466,  # 89% of £1m+ sales
+    "Band J (£2m+)": 50 / 466,      # 11% of £1m+ sales
 }
 
 
@@ -82,7 +80,7 @@ def analyze():
     """Main analysis: estimate Scottish mansion tax impact by council area."""
     print("=" * 70)
     print("Scottish Mansion Tax Analysis")
-    print("Based on Scottish Budget 2025-26 and public property data")
+    print("Based on Scottish Budget 2026-27 and public property data")
     print("=" * 70)
 
     print("\n📊 Policy Overview:")

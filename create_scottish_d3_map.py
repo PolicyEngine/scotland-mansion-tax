@@ -42,7 +42,7 @@ def generate_d3_map_html(geojson, impact_data):
     for _, row in impact_data.iterrows():
         impact_js[row['constituency']] = {
             'pct': row['share_pct'],
-            'num': round(row['estimated_sales'], 1),
+            'num': int(row['estimated_sales']),
             'rev': int(row['allocated_revenue']),
             'council': row['council']
         }
