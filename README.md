@@ -47,25 +47,25 @@ Total Revenue = Stock × Average Rate
 
 ### Step 3: Distribute Within Councils
 
-Each council contains multiple constituencies. To allocate sales within a council, we use **wealth-adjusted weights**:
+Each council contains multiple constituencies. To allocate sales within a council, we use **Band H-adjusted weights**:
 
 ```
-Weight = (Population × Wealth Factor) / Council Total
+Weight = (Population × Band H Factor) / Council Total
 ```
 
-### Step 4: Wealth Factor from Band H Property Counts
+### Step 4: Band H Factor
 
 **What is Band H?** Council Tax Band H contains properties valued >£212k in 1991. Using [UK House Price Index](https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-april-2025), Scottish prices have risen 4.98× since 1991, so Band H threshold today ≈ **£1.06 million**.
 
 **What we measure**: The percentage of dwellings in each constituency that are Band H. This is a **count of expensive properties**, not a council tax rate.
 
 ```
-Wealth Factor = Constituency Band H % ÷ Scotland Average Band H %
+Band H Factor = Constituency Band H % ÷ Scotland Average Band H %
 ```
 
 Scotland average: 0.57% of dwellings are Band H (~16,000 out of ~2.8 million).
 
-| Constituency | Band H % | Wealth Factor |
+| Constituency | Band H % | Band H Factor |
 |--------------|----------|---------------|
 | Edinburgh Southern | 2.97% | 5.26× |
 | Edinburgh Central | 2.74% | 4.85× |
