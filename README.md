@@ -96,3 +96,7 @@ Constituency Revenue = (Council Sales × Weight / Total Sales) × £18.5m
 2. **Band H as proxy**: Band H (>£212k in 1991 ≈ £1.06m today) approximates but doesn't perfectly match £1m+ threshold
 3. **Rate uncertainty**: Scotland hasn't announced rates; actual revenue depends on rates chosen
 4. **Stock-sales assumption**: Assumes stock distributed geographically like sales
+
+## License
+
+Code in this repository is released under the [MIT License](LICENSE). Original text and figures are released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) with attribution to PolicyEngine. Third-party data and materials keep their own terms.
